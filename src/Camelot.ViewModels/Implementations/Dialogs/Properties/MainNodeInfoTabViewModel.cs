@@ -37,7 +37,7 @@ public class MainNodeInfoTabViewModel : ViewModelBase, IMainNodeInfoTabViewModel
 
     public bool IsDirectory { get; set; }
 
-    public IBitmap ImageBitmap => CheckIfImage() ? _bitmapFactory.Create(_fullPath) : null;
+    public Bitmap ImageBitmap => CheckIfImage() ? _bitmapFactory.Create(_fullPath) : null;
 
     public string FormattedSize => _fileSizeFormatter.GetFormattedSize(Size);
 

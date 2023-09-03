@@ -45,7 +45,7 @@
 					 IsVisible="{Binding RecommendedApplications.Count}"
 					 SelectedItem="{Binding SelectedDefaultApplication, Mode=TwoWay}"
 					 GotFocus="DefaultAppsListBoxOnGotFocus" Name="DefaultAppsListBox"
-					 Items="{Binding RecommendedApplications}">
+                 ItemsSource="{Binding RecommendedApplications}">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<openWith:ApplicationView />
@@ -56,7 +56,7 @@
 			<Expander Grid.Row="3" Grid.ColumnSpan="2" Margin="0,15,0,10">
 				<Expander.Content>
 					<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*">
-						<ListBox Items="{Binding OtherApplications}"
+						<ListBox ItemsSource="{Binding OtherApplications}"
 						         Height="120" ScrollViewer.VerticalScrollBarVisibility="Visible"
 						         Grid.ColumnSpan="2" GotFocus="OtherAppsListBoxOnGotFocus"
 						         Name="OtherAppsListBox"

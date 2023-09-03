@@ -7,7 +7,7 @@ namespace Camelot.Views;
 
 public class ViewLocator : IDataTemplate
 {
-    public IControl Build(object data)
+    public Control Build(object data)
     {
         var fullName = data.GetType().FullName;
         if (fullName is null)

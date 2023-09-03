@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Camelot.Ui.Tests.Common;
@@ -30,13 +31,13 @@ public class CreateAndRemoveFavouriteDirectoryFlow
         await WaitService.WaitForConditionAsync(() => GetFavouriteDirectoriesActiveIconsCount(window) == 2);
     }
 
-    private static int GetFavouriteDirectoriesCount(IVisual window) =>
+    private static int GetFavouriteDirectoriesCount(Visual window) =>
         window
             .GetVisualDescendants()
             .OfType<FavouriteDirectoryView>()
             .Count();
 
-    private static int GetFavouriteDirectoriesActiveIconsCount(IVisual window) =>
+    private static int GetFavouriteDirectoriesActiveIconsCount(Visual window) =>
         window
             .GetVisualDescendants()
             .OfType<Image>()
