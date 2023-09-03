@@ -17,7 +17,7 @@
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </UserControl.Resources>
 
-    <ItemsControl Items="{Binding ActiveOperations}">
+    <ItemsControl ItemsSource="{Binding ActiveOperations}">
         <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type operationsStates:OperationStateViewModel}">
                 <Grid>

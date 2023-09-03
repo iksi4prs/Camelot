@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.VisualTree;
 using Camelot.Ui.Tests.Common;
 using Camelot.Ui.Tests.Steps;
@@ -39,7 +40,7 @@ public class CreateAndCloseNewTabFlow
         CloseCurrentTabStep.CloseCurrentTab(window);
     }
 
-    private static int GetTabsCount(IVisual window) =>
+    private static int GetTabsCount(Visual window) =>
         window
             .GetVisualDescendants()
             .OfType<TabView>()

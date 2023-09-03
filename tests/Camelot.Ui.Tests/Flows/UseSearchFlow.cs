@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
@@ -93,7 +94,7 @@ public class UseSearchFlow : IDisposable
         }
     }
 
-    private string GetSelectedItemText(IVisual filesPanel)
+    private string GetSelectedItemText(Visual filesPanel)
     {
         var dataGrid = GetDataGrid(filesPanel);
         var directoryViewModel = (DirectoryViewModel) dataGrid.SelectedItem;
@@ -102,14 +103,14 @@ public class UseSearchFlow : IDisposable
         return directoryViewModel.FullName;
     }
 
-    private static bool CheckIfFilesExist(IVisual filesPanel)
+    private static bool CheckIfFilesExist(Visual filesPanel)
     {
         var dataGrid = GetDataGrid(filesPanel);
 
-        return dataGrid.Items.OfType<FileViewModel>().Any();
+        return dataGrid.ItemsSource.OfType<FileViewModel>().Any();
     }
 
-    private static DataGrid GetDataGrid(IVisual filesPanel) =>
+    private static DataGrid GetDataGrid(Visual filesPanel) =>
         filesPanel
             .GetVisualDescendants()
             .OfType<DataGrid>()

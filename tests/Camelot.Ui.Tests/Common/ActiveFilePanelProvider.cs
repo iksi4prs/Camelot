@@ -1,4 +1,5 @@
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Camelot.ViewModels.Implementations.MainWindow.FilePanels;
@@ -30,7 +31,7 @@ public static class ActiveFilePanelProvider
         return viewModel?.IsActive ?? false;
     }
 
-    private static DataGrid GetDataGrid(IVisual filesPanel) =>
+    private static DataGrid GetDataGrid(Visual filesPanel) =>
         filesPanel
             .GetVisualDescendants()
             .OfType<DataGrid>()

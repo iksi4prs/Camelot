@@ -49,7 +49,7 @@
                  Text="{Binding ArchivePath}" />
 
         <ComboBox Grid.Row="3" Grid.ColumnSpan="2" Width="550" Margin="0,15"
-                  Items="{Binding AvailableArchiveTypes}"
+                  ItemsSource="{Binding AvailableArchiveTypes}"
                   SelectedItem="{Binding SelectedArchiveType, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>

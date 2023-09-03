@@ -30,7 +30,7 @@
                       Grid.Column="0" Grid.ColumnSpan="3"
                       ScrollChanged="ScrollViewerOnScrollChanged"
                       Classes="arrowScrollViewer">
-            <ItemsControl Items="{Binding Directories}"
+            <ItemsControl ItemsSource="{Binding Directories}"
                           Margin="0,8,8,3">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

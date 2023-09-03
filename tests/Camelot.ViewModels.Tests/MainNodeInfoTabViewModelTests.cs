@@ -61,8 +61,8 @@ public class MainNodeInfoTabViewModelTests
             .Setup<IPathService, string>(m => m.GetExtension(filePath))
             .Returns(extension);
         _autoMocker
-            .Setup<IBitmapFactory, IBitmap>(m => m.Create(filePath))
-            .Returns(new Mock<IBitmap>().Object);
+            .Setup<IBitmapFactory, Bitmap>(m => m.Create(filePath))
+            .Returns(new Mock<Bitmap>().Object);
 
         var viewModel = _autoMocker.CreateInstance<MainNodeInfoTabViewModel>();
         var nodeModel = new NodeModelBase

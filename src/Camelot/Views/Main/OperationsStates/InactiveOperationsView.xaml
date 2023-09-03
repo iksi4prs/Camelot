@@ -18,7 +18,7 @@
         <converters:InverseEnumToBooleanConverter x:Key="InverseEnumToBooleanConverter" />
     </UserControl.Resources>
 
-    <ItemsControl Items="{Binding InactiveOperations}">
+    <ItemsControl ItemsSource="{Binding InactiveOperations}">
         <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type operationsStates:OperationStateViewModel}">
                 <Grid>

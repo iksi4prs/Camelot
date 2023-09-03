@@ -31,7 +31,7 @@
                       Classes="arrowScrollViewer"
                       ScrollChanged="ScrollViewerOnScrollChanged">
             <ItemsControl Name="TabsItemsControl"
-                          Items="{Binding Tabs}"
+                          ItemsSource="{Binding Tabs}"
                           PointerWheelChanged="TabsListOnPointerWheelChanged">
 
                 <ItemsControl.ItemsPanel>
