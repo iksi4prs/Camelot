@@ -360,6 +360,7 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IEnvironmentDriveService>(),
             resolver.GetRequiredService<IProcessService>()
         ));
+        services.RegisterLazySingleton<ISystemIconsService>(() => new WindowsSystemIconsService());
 #pragma warning restore CA1416
     }
 }
