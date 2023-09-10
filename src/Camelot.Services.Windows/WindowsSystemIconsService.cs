@@ -44,7 +44,26 @@ public class WindowsSystemIconsService : ISystemIconsService
         var ext = Path.GetExtension(path).ToLower();
         if (ext == ".lnk")
         {
-            path = ShellLink.ResolveLink(path);
+            var resolved = ShellLink.ResolveLink(path);
+            // need again to check if resolved is extentsion or path
+            var type = GetIconType(resolved);
+            if (type == ISystemIconsService.SystemIconType.Extension)
+            {
+                var ext2 = Path.GetExtension(resolved);
+                return GetIconForExtension(ext2);
+            }
+            else
+            {
+                // Continue with flow for path.
+                // Check if resolved still exists, sometimes the target of .lnk files
+                // dont exist anymore
+                if (!File.Exists(resolved))
+                {
+                    // WIP333 - return some SVG
+                    return null;
+                }
+                path = resolved;
+            }
         }
 
         return LoadIcon(path);
