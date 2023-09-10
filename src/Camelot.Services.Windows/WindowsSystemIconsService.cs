@@ -46,7 +46,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (iconFilename.StartsWith("@{"))
         {
             
-            // TODO - add support for app store (UWP) - X3X3X3
+            // TODO WIP333 - add support for app store (UWP)
             // see LogoUriFromManifest in .cs file of lucy
            return new Bitmap("C:/MyProjects/FilesCommander/uwp.bmp");
         }
