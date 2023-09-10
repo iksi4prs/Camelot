@@ -69,14 +69,32 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         {
             if (_systemIcon == null)
             {
+                // TODO WIP333
                 // first - check if in cache
-                // TODO
+                // TODO WIP333
+                // depending on implemntaion of Limux,
+                // maybe move cache to common layer, eg
+                // SystemIconsCache (impelmeted under the "Camelot.Services.AllPlatforms" ?)
 
                 // not in cache, get from system/shell
-                var task = _systemIconsService.GetFileIcon(FullPath);
-                task.Wait();
-                var bitmap = task.Result;
-                _systemIcon = ConvertToAvaloniaBitmap(bitmap);
+                System.Drawing.Image image;
+
+
+
+               var t = _systemIconsService.GetIconType(FullPath);
+               switch(t)
+               {
+                   case ISystemIconsService.SystemIconType.Extension:
+                       var ext = System.IO.Path.GetExtension(FullPath);
+                       image = _systemIconsService.GetIconForExtension(ext);
+                       break;
+                   case ISystemIconsService.SystemIconType.Application:
+                       image = _systemIconsService.GetIconForApplication(FullPath);
+                       break;
+                   default:
+                       throw new System.Exception();
+               }
+                _systemIcon = ConvertToAvaloniaBitmap(image);
             }
             return _systemIcon;
         }
@@ -86,14 +104,14 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     {
         get
         {
-            // TODO WIP
+            // TODO WIP333
             // 1) check if window
             // 2) check value from settings
             return true;
         }
     }
 
-    // TODO WIP - move to extnetsion method or helper file
+    // TODO WIP333 - move to extnetsion method or helper file
     // see https://github.com/AvaloniaUI/Avalonia/discussions/5908
     public static Bitmap ConvertToAvaloniaBitmap(System.Drawing.Image bitmap)
     {
