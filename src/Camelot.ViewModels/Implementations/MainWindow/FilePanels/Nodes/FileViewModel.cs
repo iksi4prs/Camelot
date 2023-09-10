@@ -86,7 +86,16 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                {
                    case ISystemIconsService.SystemIconType.Extension:
                        var ext = System.IO.Path.GetExtension(FullPath);
-                       image = _systemIconsService.GetIconForExtension(ext);
+                        if (string.IsNullOrEmpty(ext))
+                        {
+                            // a file with no extension.
+                            // WIP333 - return some default SVG
+                            return null;
+                        }
+                        else
+                        {
+                            image = _systemIconsService.GetIconForExtension(ext);
+                        }
                        break;
                    case ISystemIconsService.SystemIconType.Application:
                        image = _systemIconsService.GetIconForApplication(FullPath);
@@ -94,7 +103,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                    default:
                        throw new System.Exception();
                }
-                _systemIcon = ConvertToAvaloniaBitmap(image);
+               _systemIcon = ConvertToAvaloniaBitmap(image);
             }
             return _systemIcon;
         }
