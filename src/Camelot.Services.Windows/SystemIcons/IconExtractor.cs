@@ -16,20 +16,16 @@ internal class IconExtractor
 
         Icon result;
 
-        // see if path contains seperator "?" for index
+        // See if path contains seperator '?' or ',' for index inside file.
+        // (both ? and , are used, depending on app)
         // namely the icon is a numbered/index in a file with more icons,
         // or the file contains just one icon.
-
-        // TODO WIP333 - make use of PathParseIconLocationW ?
-        // not good here
-        // see https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathparseiconlocationw
-
-        int questionMark = filename.IndexOf('?');
-        if (questionMark >= 0)
+        var delimiter = FindIndexDelimiter(filename);
+        if (delimiter >= 0)
         {
-            string iconPath = filename.Substring(0, questionMark);
-            string strIndex = filename.Substring(questionMark + 1);
-            int index = Int32.Parse(strIndex);
+            string iconPath = filename.Substring(0, delimiter);
+            string strIndex = filename.Substring(delimiter + 1);
+            int index = int.Parse(strIndex);
             result = ExtractIconImpl(iconPath, index, true);
         }
         else
@@ -38,7 +34,25 @@ internal class IconExtractor
         }
         return result;
     }
-    private static Icon ExtractIconImpl (string filename)
+
+    private static int FindIndexDelimiter(string filename)
+    {
+        if (string.IsNullOrEmpty(filename))
+            throw new ArgumentNullException(nameof(filename));
+
+        int questionMark = filename.IndexOf('?');
+        if (questionMark >= 0)
+        {
+            return questionMark;
+        }
+        int comma = filename.IndexOf(',');
+        if (comma >= 0)
+        {
+            return comma;
+        }
+        return -1;
+    }
+    private static Icon ExtractIconImpl(string filename)
     {
         if (string.IsNullOrEmpty(filename))
             throw new ArgumentException(nameof(filename));
