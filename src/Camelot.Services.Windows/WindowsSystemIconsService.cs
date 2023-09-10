@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Windows.SystemIcons;
@@ -32,15 +33,21 @@ public class WindowsSystemIconsService : ISystemIconsService
         return LoadIcon(iconFilename);
     }
 
-    public Image GetIconForApplication(string pathToExe)
+    public Image GetIconForPath(string path)
     {
-        if (string.IsNullOrEmpty(pathToExe))
-            throw new ArgumentNullException(nameof(pathToExe));
+        if (string.IsNullOrEmpty(path))
+            throw new ArgumentNullException(nameof(path));
 
-        if (GetIconType(pathToExe) != ISystemIconsService.SystemIconType.Application)
-            throw new ArgumentOutOfRangeException(nameof(pathToExe));
+        if (GetIconType(path) != ISystemIconsService.SystemIconType.Path)
+            throw new ArgumentOutOfRangeException(nameof(path));
 
-        return LoadIcon(pathToExe);
+        var ext = Path.GetExtension(path).ToLower();
+        if (ext == ".lnk")
+        {
+            path = ShellLink.ResolveLink(path);
+        }
+
+        return LoadIcon(path);
     }
 
     private Image LoadIcon(string path)
@@ -49,6 +56,7 @@ public class WindowsSystemIconsService : ISystemIconsService
             throw new ArgumentNullException(nameof(path));
 
         Image result;
+
         var needsExtract = WindowsIconTypes.IsIconThatRequiresExtract(path);
         if (needsExtract)
         {
@@ -57,7 +65,6 @@ public class WindowsSystemIconsService : ISystemIconsService
             // looks like bit lossy ??
             // try other options ?
             // https://learn.microsoft.com/en-us/dotnet/api/system.drawing.imageconverter.canconvertfrom?view=dotnet-plat-ext-7.0
-
             result = icon.ToBitmap();
         }
         else
@@ -72,9 +79,13 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (string.IsNullOrEmpty(filename))
             throw new ArgumentNullException(nameof(filename));
         
-        var ext = Path.GetExtension(filename);
-        if (ext != null && ext.ToLower() == ".exe")
-            return ISystemIconsService.SystemIconType.Application;
+        var ext = Path.GetExtension(filename).ToLower();
+
+        // next extensions require that the icon will be resolved by full path,
+        // and not just the extension itself.
+        var extensionForFullPaths = new string[] { ".exe", ".lnk", ".cpl", ".appref-ms", ".msc" };
+        if (extensionForFullPaths.Contains(ext))
+            return ISystemIconsService.SystemIconType.Path;
         
         return ISystemIconsService.SystemIconType.Extension;
     }

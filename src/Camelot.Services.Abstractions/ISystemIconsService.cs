@@ -6,7 +6,7 @@ public interface ISystemIconsService
 {
     // There are 3 methods and not only simple one "getter",
     // in order to maintain a cache in the Avalonia level,
-    // so cached images are of type Avalonoia and not System.Drawing,
+    // so cached images are of type Avalonia and not System.Drawing,
     // which is more efficient.
     // Using information provided by methods below,
     // the Avalonia cache "knows" which key to use for cache.
@@ -14,9 +14,9 @@ public interface ISystemIconsService
     enum SystemIconType
     {
         Extension,
-        Application
+        Path,
     }
     SystemIconType GetIconType(string filename);
-    Image GetIconForApplication(string pathToExe);
+    Image GetIconForPath(string path);
     Image GetIconForExtension(string extension);
 }

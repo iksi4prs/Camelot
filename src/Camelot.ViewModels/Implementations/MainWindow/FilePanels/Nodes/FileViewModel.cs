@@ -97,8 +97,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                             image = _systemIconsService.GetIconForExtension(ext);
                         }
                        break;
-                   case ISystemIconsService.SystemIconType.Application:
-                       image = _systemIconsService.GetIconForApplication(FullPath);
+                    case ISystemIconsService.SystemIconType.Path:
+                       image = _systemIconsService.GetIconForPath(FullPath);
                        break;
                    default:
                        throw new System.Exception();
