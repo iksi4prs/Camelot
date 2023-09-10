@@ -10,12 +10,6 @@ namespace Camelot.Services.Windows;
 [SupportedOSPlatform("windows")]
 public class WindowsSystemIconsService : ISystemIconsService
 {
-
-    public WindowsSystemIconsService()
-    {
-    }
-
-
     public Image GetIconForExtension(string extension)
     {
         if (string.IsNullOrEmpty(extension))
@@ -23,34 +17,19 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (!extension.StartsWith("."))
             throw new ArgumentOutOfRangeException(nameof(extension));
 
-       var iconFilename = ShellIcon.GetIconForExtension(extension);
+        var iconFilename = ShellIcon.GetIconForExtension(extension);
 
-        // WIP333 rermove debug code
         if (string.IsNullOrEmpty(iconFilename))
-       {
-            // shell has no ico for this one
-            // todo - return some dummy
-            return null;
-       }
-       if (extension == ".png")
         {
-            int dbg = 0;
-            dbg = 2;
+            // shell has no ico for this one
+            return null;
         }
 
-        if (extension == ".mp3")
+        if (UWPIcon.IsPriString(iconFilename))
         {
-            int dbg = 0;
-            dbg = 2;
+            iconFilename = UWPIcon.ReslovePackageResource(iconFilename);
         }
-        if (iconFilename.StartsWith("@{"))
-        {
-            
-            // TODO WIP333 - add support for app store (UWP)
-            // see LogoUriFromManifest in .cs file of lucy
-           return new Bitmap("C:/MyProjects/FilesCommander/uwp.bmp");
-        }
-       return LoadIcon(iconFilename);
+        return LoadIcon(iconFilename);
     }
 
     public Image GetIconForApplication(string pathToExe)
@@ -64,16 +43,16 @@ public class WindowsSystemIconsService : ISystemIconsService
         return LoadIcon(pathToExe);
     }
 
-    private Image LoadIcon(string iconFilenameOrUwpUri)
+    private Image LoadIcon(string path)
     {
-        if (string.IsNullOrEmpty(iconFilenameOrUwpUri))
-            throw new ArgumentNullException(nameof(iconFilenameOrUwpUri));
+        if (string.IsNullOrEmpty(path))
+            throw new ArgumentNullException(nameof(path));
 
         Image result;
-        var needsExtract = WindowsIconTypes.IsIconThatRequiresExtract(iconFilenameOrUwpUri);
+        var needsExtract = WindowsIconTypes.IsIconThatRequiresExtract(path);
         if (needsExtract)
         {
-            var icon = IconExtractor.ExtractIcon(iconFilenameOrUwpUri);
+            var icon = IconExtractor.ExtractIcon(path);
             // WIP333
             // looks like bit lossy ??
             // try other options ?
@@ -83,8 +62,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         }
         else
         {
-            // WIP333 remove
-            result = new Bitmap("C:/MyProjects/FilesCommander/test333.bmp");
+            result = new Bitmap(path);
         }
         return result;
     }
