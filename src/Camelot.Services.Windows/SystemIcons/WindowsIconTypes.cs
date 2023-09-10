@@ -17,7 +17,7 @@ namespace Camelot.Services.Windows.SystemIcons
                 return true; // icon in indexed resource
 
             var ext = Path.GetExtension(filename).ToLower();
-            var extensionsOfIcoFiles = new List<string>() { ".ico", ".exe", ".dll" };
+            var extensionsOfIcoFiles = new List<string>() { ".ico", ".exe", ".dll" , ".cpl", ".appref-ms", ".msc" };
             if (extensionsOfIcoFiles.Contains(ext))
                 return true;
             return false;

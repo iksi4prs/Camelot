@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Windows.SystemIcons;
+using Camelot.Services.Windows.WinApi;
 
 namespace Camelot.Services.Windows;
 
@@ -17,6 +18,8 @@ public class WindowsSystemIconsService : ISystemIconsService
             throw new ArgumentNullException(nameof(extension));
         if (!extension.StartsWith("."))
             throw new ArgumentOutOfRangeException(nameof(extension));
+        if (extension.ToLower() == ".lnk")
+            throw new ArgumentOutOfRangeException("Need to resolve .lnk first");
 
         var iconFilename = ShellIcon.GetIconForExtension(extension);
 
@@ -43,28 +46,7 @@ public class WindowsSystemIconsService : ISystemIconsService
 
         var ext = Path.GetExtension(path).ToLower();
         if (ext == ".lnk")
-        {
-            var resolved = ShellLink.ResolveLink(path);
-            // need again to check if resolved is extentsion or path
-            var type = GetIconType(resolved);
-            if (type == ISystemIconsService.SystemIconType.Extension)
-            {
-                var ext2 = Path.GetExtension(resolved);
-                return GetIconForExtension(ext2);
-            }
-            else
-            {
-                // Continue with flow for path.
-                // Check if resolved still exists, sometimes the target of .lnk files
-                // dont exist anymore
-                if (!File.Exists(resolved))
-                {
-                    // WIP333 - return some SVG
-                    return null;
-                }
-                path = resolved;
-            }
-        }
+           throw new ArgumentOutOfRangeException("Need to resolve .lnk first");
 
         return LoadIcon(path);
     }
@@ -88,7 +70,17 @@ public class WindowsSystemIconsService : ISystemIconsService
         }
         else
         {
-            result = new Bitmap(path);
+            if (File.Exists(path))
+            {
+                result = new Bitmap(path);
+            }
+            else
+            {
+                // WIP333
+                // in caller level, draw SVG
+                result = null;
+            }
+            
         }
         return result;
     }
@@ -102,7 +94,7 @@ public class WindowsSystemIconsService : ISystemIconsService
 
         // next extensions require that the icon will be resolved by full path,
         // and not just the extension itself.
-        var extensionForFullPaths = new string[] { ".exe", ".lnk", ".cpl", ".appref-ms", ".msc" };
+        var extensionForFullPaths = new string[] { ".exe", ".cpl", ".appref-ms", ".msc" };
         if (extensionForFullPaths.Contains(ext))
             return ISystemIconsService.SystemIconType.Path;
         

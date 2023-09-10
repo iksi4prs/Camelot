@@ -361,6 +361,7 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IProcessService>()
         ));
         services.RegisterLazySingleton<ISystemIconsService>(() => new WindowsSystemIconsService());
+        services.RegisterLazySingleton<IShellLinksService>(() => new WindowsShellLinksService());
 #pragma warning restore CA1416
     }
 }

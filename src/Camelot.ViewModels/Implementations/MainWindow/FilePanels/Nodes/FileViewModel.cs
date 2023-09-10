@@ -16,6 +16,8 @@ using AvaloniaPixelFormat = Avalonia.Platform.PixelFormat;
 using AlphaFormat = Avalonia.Platform.AlphaFormat;
 using PixelSize = Avalonia.PixelSize;
 using Vector = Avalonia.Vector;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Camelot.ViewModels.Implementations.MainWindow.FilePanels.Nodes;
 
@@ -24,6 +26,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private readonly IFileSizeFormatter _fileSizeFormatter;
     private readonly IFileTypeMapper _fileTypeMapper;
     private readonly ISystemIconsService _systemIconsService;
+    private readonly IShellLinksService _shellLinksService;
     private long _size;
 
     public string Extension { get; set; }
@@ -49,7 +52,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         bool shouldShowOpenSubmenu,
         IFileSizeFormatter fileSizeFormatter,
         IFileTypeMapper fileTypeMapper,
-        ISystemIconsService systemIconsService)
+        ISystemIconsService systemIconsService,
+        IShellLinksService shellLinksService)
         : base(
             fileSystemNodeOpeningBehavior,
             fileSystemNodePropertiesBehavior,
@@ -59,6 +63,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         _fileSizeFormatter = fileSizeFormatter;
         _fileTypeMapper = fileTypeMapper;
         _systemIconsService = systemIconsService;
+        _shellLinksService = shellLinksService;
     }
 
     
@@ -69,6 +74,52 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         {
             if (_systemIcon == null)
             {
+                string path = FullPath;
+                var isLink = _shellLinksService.IsShellLink(FullPath);
+                if (isLink)
+                {
+                    var resolved = _shellLinksService.ResolveLink(FullPath);
+                    // Check if resolved still exists, sometimes the target of .lnk files
+                    // dont exist anymore, or links to a folder
+                    if (!File.Exists(resolved))
+                    {
+                        if (Directory.Exists(resolved))
+                        {
+                            int dbg = 9;
+                            dbg = 8;
+                        }
+                        // WIP333 - return some SVG
+                        return null;
+                    }
+                    // cotinue with new path
+                    path = resolved;
+                }
+        
+              /*              {
+            var resolved = ShellLink.ResolveLink(path);
+            // need again to check if resolved is extension or path,
+            // or maybe even a folder.
+            var type = GetIconType(resolved);
+            if (type == ISystemIconsService.SystemIconType.Extension)
+            {
+                var ext2 = Path.GetExtension(resolved);
+                return GetIconForExtension(ext2);
+            }
+            else
+            {
+                // Continue with flow for path.
+                // Check if resolved still exists, sometimes the target of .lnk files
+                // dont exist anymore
+                if (!File.Exists(resolved))
+                {
+                    // WIP333 - return some SVG
+                    return null;
+                }
+                path = resolved;
+            }
+        }
+                }
+        */
                 // TODO WIP333
                 // first - check if in cache
                 // TODO WIP333
@@ -81,11 +132,11 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
 
 
 
-               var t = _systemIconsService.GetIconType(FullPath);
+               var t = _systemIconsService.GetIconType(path);
                switch(t)
                {
                    case ISystemIconsService.SystemIconType.Extension:
-                       var ext = System.IO.Path.GetExtension(FullPath);
+                       var ext = System.IO.Path.GetExtension(path);
                         if (string.IsNullOrEmpty(ext))
                         {
                             // a file with no extension.
@@ -98,7 +149,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                         }
                        break;
                     case ISystemIconsService.SystemIconType.Path:
-                       image = _systemIconsService.GetIconForPath(FullPath);
+                       image = _systemIconsService.GetIconForPath(path);
                        break;
                    default:
                        throw new System.Exception();
