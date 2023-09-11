@@ -9,6 +9,8 @@ using Camelot.ViewModels.Interfaces.Behaviors;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Services.Interfaces;
 using ReactiveUI;
+
+// WIP333 some cleanup in this file
 //using System.Drawing.Imaging;
 //using Bitmap = Avalonia.Media.Imaging.Bitmap;
 //using Rectangle = System.Drawing.Rectangle;
