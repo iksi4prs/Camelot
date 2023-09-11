@@ -14,7 +14,7 @@ public interface ISystemIconsService
     enum SystemIconType
     {
         Extension,
-        Path,
+        FullPath,
     }
     SystemIconType GetIconType(string filename);
     Image GetIconForPath(string path);

@@ -41,7 +41,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
 
-        if (GetIconType(path) != ISystemIconsService.SystemIconType.Path)
+        if (GetIconType(path) != ISystemIconsService.SystemIconType.FullPath)
             throw new ArgumentOutOfRangeException(nameof(path));
 
         var ext = Path.GetExtension(path).ToLower();
@@ -95,7 +95,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         // and not just the extension itself.
         var extensionForFullPaths = new string[] { ".exe", ".cpl", ".appref-ms", ".msc" };
         if (extensionForFullPaths.Contains(ext))
-            return ISystemIconsService.SystemIconType.Path;
+            return ISystemIconsService.SystemIconType.FullPath;
         
         return ISystemIconsService.SystemIconType.Extension;
     }

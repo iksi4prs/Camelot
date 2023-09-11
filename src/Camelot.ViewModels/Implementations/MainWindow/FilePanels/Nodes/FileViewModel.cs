@@ -143,7 +143,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                     image = _systemIconsService.GetIconForExtension(ext);
                 }
                 break;
-            case ISystemIconsService.SystemIconType.Path:
+            case ISystemIconsService.SystemIconType.FullPath:
                 image = _systemIconsService.GetIconForPath(path);
                 break;
             default:
