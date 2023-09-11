@@ -76,8 +76,7 @@ public class WindowsSystemIconsService : ISystemIconsService
             }
             else
             {
-                // WIP333
-                // in caller level, draw SVG
+                // no shell icon, caller should use other icon
                 result = null;
             }
             

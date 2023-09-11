@@ -89,7 +89,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                     int dbg = 9;
                     dbg = 8;
                 }
-                // WIP333 - return some SVG
                 return null;
             }
             // cotinue with new path
@@ -113,7 +112,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
           // dont exist anymore
           if (!File.Exists(resolved))
           {
-              // WIP333 - return some SVG
               return null;
           }
           path = resolved;
@@ -137,8 +135,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                 var ext = System.IO.Path.GetExtension(path);
                 if (string.IsNullOrEmpty(ext))
                 {
-                    // a file with no extension.
-                    // WIP333 - return some default SVG
+                    // a file with no extension. caller should use other icon.
                     return null;
                 }
                 else
