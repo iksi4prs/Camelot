@@ -110,8 +110,10 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IDirectoryService>(),
             resolver.GetRequiredService<IFileSystemNodeFacade>(),
             resolver.GetRequiredService<IFileTypeMapper>(),
+            // WIP333 - remove next 2 ?
             resolver.GetRequiredService<ISystemIconsService>(),
-            resolver.GetRequiredService<IShellLinksService>()
+            resolver.GetRequiredService<IShellLinksService>(),
+            resolver.GetRequiredService<IShellIconsCacheService>()
         ));
         services.RegisterLazySingleton<IBitmapFactory>(() => new BitmapFactory());
         services.Register(() => new MainNodeInfoTabViewModel(
@@ -350,8 +352,10 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IDirectoryService>(),
             resolver.GetRequiredService<IFileSystemNodeFacade>(),
             resolver.GetRequiredService<IFileTypeMapper>(),
+            // WIP333 - remove next 2 ??
             resolver.GetRequiredService<ISystemIconsService>(),
-            resolver.GetRequiredService<IShellLinksService>()
+            resolver.GetRequiredService<IShellLinksService>(),
+            resolver.GetRequiredService<IShellIconsCacheService>()
         ));
     }
 }

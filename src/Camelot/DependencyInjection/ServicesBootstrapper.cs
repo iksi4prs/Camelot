@@ -172,6 +172,10 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IRecursiveSearchResultFactory>(),
             resolver.GetRequiredService<ILogger>()
         ));
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IShellLinksService>(),
+            resolver.GetRequiredService<ISystemIconsService>()
+        ));
     }
 
     private static void RegisterPlatformSpecificServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
