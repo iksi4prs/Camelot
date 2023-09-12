@@ -6,7 +6,6 @@
 
     <ItemGroup>
       <PackageReference Include="Avalonia" Version="0.10.18" />
-      <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
       <ProjectReference Include="..\Camelot.Services.Abstractions\Camelot.Services.Abstractions.csproj" />
       <PackageReference Update="Packaging.Targets">
         <Version>0.1.220</Version>
