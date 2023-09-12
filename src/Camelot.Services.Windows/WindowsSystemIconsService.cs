@@ -12,7 +12,7 @@ namespace Camelot.Services.Windows;
 [SupportedOSPlatform("windows")]
 public class WindowsSystemIconsService : ISystemIconsService
 {
-    public Image GetIconForExtension(string extension)
+    public System.Drawing.Image GetIconForExtension(string extension)
     {
         if (string.IsNullOrEmpty(extension))
             throw new ArgumentNullException(nameof(extension));
@@ -36,7 +36,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         return LoadIcon(iconFilename);
     }
 
-    public Image GetIconForPath(string path)
+    public System.Drawing.Image GetIconForPath(string path)
     {
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
@@ -51,12 +51,12 @@ public class WindowsSystemIconsService : ISystemIconsService
         return LoadIcon(path);
     }
 
-    private Image LoadIcon(string path)
+    private System.Drawing.Image LoadIcon(string path)
     {
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
 
-        Image result;
+        System.Drawing.Image result;
 
         var needsExtract = WindowsIconTypes.IsIconThatRequiresExtract(path);
         if (needsExtract)

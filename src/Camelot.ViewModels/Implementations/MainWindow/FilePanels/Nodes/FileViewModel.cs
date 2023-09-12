@@ -2,13 +2,16 @@ using Avalonia;
 using Avalonia.Controls.Shapes;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
+using Camelot.Images;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Behaviors;
+using Camelot.Services.Abstractions.Models;
 using Camelot.Services.Abstractions.Models.Enums;
 using Camelot.ViewModels.Interfaces.Behaviors;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Services.Interfaces;
 using ReactiveUI;
+using System;
 
 // WIP333 some cleanup in this file
 //using System.Drawing.Imaging;
@@ -85,7 +88,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         {
             if (!_loadedShellIcon)
             {
-                _systemIcon = (Bitmap)_shellIconsCacheService.GetIcon(FullPath);
+                var imageModel = _shellIconsCacheService.GetIcon(FullPath);
+                _systemIcon = FromImageModel(imageModel);
                 _loadedShellIcon = true;
             }
             return _systemIcon;
@@ -103,7 +107,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
             // if not first time, and already have value
             if (!_loadedShellIcon)
             {
-                _systemIcon = (Bitmap)_shellIconsCacheService.GetIcon(FullPath);
+                var imageModel = _shellIconsCacheService.GetIcon(FullPath);
+                _systemIcon = FromImageModel(imageModel);
                 _loadedShellIcon = true;
             }
 
@@ -117,5 +122,20 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
                 return false;
             }
         }
+    }
+
+    // WIP333 maybe this, and the opposye should be in new file ?
+    // ImageModelConverter.cs ?
+    // BETTER put under new folder, not "Converters" so not to confuse...
+    // can put under folder Converters, but add not this is not IValueConverter
+    // which used in xaml
+    private static Bitmap FromImageModel(ImageModel imageModel)
+    {
+        if (imageModel == null)
+            throw new ArgumentNullException(nameof(imageModel));
+
+        var concreteImage = imageModel as ConcreteImage;
+        var result = concreteImage.Bitmap;
+        return result;
     }
 }

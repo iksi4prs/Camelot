@@ -14,9 +14,11 @@ using AlphaFormat = Avalonia.Platform.AlphaFormat;
 using PixelSize = Avalonia.PixelSize;
 using Vector = Avalonia.Vector;
 using System.IO;
+using Avalonia.Controls;
+using Camelot.Services.Abstractions.Models;
 //using System.Runtime.CompilerServices;
 //using System;
-
+using Camelot.Images;
 
 namespace Camelot.Services.AllPlatforms;
 
@@ -36,12 +38,14 @@ public class ShellIconsCacheService : IShellIconsCacheService
     // result is always Avalonia's Bitmap, but since interface is defined
     // in "Camelot.Services.Abstractions" which is not referncing Avalonia,
     // the return type is 'object'
-    public object GetIcon(string filename)
+    public ImageModel GetIcon(string filename)
     {
         if (string.IsNullOrEmpty(filename))
             throw new ArgumentNullException(nameof(filename));
 
-        return GetShellIcon(filename);
+        var bitmap = GetShellIcon(filename);
+        var result = new ConcreteImage(bitmap);
+        return result;
     }
     private Bitmap GetShellIcon(string filename)
     {
