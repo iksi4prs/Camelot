@@ -1,18 +1,23 @@
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
+using Camelot.Services.Abstractions.Models;
 using Camelot.Services.Windows.SystemIcons;
-using Camelot.Services.Windows.WinApi;
+using Camelot.Images;
+
+using SystemBitmap = System.Drawing.Bitmap;
+using AvaloniaBitmap = Avalonia.Media.Imaging.Bitmap;
+
 
 namespace Camelot.Services.Windows;
+
 
 [SupportedOSPlatform("windows")]
 public class WindowsSystemIconsService : ISystemIconsService
 {
-    public System.Drawing.Image GetIconForExtension(string extension)
+    public ImageModel GetIconForExtension(string extension)
     {
         if (string.IsNullOrEmpty(extension))
             throw new ArgumentNullException(nameof(extension));
@@ -36,7 +41,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         return LoadIcon(iconFilename);
     }
 
-    public System.Drawing.Image GetIconForPath(string path)
+    public ImageModel GetIconForPath(string path)
     {
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
@@ -51,12 +56,12 @@ public class WindowsSystemIconsService : ISystemIconsService
         return LoadIcon(path);
     }
 
-    private System.Drawing.Image LoadIcon(string path)
+    private ImageModel LoadIcon(string path)
     {
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
 
-        System.Drawing.Image result;
+        ImageModel result;
 
         var needsExtract = WindowsIconTypes.IsIconThatRequiresExtract(path);
         if (needsExtract)
@@ -66,13 +71,16 @@ public class WindowsSystemIconsService : ISystemIconsService
             // looks like bit lossy ??
             // try other options ?
             // https://learn.microsoft.com/en-us/dotnet/api/system.drawing.imageconverter.canconvertfrom?view=dotnet-plat-ext-7.0
-            result = icon.ToBitmap();
+            SystemBitmap systemBitmap = icon.ToBitmap();
+            AvaloniaBitmap avaloniaBitmap = SystemImageToAvaloniaBitmapConverter.Convert(systemBitmap);
+            result = new ConcreteImage(avaloniaBitmap);
         }
         else
         {
             if (File.Exists(path))
             {
-                result = new Bitmap(path);
+                AvaloniaBitmap avaloniaBitmap = new AvaloniaBitmap(path);
+                result = new ConcreteImage(avaloniaBitmap);
             }
             else
             {

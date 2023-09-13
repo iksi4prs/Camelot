@@ -1,13 +1,16 @@
-using System.Drawing;
+using Camelot.Services.Abstractions.Models;
+
 
 namespace Camelot.Services.Abstractions;
 
 public interface ISystemIconsService
 {
+    // Motivation for 3 methods:
     // There are 3 methods and not only simple one "getter",
     // in order to maintain a cache in the Avalonia level,
-    // so cached images are of type Avalonia and not System.Drawing,
-    // which is more efficient.
+    // so cached images are of the final type which is use for renderging,
+    // namly Avalonia and not System.Drawing (or other platform dependent)
+    // so cache will be more efficient.
     // Using information provided by methods below,
     // the Avalonia cache "knows" which key to use for cache.
 
@@ -17,6 +20,6 @@ public interface ISystemIconsService
         FullPath,
     }
     SystemIconType GetIconType(string filename);
-    Image GetIconForPath(string path);
-    Image GetIconForExtension(string extension);
+    ImageModel GetIconForPath(string path);
+    ImageModel GetIconForExtension(string extension);
 }

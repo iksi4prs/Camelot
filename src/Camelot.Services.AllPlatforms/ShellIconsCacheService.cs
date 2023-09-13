@@ -6,19 +6,14 @@ using System.Collections.Generic;
 using Camelot.Services.Abstractions;
 //using Camelot.Services.Abstractions.Drives;
 //using Camelot.Services.Abstractions.Operations;
-using System.Drawing.Imaging;
-using Bitmap = Avalonia.Media.Imaging.Bitmap;
-using Rectangle = System.Drawing.Rectangle;
-using AvaloniaPixelFormat = Avalonia.Platform.PixelFormat;
-using AlphaFormat = Avalonia.Platform.AlphaFormat;
-using PixelSize = Avalonia.PixelSize;
-using Vector = Avalonia.Vector;
+
 using System.IO;
 using Avalonia.Controls;
 using Camelot.Services.Abstractions.Models;
 //using System.Runtime.CompilerServices;
 //using System;
 using Camelot.Images;
+using Avalonia.Media.Imaging;
 
 namespace Camelot.Services.AllPlatforms;
 
@@ -49,7 +44,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
     }
     private Bitmap GetShellIcon(string filename)
     {
-        Bitmap result;
+        Bitmap result = null;
 
         // step #1
         // resolve links, if any
@@ -99,8 +94,14 @@ public class ShellIconsCacheService : IShellIconsCacheService
                         }
                         else
                         {
-                            System.Drawing.Image image = _systemIconsService.GetIconForExtension(ext);
-                            result = ConvertToAvaloniaBitmap(image);
+                            var image = _systemIconsService.GetIconForExtension(ext);
+                            if (image != null)
+                            {
+                                var concreteImage = image as ConcreteImage;
+                                if (concreteImage == null)
+                                    throw new InvalidCastException();
+                                result = concreteImage.Bitmap;
+                            }
                             _cache[ext] = result;
                         }
                     }
@@ -114,8 +115,14 @@ public class ShellIconsCacheService : IShellIconsCacheService
                     }
                     else
                     {
-                        System.Drawing.Image image = _systemIconsService.GetIconForPath(path);
-                        result = ConvertToAvaloniaBitmap(image);
+                        var image = _systemIconsService.GetIconForPath(path);
+                        if (image != null)
+                        {
+                            var concreteImage = image as ConcreteImage;
+                            if (concreteImage == null)
+                                throw new InvalidCastException();
+                            result = concreteImage.Bitmap;
+                        }
                         _cache[path] = result;
                     }
                 }
@@ -125,27 +132,5 @@ public class ShellIconsCacheService : IShellIconsCacheService
         }
         
         return result;
-    }
-
-
-    // TODO WIP333 - move to extnetsion method or helper file
-    // see https://github.com/AvaloniaUI/Avalonia/discussions/5908
-    public static Bitmap ConvertToAvaloniaBitmap(System.Drawing.Image bitmap)
-    {
-        if (bitmap == null)
-            return null;
-        var bitmapTmp = new System.Drawing.Bitmap(bitmap);
-        var bitmapdata = bitmapTmp.LockBits(
-            new Rectangle(0, 0, bitmapTmp.Width, bitmapTmp.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-        Bitmap bitmap1 = new Bitmap(AvaloniaPixelFormat.Bgra8888,
-            AlphaFormat.Unpremul,
-            bitmapdata.Scan0,
-            new PixelSize(bitmapdata.Width, bitmapdata.Height),
-            new Vector(96, 96),
-            bitmapdata.Stride);
-        bitmapTmp.UnlockBits(bitmapdata);
-        bitmapTmp.Dispose();
-        return bitmap1;
     }
 }
