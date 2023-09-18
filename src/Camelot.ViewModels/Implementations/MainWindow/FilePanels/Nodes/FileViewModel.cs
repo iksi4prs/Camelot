@@ -96,7 +96,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private IconsType? _iconsType = null;
     private IconsType GetUserSelectedType()
     {
-        // TODO - later - how to reflect without restart ?
+        // WIP333 TODO - later - how to reflect without restart ?
         // check only once
         if (_iconsType == null)
         {
