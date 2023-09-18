@@ -159,8 +159,34 @@
             <DataGrid.Styles>
                 <Style Selector="DataGridRow">
                     <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
+                    <!-- lower value => less visible -->
+                    <!-- Setter Property="Opacity" Value="0.5" / -->
+                    <!--  not working, but not really needed
+                    <Setter Property="OpacityMask" Value="Red" />
+                    -->
                 </Style>
-            </DataGrid.Styles>
+                <!-- looks like cannot set IsEnbaled per row ?? so not helpful -->
+                <!-- Style Selector="DataGridRow[IsEnabled=false]" -->
+                <!-- THIS IS WHAT I WANT:  Style Selector="nodes|FileViewModel[IsFilteredOut=true]">  -->
+
+                <!-- using 'Control.class222' instead of 'Grid.class222' doesnt work) -->
+                <Style Selector="Grid.class222">
+                    <!-- lower value => less visible -->
+                    <Setter Property="Opacity" Value="0.2"/>
+                    <!-- Setter Property="Background" Value="Yellow"/ -->
+                    <!--  not working, but not really needed
+                    <Setter Property="OpacityMask" Value="Red" />
+                    -->
+                </Style>
+                <Style Selector="TextBox.class223">
+                    <!-- lower value => less visible -->
+                    <Setter Property="Opacity" Value="0.2"/>
+                    <!-- Setter Property="Background" Value="Yellow"/ -->
+                    <!--  not working, but not really needed
+                    <Setter Property="OpacityMask" Value="Red" />
+                    -->
+                </Style>
+           </DataGrid.Styles>
 
             <DataGrid.KeyBindings>
                 <KeyBinding Gesture="Ctrl+C" Command="{Binding ClipboardOperationsViewModel.CopyToClipboardCommand}" />
@@ -177,6 +203,9 @@
                 <KeyBinding Gesture="Shift+Back" Command="{Binding OperationsViewModel.RemoveCommand}" />
                 <KeyBinding Gesture="Left" Command="{Binding SelectedTab.GoToPreviousDirectoryCommand}" />
                 <KeyBinding Gesture="Right" Command="{Binding SelectedTab.GoToNextDirectoryCommand}" />
+                <!-- Bindings of up/down are used so can skip rows during filter -->
+                <KeyBinding Gesture="Up" Command="{Binding GoToPreviousRowCommand}" />
+                <KeyBinding Gesture="Down" Command="{Binding GoToNextRowCommand}" />
             </DataGrid.KeyBindings>
 
             <DataGrid.ContextMenu>
@@ -241,7 +270,7 @@
                             <ContentControl Content="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridCell}}">
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="{x:Type nodes:DirectoryViewModel}">
-                                        <Grid>
+                                        <Grid Classes.class222="{Binding IsFilteredOut}">
                                             <Grid IsVisible="{Binding !IsParentDirectory}">
                                                 <TextBlock Classes="filePanelTextBlock" Text="{Binding Name}" IsVisible="{Binding !IsEditing}"
                                                            Name="NameTextBlock" />
@@ -259,7 +288,7 @@
                                     </DataTemplate>
 
                                     <DataTemplate DataType="{x:Type nodes:FileViewModel}">
-                                        <Grid>
+                                        <Grid Classes.class222="{Binding IsFilteredOut}">
                                             <TextBlock Classes="filePanelTextBlock" Text="{Binding Name}" IsVisible="{Binding !IsEditing}"
                                                        Name="NameTextBlock" />
                                             <TextBox Classes="fileNameTextBox" Text="{Binding FullName}" IsVisible="{Binding IsEditing}"
@@ -292,13 +321,17 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridCell}}">
+
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="{x:Type nodes:DirectoryViewModel}">
-                                        <TextBlock Text="" />
+                                        <TextBlock Text=""
+                                             Classes.class223="{Binding IsFilteredOut}" />
                                     </DataTemplate>
 
                                     <DataTemplate DataType="{x:Type nodes:FileViewModel}">
-                                        <TextBlock Classes="filePanelTextBlock" Text="{Binding Extension}"
+                                        <TextBlock Classes="filePanelTextBlock"
+                                                   Classes.class223="{Binding IsFilteredOut}"
+                                                   Text="{Binding Extension}"
                                                    IsVisible="{Binding !IsEditing}" />
                                     </DataTemplate>
                                 </ContentControl.DataTemplates>
@@ -325,11 +358,15 @@
                             <ContentControl Content="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridCell}}">
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="{x:Type nodes:DirectoryViewModel}">
-                                        <TextBlock Classes="filePanelTextBlock" Text="{x:Static p:Resources.DirectoryTemplate}" />
+                                        <TextBlock Classes="filePanelTextBlock"
+                                                   Classes.class223="{Binding IsFilteredOut}"
+                                                   Text="{x:Static p:Resources.DirectoryTemplate}" />
                                     </DataTemplate>
 
                                     <DataTemplate DataType="{x:Type nodes:FileViewModel}">
-                                        <TextBlock Classes="filePanelTextBlock" Text="{Binding FormattedSize}" />
+                                        <TextBlock Classes="filePanelTextBlock"
+                                                   Classes.class223="{Binding IsFilteredOut}"
+                                                   Text="{Binding FormattedSize}" />
                                     </DataTemplate>
                                 </ContentControl.DataTemplates>
                             </ContentControl>
@@ -352,7 +389,10 @@
 
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Classes="filePanelTextBlock" Text="{Binding LastModifiedDateTime}" />
+                            <TextBlock Classes="filePanelTextBlock"
+                                       Classes.class222="{Binding IsFilteredOut}"
+                                       Text="{Binding LastModifiedDateTime}" />
+                            
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -11,10 +11,12 @@ using Avalonia.Markup.Xaml;
 using Camelot.Avalonia.Interfaces;
 using Camelot.DependencyInjection;
 using Camelot.Extensions;
+using Camelot.ViewModels.Implementations.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.Views.Main.Controls;
 using DynamicData;
+using ReactiveUI;
 using Splat;
 
 namespace Camelot.Views.Main;
@@ -154,17 +156,103 @@ public class FilesPanelView : UserControl
         nodeViewModel.OpenCommand.Execute(null);
     }
 
+    // TODO - fix this one to work cporrrectly
+    // and mayeb also tke from other place in code
+    private bool IsValidForPath(Key key)
+    {
+        char c = KeyToChar(key);
+        if (Char.IsLetterOrDigit(c))
+            return true;
+        return false;
+    }
+
+    private char KeyToChar(Key key)
+    {
+        // requires win api ??
+        //https://stackoverflow.com/questions/318777/c-sharp-how-to-translate-virtual-keycode-to-char
+        char c = '\0';
+        if ((key >= Key.A) && (key <= Key.Z))
+        {
+            c = (char)((int)'a' + (int)(key - Key.A));
+        }
+
+        else if ((key >= Key.D0) && (key <= Key.D9))
+        {
+            c = (char)((int)'0' + (int)(key - Key.D0));
+        }
+
+        return c;
+    }
+    // see also KeyBindings in xaml
     private void OnDataGridKeyDown(object sender, KeyEventArgs args)
     {
-        if (args.Key != Key.Delete && args.Key != Key.Back)
+        if (args.Key == Key.Delete || args.Key == Key.Back)
+        {
+            args.Handled = true;
+            ViewModel.OperationsViewModel.MoveToTrashCommand.Execute(null);
+            return;
+        }
+        if (args.Key == Key.Escape)
+        {
+            var files2 = ViewModel.FileSystemNodes;
+            foreach (var file in files2)
+            {
+                file.IsFilteredOut = false;
+            }
+            args.Handled = true;
+            return;
+        }
+        if (args.Key == Key.Down || args.Key == Key.Up)
+        {
+            // QQQ
+            var grid = FilesDataGrid;
+            var selectedNoded = ViewModel.SelectedFileSystemNodes;
+            var selectedItem = grid.SelectedItem;
+            var gridItems = grid.Items;
+            args.Handled = true;
+            return;
+        }
+
+        if (!IsValidForPath(args.Key))
         {
             return;
         }
 
-        args.Handled = true;
+        //if (Char.IsLetterOrDigit(args.Key.))
+        //
+        // kk
+        // filter entries
+        //var view = ViewModel;
+        var files = ViewModel.FileSystemNodes;
+        foreach(var file in files)
+        {
+            var c = KeyToChar(args.Key);
+            var name = file.Name.ToLower();
+            if (!name.StartsWith(c))
+            {
+                file.IsFilteredOut = true;
+                //file.Name = "zzz";
 
-        ViewModel.OperationsViewModel.MoveToTrashCommand.Execute(null);
+                // how to disable row ??
+                // not possible ??
+                // https://github.com/AvaloniaUI/Avalonia/issues/7766
+                //var x = FilesDataGrid.
+            }
+            else
+            {
+                file.IsFilteredOut = false;
+            }
+        }
+        var items = FilesDataGrid.Items;
+        foreach(var item in items)
+        {
+            var file = item as FileViewModel;
+            var dir = item as DirectoryViewModel;
+            //var model = GetNode(item.)
+        }
+        args.Handled = true;
     }
+
 
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
     {

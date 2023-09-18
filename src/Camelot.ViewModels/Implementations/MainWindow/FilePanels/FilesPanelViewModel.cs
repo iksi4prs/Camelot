@@ -79,6 +79,7 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
     public IList<IFileSystemNodeViewModel> SelectedFileSystemNodes => _selectedFileSystemNodes;
 
+
     [Reactive]
     public IFileSystemNodeViewModel CurrentNode { get; private set; }
 
@@ -113,6 +114,8 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
     public ICommand GoToParentDirectoryCommand { get; }
 
     public ICommand SortFilesCommand { get; }
+    public ICommand GoToPreviousRowCommand { get; }
+    public ICommand GoToNextRowCommand { get; }
 
     public FilesPanelViewModel(
         IFileService fileService,
@@ -165,7 +168,8 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
             (DirectoryModel dm) => dm is not null);
         GoToParentDirectoryCommand = ReactiveCommand.Create(GoToParentDirectory, canGoToParentDirectory);
         SortFilesCommand = ReactiveCommand.Create<SortingMode>(SortFiles);
-
+        GoToPreviousRowCommand = ReactiveCommand.Create(GoToPreviousRow);
+        GoToNextRowCommand = ReactiveCommand.Create(GoToNextRow);
         SubscribeToEvents();
         UpdateStateAsync().Forget();
     }
@@ -438,4 +442,70 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
     private bool CheckIfShouldShowNode(string nodePath) =>
         _specification?.IsSatisfiedBy(_nodeService.GetNode(nodePath)) ?? true;
+
+    private int GetSelectedIndex()
+    {
+        var oldSelected = SelectedFileSystemNodes.First();
+        var nodes = FileSystemNodes.ToList();
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            var curr = nodes[i];
+            if (curr.FullPath == oldSelected.FullPath)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    private void GoToNextRow()
+    {
+        var nodes = FileSystemNodes.ToList();
+
+        // current
+        int selected = GetSelectedIndex();
+        var oldSelected = nodes[selected];
+        
+        // next
+        string newSelected = null;
+        for (int i= selected+1; i<nodes.Count-1; i++)
+        {
+            var curr = nodes[i];
+            if (curr.IsFilteredOut)
+                continue;
+            newSelected = curr.FullPath;
+            break;
+        }
+
+        if (newSelected != null)
+        {
+            UnselectNode(oldSelected.FullPath);
+            SelectNode(newSelected);
+        }
+    }
+
+    private void GoToPreviousRow()
+    {
+        var nodes = FileSystemNodes.ToList();
+
+        // current
+        int selected = GetSelectedIndex();
+        var oldSelected = nodes[selected];
+
+        // previous
+        string newSelected = null;
+        for (int i = selected - 1; i > 1; i--)
+        {
+            var curr = nodes[i];
+            if (curr.IsFilteredOut)
+                continue;
+            newSelected = curr.FullPath;
+            break;
+        }
+
+        if (newSelected != null)
+        {
+            UnselectNode(oldSelected.FullPath);
+            SelectNode(newSelected);
+        }
+    }
 }
