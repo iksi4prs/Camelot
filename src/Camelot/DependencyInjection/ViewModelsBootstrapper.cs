@@ -110,10 +110,8 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IDirectoryService>(),
             resolver.GetRequiredService<IFileSystemNodeFacade>(),
             resolver.GetRequiredService<IFileTypeMapper>(),
-            // WIP333 - remove next 2 ?
-            resolver.GetRequiredService<ISystemIconsService>(),
-            resolver.GetRequiredService<IShellLinksService>(),
-            resolver.GetRequiredService<IShellIconsCacheService>()
+            resolver.GetRequiredService<IShellIconsCacheService>(),
+            resolver.GetRequiredService<IIconsService>()
         ));
         services.RegisterLazySingleton<IBitmapFactory>(() => new BitmapFactory());
         services.Register(() => new MainNodeInfoTabViewModel(
@@ -161,7 +159,11 @@ public static class ViewModelsBootstrapper
         ));
         services.Register(() => new SettingsDialogViewModel(
             resolver.GetRequiredService<GeneralSettingsViewModel>(),
-            resolver.GetRequiredService<TerminalSettingsViewModel>()
+            resolver.GetRequiredService<TerminalSettingsViewModel>(),
+            resolver.GetRequiredService<IconsSettingsViewModel>()
+        ));
+        services.Register(() => new IconsSettingsViewModel(
+            resolver.GetRequiredService<IIconsService>()
         ));
         services.RegisterLazySingleton(() => new FilePropertiesBehavior(
             resolver.GetRequiredService<IDialogService>()
@@ -352,10 +354,8 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IDirectoryService>(),
             resolver.GetRequiredService<IFileSystemNodeFacade>(),
             resolver.GetRequiredService<IFileTypeMapper>(),
-            // WIP333 - remove next 2 ??
-            resolver.GetRequiredService<ISystemIconsService>(),
-            resolver.GetRequiredService<IShellLinksService>(),
-            resolver.GetRequiredService<IShellIconsCacheService>()
+            resolver.GetRequiredService<IShellIconsCacheService>(),
+            resolver.GetRequiredService<IIconsService>()
         ));
     }
 }

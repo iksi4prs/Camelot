@@ -176,6 +176,10 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IShellLinksService>(),
             resolver.GetRequiredService<ISystemIconsService>()
         ));
+
+        services.RegisterLazySingleton<IIconsService>(() => new IconsService(
+        resolver.GetRequiredService<IUnitOfWorkFactory>()
+        ));
     }
 
     private static void RegisterPlatformSpecificServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
