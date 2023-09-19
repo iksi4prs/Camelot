@@ -31,11 +31,12 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
 {
     private readonly IFileSizeFormatter _fileSizeFormatter;
     private readonly IFileTypeMapper _fileTypeMapper;
-    //private readonly ISystemIconsService _systemIconsService;
-    //private readonly IShellLinksService _shellLinksService;
     private readonly IShellIconsCacheService _shellIconsCacheService;
+    private readonly IIconsService _iconsService;
     private long _size;
     private Bitmap _systemIcon = null;
+    private bool? _useShellIcon = null;
+
     // Helper to load icon only on demand.
     // Can't use icon member itself, since null is valid value,
     // in case file has no shell icon.
@@ -63,9 +64,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         bool shouldShowOpenSubmenu,
         IFileSizeFormatter fileSizeFormatter,
         IFileTypeMapper fileTypeMapper,
-        ISystemIconsService systemIconsService,
-        IShellLinksService shellLinksService,
-        IShellIconsCacheService shellIconsCacheService)
+        IShellIconsCacheService shellIconsCacheService,
+        IIconsService iconsService)
         : base(
             fileSystemNodeOpeningBehavior,
             fileSystemNodePropertiesBehavior,
@@ -74,10 +74,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     {
         _fileSizeFormatter = fileSizeFormatter;
         _fileTypeMapper = fileTypeMapper;
-        // WIP333 remove next 2, if not needed
-        //_systemIconsService = systemIconsService;
-        //_shellLinksService = shellLinksService;
         _shellIconsCacheService = shellIconsCacheService;
+        _iconsService = iconsService;
     }
 
 
@@ -96,33 +94,49 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         }
     }
 
+
+    private IconsType GetUserSelectedType()
+    {
+        // WIP333 TODO - later - how to reflect without restart ?
+        // check only once
+        var model = _iconsService.GetIconsSettings();
+        return  model.SelectedIconsType;
+    }
     public bool UseSystemIcons
     {
         get
         {
-            // TODO WIP333
-            // 1) check if windows os
-            // 2) check value from settings
-
-            // if not first time, and already have value
-            if (!_loadedShellIcon)
-            {
-                var imageModel = _shellIconsCacheService.GetIcon(FullPath);
-                _systemIcon = FromImageModel(imageModel);
-                _loadedShellIcon = true;
-            }
-
-            if (_systemIcon != null)
-            {
-                return true;
-            }
-            else
-            {
-                // file has no shell icon, so fallback to use builtin icons
-                return false;
-            }
+            if (_useShellIcon == null)
+                _useShellIcon = ComputeUseShellIcons();
+            return (bool)_useShellIcon;
         }
     }
+    private bool ComputeUseShellIcons()
+    {
+        var selected = GetUserSelectedType();
+        if (selected == IconsType.Builtin)
+            return false;
+
+        // still need to some check, before can return true
+        // if not first time, and already have value
+        if (!_loadedShellIcon)
+        {
+            var imageModel = _shellIconsCacheService.GetIcon(FullPath);
+            _systemIcon = FromImageModel(imageModel);
+            _loadedShellIcon = true;
+        }
+
+        if (_systemIcon != null)
+        {
+            return true;
+        }
+        else
+        {
+            // file has no shell icon, so fallback to use builtin icons
+            return false;
+        }
+    }
+
 
     // WIP333 maybe this, and the opposye should be in new file ?
     // ImageModelConverter.cs ?
