@@ -43,14 +43,7 @@ public class IconsSettingsViewModel : ViewModelBase, ISettingsViewModel
         _isActivated = true;
 
         var model = _iconsService.GetIconsSettings();
-        if (model != null)
-        {
-            CurrentIconsType = model.SelectedIconsType;
-        }
-        else
-        {
-            CurrentIconsType = IconsType.Shell;
-        }
+        CurrentIconsType = model.SelectedIconsType;
     }
 
     public void SaveChanges()

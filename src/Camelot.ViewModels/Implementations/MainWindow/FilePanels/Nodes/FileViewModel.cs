@@ -35,7 +35,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private readonly IIconsService _iconsService;
     private long _size;
     private Bitmap _systemIcon = null;
-    
+    private bool? _useShellIcon = null;
+
     // Helper to load icon only on demand.
     // Can't use icon member itself, since null is valid value,
     // in case file has no shell icon.
@@ -93,53 +94,49 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         }
     }
 
-    private IconsType? _iconsType = null;
+
     private IconsType GetUserSelectedType()
     {
         // WIP333 TODO - later - how to reflect without restart ?
         // check only once
-        if (_iconsType == null)
-        {
-            var model = _iconsService.GetIconsSettings();
-            if (model == null)
-            {
-                _iconsType = IconsType.Shell;
-            }
-            else
-            {
-                _iconsType = model.SelectedIconsType;
-            }
-        }
-        return (IconsType)_iconsType;
+        var model = _iconsService.GetIconsSettings();
+        return  model.SelectedIconsType;
     }
     public bool UseSystemIcons
     {
         get
         {
-            var selected = GetUserSelectedType();
-            if (selected == IconsType.Builtin)
-                return false;
-            
-            // still need to some check, before can return true
-            // if not first time, and already have value
-            if (!_loadedShellIcon)
-            {
-                var imageModel = _shellIconsCacheService.GetIcon(FullPath);
-                _systemIcon = FromImageModel(imageModel);
-                _loadedShellIcon = true;
-            }
-
-            if (_systemIcon != null)
-            {
-                return true;
-            }
-            else
-            {
-                // file has no shell icon, so fallback to use builtin icons
-                return false;
-            }
+            if (_useShellIcon == null)
+                _useShellIcon = ComputeUseShellIcons();
+            return (bool)_useShellIcon;
         }
     }
+    private bool ComputeUseShellIcons()
+    {
+        var selected = GetUserSelectedType();
+        if (selected == IconsType.Builtin)
+            return false;
+
+        // still need to some check, before can return true
+        // if not first time, and already have value
+        if (!_loadedShellIcon)
+        {
+            var imageModel = _shellIconsCacheService.GetIcon(FullPath);
+            _systemIcon = FromImageModel(imageModel);
+            _loadedShellIcon = true;
+        }
+
+        if (_systemIcon != null)
+        {
+            return true;
+        }
+        else
+        {
+            // file has no shell icon, so fallback to use builtin icons
+            return false;
+        }
+    }
+
 
     // WIP333 maybe this, and the opposye should be in new file ?
     // ImageModelConverter.cs ?
