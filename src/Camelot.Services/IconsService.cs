@@ -11,6 +11,7 @@ public class IconsService : IIconsService
     private const string SettingsId = "IconsSettings";
     private readonly IconsSettingsModel _default;
     private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+    private IconsSettingsModel _value = null;
 
     public IconsService(IUnitOfWorkFactory unitOfWorkFactory)
     {
@@ -21,13 +22,17 @@ public class IconsService : IIconsService
     
     public IconsSettingsModel GetIconsSettings()
     {
-        using var uow = _unitOfWorkFactory.Create();
-        var repository = uow.GetRepository<IconsSettingsModel>();
-        var dbModel = repository.GetById(SettingsId);
-        if (dbModel != null)
-            return dbModel;
-        else
-            return _default;
+        if (_value == null)
+        {
+            using var uow = _unitOfWorkFactory.Create();
+            var repository = uow.GetRepository<IconsSettingsModel>();
+            var dbModel = repository.GetById(SettingsId);
+            if (dbModel != null)
+                _value = dbModel;
+            else
+                _value = _default;
+        }
+        return _value;
     }
 
     public void SaveIconsSettings(IconsSettingsModel iconsSettingsModel)
@@ -40,5 +45,6 @@ public class IconsService : IIconsService
         using var uow = _unitOfWorkFactory.Create();
         var repository = uow.GetRepository<IconsSettingsModel>();
         repository.Upsert(SettingsId, iconsSettingsModel);
+        _value = iconsSettingsModel;
     }
 }
