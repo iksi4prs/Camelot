@@ -43,7 +43,8 @@ public class IconsSettingsViewModel : ViewModelBase, ISettingsViewModel
         _isActivated = true;
 
         var model = _iconsService.GetIconsSettings();
-        CurrentIconsType = model.SelectedIconsType;
+        _initialIconsType = model.SelectedIconsType;
+        CurrentIconsType = _initialIconsType;
     }
 
     public void SaveChanges()
