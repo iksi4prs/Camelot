@@ -21,19 +21,19 @@
 
 
     <Grid>
-        <Grid Name="System (aka Shell) Icons"
-              IsVisible="{Binding Path=UseSystemIcons}">
+        <Grid Name="Shell Icons (aka System Icons)"
+              IsVisible="{Binding Path=UseShellIcons}">
             
             <Image Classes="iconImage" 
                     Margin="10,3,3,3"
                     VerticalAlignment="Stretch" 
                     HorizontalAlignment="Stretch"
                     IsVisible="True"
-                    Source="{Binding SystemIcon}" />
+                    Source="{Binding ShellIcon}" />
         </Grid>
         
         <Grid Name="Builtin SVG (GeometryDrawing) Icons"
-              IsVisible="{Binding Path=UseSystemIcons, Converter={StaticResource InverseBooleanConverter}}">
+              IsVisible="{Binding Path=UseShellIcons, Converter={StaticResource InverseBooleanConverter}}">
 
             <Image Classes="iconImage" Margin="10,3,3,3" VerticalAlignment="Center"
                    IsVisible="{Binding Type, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static enums:FileContentType.Audio}}">

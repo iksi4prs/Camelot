@@ -3,40 +3,58 @@ using Camelot.DataAccess.UnitOfWork;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
 using Camelot.Services.Abstractions.Models.Enums;
+using Camelot.Services.Environment.Enums;
+using Camelot.Services.Environment.Interfaces;
 
 namespace Camelot.Services;
 
-public class IconsService : IIconsService
+public class IconsSettingsService : IIconsSettingsService
 {
     private const string SettingsId = "IconsSettings";
     private readonly IconsSettingsModel _default;
+    private readonly IconsSettingsModel _builtin;
     private readonly IUnitOfWorkFactory _unitOfWorkFactory;
-    private IconsSettingsModel _value = null;
+    private readonly Platform _platform;
+    private IconsSettingsModel _cachedValue = null;
 
-    public IconsService(IUnitOfWorkFactory unitOfWorkFactory)
+    public IconsSettingsService(IUnitOfWorkFactory unitOfWorkFactory,
+        IPlatformService platformService)
     {
         _unitOfWorkFactory = unitOfWorkFactory;
+        _platform = platformService.GetPlatform();
         _default = new IconsSettingsModel(IconsType.Shell);
+        _builtin = new IconsSettingsModel(IconsType.Builtin);
     }
 
     
     public IconsSettingsModel GetIconsSettings()
     {
-        if (_value == null)
+        if (_platform != Platform.Windows)
+            return _builtin;
+
+        if (_cachedValue == null)
         {
             using var uow = _unitOfWorkFactory.Create();
             var repository = uow.GetRepository<IconsSettingsModel>();
             var dbModel = repository.GetById(SettingsId);
             if (dbModel != null)
-                _value = dbModel;
+                _cachedValue = dbModel;
             else
-                _value = _default;
+                _cachedValue = _default;
         }
-        return _value;
+        else
+        {
+            // we set value of _cachedValue in 'save',
+            // so no need to read from the repository every time.
+        }
+        return _cachedValue;
     }
 
     public void SaveIconsSettings(IconsSettingsModel iconsSettingsModel)
     {
+        if (_platform != Platform.Windows)
+            return;
+
         if (iconsSettingsModel is null)
         {
             throw new ArgumentNullException(nameof(iconsSettingsModel));
@@ -45,6 +63,6 @@ public class IconsService : IIconsService
         using var uow = _unitOfWorkFactory.Create();
         var repository = uow.GetRepository<IconsSettingsModel>();
         repository.Upsert(SettingsId, iconsSettingsModel);
-        _value = iconsSettingsModel;
+        _cachedValue = iconsSettingsModel;
     }
 }

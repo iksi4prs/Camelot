@@ -18,11 +18,11 @@
                    Grid.Column="0"
                   Grid.ColumnSpan="3"
                   Classes="settingsTabTextBlock" Margin="5,8,10,0"
-                  Text="Changes requires restart of application to take effect" />
+                  Text="{x:Static p:Resources.ChangesRequireRestart}" />
         <TextBlock Grid.Row="2"
                    Grid.Column="0"
                    Classes="settingsTabTextBlock" Margin="5,8,10,0"
-                   Text="File icons:" />
+                   Text="{x:Static p:Resources.FilesIconsWithColon}" />
         <ComboBox Grid.Row="2"
                   Grid.Column="1"
                   Items="{Binding IconsTypeOptions}"
@@ -34,14 +34,6 @@
         <TextBlock Grid.Row="2"
                    Grid.Column="2"
                    Classes="settingsTabTextBlock" Margin="5,8,10,0"
-                   Text="(*supported on Windows only)" />
-        <TextBlock Grid.Row="4"
-                   Grid.Column="0"
-                   Classes="settingsTabTextBlock" Margin="5,8,10,0"
-                   Text="Folder icons:" />
-        <TextBlock Grid.Row="4"
-                   Grid.Column="2"
-                   Classes="settingsTabTextBlock" Margin="5,8,10,0"
-                   Text="TODO - in work" />
+                   Text="{x:Static p:Resources.SupportedOnWindowsOnly}" />
     </Grid>
 </UserControl>

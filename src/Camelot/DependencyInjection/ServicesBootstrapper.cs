@@ -177,8 +177,9 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<ISystemIconsService>()
         ));
 
-        services.RegisterLazySingleton<IIconsService>(() => new IconsService(
-        resolver.GetRequiredService<IUnitOfWorkFactory>()
+        services.RegisterLazySingleton<IIconsSettingsService>(() => new IconsSettingsService(
+            resolver.GetRequiredService<IUnitOfWorkFactory>(),
+            resolver.GetRequiredService<IPlatformService>()
         ));
     }
 

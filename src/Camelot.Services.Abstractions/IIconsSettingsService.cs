@@ -3,7 +3,7 @@ using Camelot.Services.Abstractions.Models.Enums;
 
 namespace Camelot.Services.Abstractions;
 
-public interface IIconsService
+public interface IIconsSettingsService
 {
     IconsSettingsModel GetIconsSettings();
 

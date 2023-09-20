@@ -1,7 +1,5 @@
 using System;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Windows.SystemIcons;

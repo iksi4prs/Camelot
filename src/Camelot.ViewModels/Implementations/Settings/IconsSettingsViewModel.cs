@@ -9,7 +9,7 @@ namespace Camelot.ViewModels.Implementations.Settings;
 
 public class IconsSettingsViewModel : ViewModelBase, ISettingsViewModel
 {
-    private readonly IIconsService _iconsService;
+    private readonly IIconsSettingsService _iconsSettingsService;
     private IconsType _initialIconsType;
 
     private bool _isActivated;
@@ -28,9 +28,9 @@ public class IconsSettingsViewModel : ViewModelBase, ISettingsViewModel
     public bool IsChanged => _initialIconsType != CurrentIconsType;
     
     public IconsSettingsViewModel(
-        IIconsService iconsService)
+        IIconsSettingsService iconsSettingsService)
     {
-        _iconsService = iconsService;
+        _iconsSettingsService = iconsSettingsService;
     }
 
     public void Activate()
@@ -42,7 +42,7 @@ public class IconsSettingsViewModel : ViewModelBase, ISettingsViewModel
 
         _isActivated = true;
 
-        var model = _iconsService.GetIconsSettings();
+        var model = _iconsSettingsService.GetIconsSettings();
         _initialIconsType = model.SelectedIconsType;
         CurrentIconsType = _initialIconsType;
     }
@@ -50,6 +50,6 @@ public class IconsSettingsViewModel : ViewModelBase, ISettingsViewModel
     public void SaveChanges()
     {
         var model = new IconsSettingsModel(CurrentIconsType);
-        _iconsService.SaveIconsSettings(model);
+        _iconsSettingsService.SaveIconsSettings(model);
     }
 }

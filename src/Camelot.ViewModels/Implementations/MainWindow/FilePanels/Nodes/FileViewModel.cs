@@ -1,6 +1,3 @@
-using Avalonia;
-using Avalonia.Controls.Shapes;
-using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Camelot.Images;
 using Camelot.Services.Abstractions;
@@ -13,18 +10,6 @@ using Camelot.ViewModels.Services.Interfaces;
 using ReactiveUI;
 using System;
 
-// WIP333 some cleanup in this file
-//using System.Drawing.Imaging;
-//using Bitmap = Avalonia.Media.Imaging.Bitmap;
-//using Rectangle = System.Drawing.Rectangle;
-//using AvaloniaPixelFormat = Avalonia.Platform.PixelFormat;
-//using AlphaFormat = Avalonia.Platform.AlphaFormat;
-//using PixelSize = Avalonia.PixelSize;
-//using Vector = Avalonia.Vector;
-//using System.IO;
-//using System.Runtime.CompilerServices;
-//using System;
-
 namespace Camelot.ViewModels.Implementations.MainWindow.FilePanels.Nodes;
 
 public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
@@ -32,9 +17,9 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private readonly IFileSizeFormatter _fileSizeFormatter;
     private readonly IFileTypeMapper _fileTypeMapper;
     private readonly IShellIconsCacheService _shellIconsCacheService;
-    private readonly IIconsService _iconsService;
+    private readonly IIconsSettingsService _iconsSettingsService;
     private long _size;
-    private Bitmap _systemIcon = null;
+    private Bitmap _shellIcon = null;
     private bool? _useShellIcon = null;
 
     // Helper to load icon only on demand.
@@ -65,7 +50,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         IFileSizeFormatter fileSizeFormatter,
         IFileTypeMapper fileTypeMapper,
         IShellIconsCacheService shellIconsCacheService,
-        IIconsService iconsService)
+        IIconsSettingsService iconsSettingsService)
         : base(
             fileSystemNodeOpeningBehavior,
             fileSystemNodePropertiesBehavior,
@@ -75,34 +60,31 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         _fileSizeFormatter = fileSizeFormatter;
         _fileTypeMapper = fileTypeMapper;
         _shellIconsCacheService = shellIconsCacheService;
-        _iconsService = iconsService;
+        _iconsSettingsService = iconsSettingsService;
     }
 
-
-
-    public Bitmap SystemIcon
+    public Bitmap ShellIcon
     {
         get
         {
             if (!_loadedShellIcon)
             {
                 var imageModel = _shellIconsCacheService.GetIcon(FullPath);
-                _systemIcon = FromImageModel(imageModel);
+                _shellIcon = FromImageModel(imageModel);
                 _loadedShellIcon = true;
             }
-            return _systemIcon;
+            return _shellIcon;
         }
     }
-
 
     private IconsType GetUserSelectedType()
     {
         // WIP333 TODO - later - how to reflect without restart ?
         // check only once
-        var model = _iconsService.GetIconsSettings();
+        var model = _iconsSettingsService.GetIconsSettings();
         return  model.SelectedIconsType;
     }
-    public bool UseSystemIcons
+    public bool UseShellIcons
     {
         get
         {
@@ -122,11 +104,11 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         if (!_loadedShellIcon)
         {
             var imageModel = _shellIconsCacheService.GetIcon(FullPath);
-            _systemIcon = FromImageModel(imageModel);
+            _shellIcon = FromImageModel(imageModel);
             _loadedShellIcon = true;
         }
 
-        if (_systemIcon != null)
+        if (_shellIcon != null)
         {
             return true;
         }
