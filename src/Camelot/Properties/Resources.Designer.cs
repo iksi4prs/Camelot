@@ -314,7 +314,7 @@ namespace Camelot.Properties {
                 return ResourceManager.GetString("HelpHeader", resourceCulture);
             }
         }
-        
+
         public static string LanguageWithColon {
             get {
                 return ResourceManager.GetString("LanguageWithColon", resourceCulture);
@@ -888,6 +888,30 @@ namespace Camelot.Properties {
         public static string GoToParentDirectory {
             get {
                 return ResourceManager.GetString("GoToParentDirectory", resourceCulture);
+            }
+        }
+        
+	public static string IconsWithColon {
+            get {
+                return ResourceManager.GetString("IconsWithColon", resourceCulture);
+            }
+        }
+	
+	public static string FilesIconsWithColon {
+            get {
+                return ResourceManager.GetString("FilesIconsWithColon", resourceCulture);
+            }
+        }
+        
+	public static string ChangesRequireRestart {
+            get {
+                return ResourceManager.GetString("ChangesRequireRestart", resourceCulture);
+            }
+        }
+        
+	public static string SupportedOnWindowsOnly {
+            get {
+                return ResourceManager.GetString("SupportedOnWindowsOnly", resourceCulture);
             }
         }
     }
