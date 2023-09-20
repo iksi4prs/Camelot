@@ -32,7 +32,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private readonly IFileSizeFormatter _fileSizeFormatter;
     private readonly IFileTypeMapper _fileTypeMapper;
     private readonly IShellIconsCacheService _shellIconsCacheService;
-    private readonly IIconsSettingsService _iconsService;
+    private readonly IIconsSettingsService _iconsSettingsService;
     private long _size;
     private Bitmap _systemIcon = null;
     private bool? _useShellIcon = null;
@@ -65,7 +65,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         IFileSizeFormatter fileSizeFormatter,
         IFileTypeMapper fileTypeMapper,
         IShellIconsCacheService shellIconsCacheService,
-        IIconsSettingsService iconsService)
+        IIconsSettingsService iconsSettingsService)
         : base(
             fileSystemNodeOpeningBehavior,
             fileSystemNodePropertiesBehavior,
@@ -75,7 +75,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         _fileSizeFormatter = fileSizeFormatter;
         _fileTypeMapper = fileTypeMapper;
         _shellIconsCacheService = shellIconsCacheService;
-        _iconsService = iconsService;
+        _iconsSettingsService = iconsSettingsService;
     }
 
 
@@ -99,7 +99,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     {
         // WIP333 TODO - later - how to reflect without restart ?
         // check only once
-        var model = _iconsService.GetIconsSettings();
+        var model = _iconsSettingsService.GetIconsSettings();
         return  model.SelectedIconsType;
     }
     public bool UseSystemIcons
