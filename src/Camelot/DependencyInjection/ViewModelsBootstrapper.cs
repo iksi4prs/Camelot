@@ -111,7 +111,7 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IFileSystemNodeFacade>(),
             resolver.GetRequiredService<IFileTypeMapper>(),
             resolver.GetRequiredService<IShellIconsCacheService>(),
-            resolver.GetRequiredService<IIconsService>()
+            resolver.GetRequiredService<IIconsSettingsService>()
         ));
         services.RegisterLazySingleton<IBitmapFactory>(() => new BitmapFactory());
         services.Register(() => new MainNodeInfoTabViewModel(
@@ -163,7 +163,7 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IconsSettingsViewModel>()
         ));
         services.Register(() => new IconsSettingsViewModel(
-            resolver.GetRequiredService<IIconsService>()
+            resolver.GetRequiredService<IIconsSettingsService>()
         ));
         services.RegisterLazySingleton(() => new FilePropertiesBehavior(
             resolver.GetRequiredService<IDialogService>()
@@ -355,7 +355,7 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IFileSystemNodeFacade>(),
             resolver.GetRequiredService<IFileTypeMapper>(),
             resolver.GetRequiredService<IShellIconsCacheService>(),
-            resolver.GetRequiredService<IIconsService>()
+            resolver.GetRequiredService<IIconsSettingsService>()
         ));
     }
 }

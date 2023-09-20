@@ -6,14 +6,14 @@ using Camelot.Services.Abstractions.Models.Enums;
 
 namespace Camelot.Services;
 
-public class IconsService : IIconsService
+public class IconsSettingsService : IIconsSettingsService
 {
     private const string SettingsId = "IconsSettings";
     private readonly IconsSettingsModel _default;
     private readonly IUnitOfWorkFactory _unitOfWorkFactory;
     private IconsSettingsModel _value = null;
 
-    public IconsService(IUnitOfWorkFactory unitOfWorkFactory)
+    public IconsSettingsService(IUnitOfWorkFactory unitOfWorkFactory)
     {
         _unitOfWorkFactory = unitOfWorkFactory;
         _default = new IconsSettingsModel(IconsType.Shell);

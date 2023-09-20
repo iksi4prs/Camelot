@@ -32,7 +32,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private readonly IFileSizeFormatter _fileSizeFormatter;
     private readonly IFileTypeMapper _fileTypeMapper;
     private readonly IShellIconsCacheService _shellIconsCacheService;
-    private readonly IIconsService _iconsService;
+    private readonly IIconsSettingsService _iconsService;
     private long _size;
     private Bitmap _systemIcon = null;
     private bool? _useShellIcon = null;
@@ -65,7 +65,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         IFileSizeFormatter fileSizeFormatter,
         IFileTypeMapper fileTypeMapper,
         IShellIconsCacheService shellIconsCacheService,
-        IIconsService iconsService)
+        IIconsSettingsService iconsService)
         : base(
             fileSystemNodeOpeningBehavior,
             fileSystemNodePropertiesBehavior,

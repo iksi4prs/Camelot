@@ -23,7 +23,7 @@ public class FileSystemNodeViewModelFactory : IFileSystemNodeViewModelFactory
     private readonly IFileSystemNodeFacade _fileSystemNodeFacade;
     private readonly IFileTypeMapper _fileTypeMapper;
     private readonly IShellIconsCacheService _shellIconsCacheService;
-    private readonly IIconsService _iconsService;
+    private readonly IIconsSettingsService _iconsService;
 
     public FileSystemNodeViewModelFactory(
         IFileSystemNodeOpeningBehavior fileOpeningBehavior,
@@ -38,7 +38,7 @@ public class FileSystemNodeViewModelFactory : IFileSystemNodeViewModelFactory
         IFileSystemNodeFacade fileSystemNodeFacade,
         IFileTypeMapper fileTypeMapper,
         IShellIconsCacheService shellIconsCacheService,
-        IIconsService iconsService)
+        IIconsSettingsService iconsService)
     {
         _fileOpeningBehavior = fileOpeningBehavior;
         _directoryOpeningBehavior = directoryOpeningBehavior;
