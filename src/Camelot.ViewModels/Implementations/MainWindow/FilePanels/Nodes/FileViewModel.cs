@@ -19,7 +19,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private readonly IShellIconsCacheService _shellIconsCacheService;
     private readonly IIconsSettingsService _iconsSettingsService;
     private long _size;
-    private Bitmap _systemIcon = null;
+    private Bitmap _shellIcon = null;
     private bool? _useShellIcon = null;
 
     // Helper to load icon only on demand.
@@ -63,17 +63,17 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         _iconsSettingsService = iconsSettingsService;
     }
 
-    public Bitmap SystemIcon
+    public Bitmap ShellIcon
     {
         get
         {
             if (!_loadedShellIcon)
             {
                 var imageModel = _shellIconsCacheService.GetIcon(FullPath);
-                _systemIcon = FromImageModel(imageModel);
+                _shellIcon = FromImageModel(imageModel);
                 _loadedShellIcon = true;
             }
-            return _systemIcon;
+            return _shellIcon;
         }
     }
 
@@ -84,7 +84,7 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         var model = _iconsSettingsService.GetIconsSettings();
         return  model.SelectedIconsType;
     }
-    public bool UseSystemIcons
+    public bool UseShellIcons
     {
         get
         {
@@ -104,11 +104,11 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         if (!_loadedShellIcon)
         {
             var imageModel = _shellIconsCacheService.GetIcon(FullPath);
-            _systemIcon = FromImageModel(imageModel);
+            _shellIcon = FromImageModel(imageModel);
             _loadedShellIcon = true;
         }
 
-        if (_systemIcon != null)
+        if (_shellIcon != null)
         {
             return true;
         }
