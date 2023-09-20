@@ -1,6 +1,3 @@
-using Avalonia;
-using Avalonia.Controls.Shapes;
-using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Camelot.Images;
 using Camelot.Services.Abstractions;
@@ -12,18 +9,6 @@ using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Services.Interfaces;
 using ReactiveUI;
 using System;
-
-// WIP333 some cleanup in this file
-//using System.Drawing.Imaging;
-//using Bitmap = Avalonia.Media.Imaging.Bitmap;
-//using Rectangle = System.Drawing.Rectangle;
-//using AvaloniaPixelFormat = Avalonia.Platform.PixelFormat;
-//using AlphaFormat = Avalonia.Platform.AlphaFormat;
-//using PixelSize = Avalonia.PixelSize;
-//using Vector = Avalonia.Vector;
-//using System.IO;
-//using System.Runtime.CompilerServices;
-//using System;
 
 namespace Camelot.ViewModels.Implementations.MainWindow.FilePanels.Nodes;
 
@@ -78,8 +63,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         _iconsSettingsService = iconsSettingsService;
     }
 
-
-
     public Bitmap SystemIcon
     {
         get
@@ -93,7 +76,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
             return _systemIcon;
         }
     }
-
 
     private IconsType GetUserSelectedType()
     {
