@@ -31,13 +31,14 @@ public class ShellIconsCacheService : IShellIconsCacheService
         var result = new ConcreteImage(bitmap);
         return result;
     }
-    private Bitmap GetShellIcon(string filename)
-    {
-        Bitmap result = null;
 
-        // step #1
-        // resolve links, if any
-        string path = filename;
+    private string ResolveIfLink(string filename)
+    {
+        if (string.IsNullOrEmpty(filename))
+            throw new ArgumentNullException(nameof(filename));
+
+        string result;
+
         var isLink = _shellLinksService.IsShellLink(filename);
         if (isLink)
         {
@@ -47,10 +48,9 @@ public class ShellIconsCacheService : IShellIconsCacheService
             // dont exist anymore, or links to a folder.
             if (File.Exists(resolved))
             {
-                // All ok, continue with new resolved path
-                path = resolved;
+                result = resolved;
             }
-            else 
+            else
             {
                 if (Directory.Exists(resolved))
                 {
@@ -58,14 +58,31 @@ public class ShellIconsCacheService : IShellIconsCacheService
                     // need to add support for folders...
                     int dbg = 9;
                     dbg = 8;
+                    result = null;
                 }
                 else
                 {
                     // target file not found
-                    return null;
+                    result = null;
                 }
             }
         }
+        else
+        {
+            result = filename;
+        }
+        return result;
+    }
+
+    private Bitmap GetShellIcon(string filename)
+    {
+        Bitmap result = null;
+
+        // step #1
+        // resolve links, if any
+        var path = ResolveIfLink(filename);
+        if (path == null)
+            return null;
 
         // step #2
         // check if cache, and if not, get from shell.
