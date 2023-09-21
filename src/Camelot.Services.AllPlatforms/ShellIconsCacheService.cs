@@ -5,7 +5,6 @@ using System.IO;
 using Camelot.Services.Abstractions.Models;
 using Camelot.Images;
 using Avalonia.Media.Imaging;
-using System.Data.Common;
 
 namespace Camelot.Services.AllPlatforms;
 
@@ -56,8 +55,6 @@ public class ShellIconsCacheService : IShellIconsCacheService
                 {
                     // WIP333 - resolved is folder.
                     // need to add support for folders...
-                    int dbg = 9;
-                    dbg = 8;
                     result = null;
                 }
                 else
@@ -76,6 +73,9 @@ public class ShellIconsCacheService : IShellIconsCacheService
 
     private Bitmap GetShellIcon(string filename)
     {
+        if (string.IsNullOrEmpty(filename))
+            throw new ArgumentNullException(nameof(filename));
+
         Bitmap result = null;
 
         // step #1
