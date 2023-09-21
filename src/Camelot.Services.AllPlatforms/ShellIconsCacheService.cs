@@ -1,19 +1,11 @@
 using System;
 using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
 using Camelot.Services.Abstractions;
-//using Camelot.Services.Abstractions.Drives;
-//using Camelot.Services.Abstractions.Operations;
-
 using System.IO;
-using Avalonia.Controls;
 using Camelot.Services.Abstractions.Models;
-//using System.Runtime.CompilerServices;
-//using System;
 using Camelot.Images;
 using Avalonia.Media.Imaging;
+using System.Data.Common;
 
 namespace Camelot.Services.AllPlatforms;
 
@@ -30,9 +22,6 @@ public class ShellIconsCacheService : IShellIconsCacheService
         _systemIconsService = systemIconsService;
     }
 
-    // result is always Avalonia's Bitmap, but since interface is defined
-    // in "Camelot.Services.Abstractions" which is not referncing Avalonia,
-    // the return type is 'object'
     public ImageModel GetIcon(string filename)
     {
         if (string.IsNullOrEmpty(filename))
@@ -53,19 +42,29 @@ public class ShellIconsCacheService : IShellIconsCacheService
         if (isLink)
         {
             var resolved = _shellLinksService.ResolveLink(filename);
-            // Check if resolved still exists, sometimes the target of .lnk files
-            // dont exist anymore, or links to a folder
-            if (!File.Exists(resolved))
+            // Check if resolved still exists,
+            // sometimes the target of .lnk files
+            // dont exist anymore, or links to a folder.
+            if (File.Exists(resolved))
+            {
+                // All ok, continue with new resolved path
+                path = resolved;
+            }
+            else 
             {
                 if (Directory.Exists(resolved))
                 {
+                    // WIP333 - resolved is folder.
+                    // need to add support for folders...
                     int dbg = 9;
                     dbg = 8;
                 }
-                return null;
+                else
+                {
+                    // target file not found
+                    return null;
+                }
             }
-            // cotinue with new path
-            path = resolved;
         }
 
         // step #2
