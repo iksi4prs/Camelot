@@ -172,10 +172,6 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IRecursiveSearchResultFactory>(),
             resolver.GetRequiredService<ILogger>()
         ));
-        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
-            resolver.GetRequiredService<IShellLinksService>(),
-            resolver.GetRequiredService<ISystemIconsService>()
-        ));
 
         services.RegisterLazySingleton<IIconsSettingsService>(() => new IconsSettingsService(
             resolver.GetRequiredService<IUnitOfWorkFactory>(),
@@ -273,6 +269,10 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IDriveNameService>(),
             resolver.GetRequiredService<ILogger>()
         ));
+
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IPlatformService>()
+        ));
     }
 
     private static void RegisterMacServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
@@ -320,6 +320,9 @@ public static class ServicesBootstrapper
         services.RegisterLazySingleton<IMountedDriveService>(() => new MacMountedDriveService(
             resolver.GetRequiredService<IEnvironmentDriveService>(),
             resolver.GetRequiredService<IProcessService>()
+        ));
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+             resolver.GetRequiredService<IPlatformService>()
         ));
     }
 
@@ -371,6 +374,12 @@ public static class ServicesBootstrapper
         ));
         services.RegisterLazySingleton<ISystemIconsService>(() => new WindowsSystemIconsService());
         services.RegisterLazySingleton<IShellLinksService>(() => new WindowsShellLinksService());
+
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IPlatformService>(),
+            resolver.GetRequiredService<IShellLinksService>(),
+            resolver.GetRequiredService<ISystemIconsService>()
+        ));
 #pragma warning restore CA1416
     }
 }

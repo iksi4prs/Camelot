@@ -1,19 +1,12 @@
 using System;
 using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
 using Camelot.Services.Abstractions;
-//using Camelot.Services.Abstractions.Drives;
-//using Camelot.Services.Abstractions.Operations;
-
 using System.IO;
-using Avalonia.Controls;
 using Camelot.Services.Abstractions.Models;
-//using System.Runtime.CompilerServices;
-//using System;
 using Camelot.Images;
 using Avalonia.Media.Imaging;
+using Camelot.Services.Environment.Interfaces;
+using Camelot.Services.Environment.Enums;
 
 namespace Camelot.Services.AllPlatforms;
 
@@ -22,17 +15,32 @@ public class ShellIconsCacheService : IShellIconsCacheService
     private readonly IShellLinksService _shellLinksService;
     private readonly ISystemIconsService _systemIconsService;
     private readonly Dictionary<string, Bitmap> _cache = new();
+    private readonly Platform _platform;
     public ShellIconsCacheService(
+        IPlatformService platformService,
         IShellLinksService shellLinksService,
         ISystemIconsService systemIconsService)
     {
+        var platform = platformService.GetPlatform();
+        if (platform != Platform.Windows)
+            throw new InvalidOperationException($"Need to you other c'tor, without arg of {typeof(IShellLinksService)}");
+
+        _platform = platform;
         _shellLinksService = shellLinksService;
         _systemIconsService = systemIconsService;
     }
 
-    // result is always Avalonia's Bitmap, but since interface is defined
-    // in "Camelot.Services.Abstractions" which is not referncing Avalonia,
-    // the return type is 'object'
+    // The c'tor is for Mac/Linux, where cache is not implemented yet.
+    public ShellIconsCacheService(
+     IPlatformService platformService)
+    {
+        var platform = platformService.GetPlatform();
+        if (platform == Platform.Windows)
+            throw new InvalidOperationException($"Need to you other c'tor, with arg of {typeof(IShellLinksService)}");
+
+        _platform = platform;
+    }
+
     public ImageModel GetIcon(string filename)
     {
         if (string.IsNullOrEmpty(filename))
@@ -42,30 +50,66 @@ public class ShellIconsCacheService : IShellIconsCacheService
         var result = new ConcreteImage(bitmap);
         return result;
     }
-    private Bitmap GetShellIcon(string filename)
-    {
-        Bitmap result = null;
 
-        // step #1
-        // resolve links, if any
-        string path = filename;
+    private string ResolveIfLink(string filename)
+    {
+        if (string.IsNullOrEmpty(filename))
+            throw new ArgumentNullException(nameof(filename));
+
+        string result;
+
         var isLink = _shellLinksService.IsShellLink(filename);
         if (isLink)
         {
             var resolved = _shellLinksService.ResolveLink(filename);
-            // Check if resolved still exists, sometimes the target of .lnk files
-            // dont exist anymore, or links to a folder
-            if (!File.Exists(resolved))
+            // Check if resolved still exists,
+            // sometimes the target of .lnk files
+            // dont exist anymore, or links to a folder.
+            if (File.Exists(resolved))
+            {
+                result = resolved;
+            }
+            else
             {
                 if (Directory.Exists(resolved))
                 {
-                    int dbg = 9;
-                    dbg = 8;
+                    // WIP333 - resolved is folder.
+                    // need to add support for folders...
+                    result = null;
                 }
-                return null;
+                else
+                {
+                    // target file not found
+                    result = null;
+                }
             }
-            // cotinue with new path
-            path = resolved;
+        }
+        else
+        {
+            result = filename;
+        }
+        return result;
+    }
+
+    private Bitmap GetShellIcon(string filename)
+    {
+        if (string.IsNullOrEmpty(filename))
+            throw new ArgumentNullException(nameof(filename));
+
+        Bitmap result = null;
+        string path;
+
+        // step #1
+        // resolve links, if any
+        if (_platform == Platform.Windows)
+        {
+            path = ResolveIfLink(filename);
+            if (path == null)
+                return null;
+        }
+        else
+        {
+            path = filename;
         }
 
         // step #2
