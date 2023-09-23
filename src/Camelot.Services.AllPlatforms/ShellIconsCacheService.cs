@@ -5,6 +5,8 @@ using System.IO;
 using Camelot.Services.Abstractions.Models;
 using Camelot.Images;
 using Avalonia.Media.Imaging;
+using Camelot.Services.Environment.Interfaces;
+using Camelot.Services.Environment.Enums;
 
 namespace Camelot.Services.AllPlatforms;
 
@@ -13,12 +15,30 @@ public class ShellIconsCacheService : IShellIconsCacheService
     private readonly IShellLinksService _shellLinksService;
     private readonly ISystemIconsService _systemIconsService;
     private readonly Dictionary<string, Bitmap> _cache = new();
+    private readonly Platform _platform;
     public ShellIconsCacheService(
+        IPlatformService platformService,
         IShellLinksService shellLinksService,
         ISystemIconsService systemIconsService)
     {
+        var platform = platformService.GetPlatform();
+        if (platform != Platform.Windows)
+            throw new InvalidOperationException($"Need to you other c'tor, without arg of {typeof(IShellLinksService)}");
+
+        _platform = platform;
         _shellLinksService = shellLinksService;
         _systemIconsService = systemIconsService;
+    }
+
+    // The c'tor is for Mac/Linux, where cache is not implemented yet.
+    public ShellIconsCacheService(
+     IPlatformService platformService)
+    {
+        var platform = platformService.GetPlatform();
+        if (platform == Platform.Windows)
+            throw new InvalidOperationException($"Need to you other c'tor, with arg of {typeof(IShellLinksService)}");
+
+        _platform = platform;
     }
 
     public ImageModel GetIcon(string filename)
@@ -77,12 +97,20 @@ public class ShellIconsCacheService : IShellIconsCacheService
             throw new ArgumentNullException(nameof(filename));
 
         Bitmap result = null;
+        string path;
 
         // step #1
         // resolve links, if any
-        var path = ResolveIfLink(filename);
-        if (path == null)
-            return null;
+        if (_platform == Platform.Windows)
+        {
+            path = ResolveIfLink(filename);
+            if (path == null)
+                return null;
+        }
+        else
+        {
+            path = filename;
+        }
 
         // step #2
         // check if cache, and if not, get from shell.
