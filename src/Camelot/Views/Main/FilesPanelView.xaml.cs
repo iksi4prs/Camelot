@@ -156,6 +156,8 @@ public class FilesPanelView : UserControl
         nodeViewModel.OpenCommand.Execute(null);
     }
 
+    // WIP444 - just remove
+    /* not really needed
     // TODO - fix this one to work cporrrectly
     // and mayeb also tke from other place in code
     private bool IsValidForPath(Key key)
@@ -165,7 +167,10 @@ public class FilesPanelView : UserControl
             return true;
         return false;
     }
+    */
 
+
+    // WIP444
     private char KeyToChar(Key key)
     {
         // requires win api ??
@@ -183,7 +188,11 @@ public class FilesPanelView : UserControl
 
         return c;
     }
-    // see also KeyBindings in xaml
+    bool _enableFilterAsYouType = true;
+
+    /// Note: Key.Down and Key.Up are handeled via KeyBindings in xaml
+    /// See <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToNextRowCommand"/> 
+    /// and <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToPreviousRowCommand"/>
     private void OnDataGridKeyDown(object sender, KeyEventArgs args)
     {
         if (args.Key == Key.Delete || args.Key == Key.Back)
@@ -192,6 +201,17 @@ public class FilesPanelView : UserControl
             ViewModel.OperationsViewModel.MoveToTrashCommand.Execute(null);
             return;
         }
+        
+        if (_enableFilterAsYouType)
+            FilterOnKeyDown(args);
+    }
+
+    private void FilterOnKeyDown(KeyEventArgs args)
+    {
+        if (!_enableFilterAsYouType)
+            return;
+
+        // Clear filter
         if (args.Key == Key.Escape)
         {
             var files2 = ViewModel.FileSystemNodes;
@@ -202,37 +222,17 @@ public class FilesPanelView : UserControl
             args.Handled = true;
             return;
         }
-        if (args.Key == Key.Down || args.Key == Key.Up)
-        {
-            // QQQ
-            var grid = FilesDataGrid;
-            var selectedNoded = ViewModel.SelectedFileSystemNodes;
-            var selectedItem = grid.SelectedItem;
-            var gridItems = grid.Items;
-            args.Handled = true;
-            return;
-        }
 
-        if (!IsValidForPath(args.Key))
-        {
-            return;
-        }
+        var c = KeyToChar(args.Key);
 
-        //if (Char.IsLetterOrDigit(args.Key.))
-        //
-        // kk
-        // filter entries
-        //var view = ViewModel;
+        // Filter out, all files that dont start with the typed key
         var files = ViewModel.FileSystemNodes;
-        foreach(var file in files)
+        foreach (var file in files)
         {
-            var c = KeyToChar(args.Key);
             var name = file.Name.ToLower();
             if (!name.StartsWith(c))
             {
                 file.IsFilteredOut = true;
-                //file.Name = "zzz";
-
                 // how to disable row ??
                 // not possible ??
                 // https://github.com/AvaloniaUI/Avalonia/issues/7766
@@ -243,8 +243,10 @@ public class FilesPanelView : UserControl
                 file.IsFilteredOut = false;
             }
         }
+
+        // 
         var items = FilesDataGrid.Items;
-        foreach(var item in items)
+        foreach (var item in items)
         {
             var file = item as FileViewModel;
             var dir = item as DirectoryViewModel;
@@ -252,7 +254,6 @@ public class FilesPanelView : UserControl
         }
         args.Handled = true;
     }
-
 
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
     {
