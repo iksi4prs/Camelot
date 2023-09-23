@@ -252,6 +252,18 @@ public class FilesPanelView : UserControl
             var dir = item as DirectoryViewModel;
             //var model = GetNode(item.)
         }
+
+        // Go to next item in filtered items
+        // WIP555
+        if ((args.KeyModifiers & KeyModifiers.Shift) == 0)
+        {
+            ViewModel.SelectNextItem();
+        }
+        else
+        {
+            ViewModel.SelectPreviousItem();
+        }
+
         args.Handled = true;
     }
 

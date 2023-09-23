@@ -23,8 +23,13 @@ public interface IFilesPanelViewModel
     IClipboardOperationsViewModel ClipboardOperationsViewModel { get; }
 
     IList<IFileSystemNodeViewModel> SelectedFileSystemNodes { get; }
-    IEnumerable<IFileSystemNodeViewModel> FileSystemNodes { get; }
     
+    IEnumerable<IFileSystemNodeViewModel> FileSystemNodes { get; }
+
+    void SelectNextItem();
+
+    void SelectPreviousItem();
+
     bool IsActive { get; }
 
     string CurrentDirectory { get; set; }

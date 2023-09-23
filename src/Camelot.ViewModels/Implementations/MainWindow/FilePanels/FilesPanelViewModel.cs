@@ -445,6 +445,8 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
     private int GetSelectedIndex()
     {
+        if (SelectedFileSystemNodes.Count == 0)
+            return -1;
         var oldSelected = SelectedFileSystemNodes.First();
         var nodes = FileSystemNodes.ToList();
         for (int i = 0; i < nodes.Count; i++)
@@ -463,11 +465,11 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
         // current
         int selected = GetSelectedIndex();
-        var oldSelected = nodes[selected];
+        var oldSelected = selected >= 0 ? nodes[selected] : null;
         
         // next
         string newSelected = null;
-        for (int i= selected+1; i<nodes.Count-1; i++)
+        for (int i = selected+1; i<nodes.Count-1; i++)
         {
             var curr = nodes[i];
             if (curr.IsFilteredOut)
@@ -478,7 +480,10 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
         if (newSelected != null)
         {
-            UnselectNode(oldSelected.FullPath);
+            if (oldSelected != null)
+            {
+                UnselectNode(oldSelected.FullPath);
+            }
             SelectNode(newSelected);
         }
     }
@@ -489,7 +494,7 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
         // current
         int selected = GetSelectedIndex();
-        var oldSelected = nodes[selected];
+        var oldSelected = selected >= 0 ? nodes[selected] : null;
 
         // previous
         string newSelected = null;
@@ -504,8 +509,21 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
         if (newSelected != null)
         {
-            UnselectNode(oldSelected.FullPath);
+            if (oldSelected != null)
+            {
+                UnselectNode(oldSelected.FullPath);
+            }
             SelectNode(newSelected);
         }
+    }
+
+    public void SelectNextItem()
+    {
+        GoToNextRow();
+    }
+
+    public void SelectPreviousItem()
+    {
+        GoToPreviousRow();
     }
 }
