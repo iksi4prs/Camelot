@@ -6,11 +6,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Input;
 using Camelot.Avalonia.Interfaces;
 using Camelot.Extensions;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
 using Camelot.Services.Abstractions.Models.Enums;
+//using Camelot.Services.Abstractions.Models.Enums.Input;
 using Camelot.Services.Abstractions.Models.EventArgs;
 using Camelot.Services.Abstractions.RecursiveSearch;
 using Camelot.Services.Abstractions.Specifications;
@@ -22,9 +24,14 @@ using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Tabs;
 using Camelot.ViewModels.Interfaces.MainWindow.Operations;
 using Camelot.ViewModels.Services.Interfaces;
+
 using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+
+//using AvaloniaKey = Avalonia.Input.Key;
+//using AbstractKey = Camelot.Services.Abstractions.Models.Enums.Input.Key;
+//using AbstractKeyModifiers = Camelot.Services.Abstractions.Models.Enums.Input.KeyModifiers;
 
 namespace Camelot.ViewModels.Implementations.MainWindow.FilePanels;
 
@@ -43,6 +50,7 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
     private readonly IFilePanelDirectoryObserver _filePanelDirectoryObserver;
     private readonly IPermissionsService _permissionsService;
     private readonly IDialogService _dialogService;
+    private readonly IQuickSearchService _quickSearchService;
 
     private readonly ObservableCollection<IFileSystemNodeViewModel> _fileSystemNodes;
     private readonly ObservableCollection<IFileSystemNodeViewModel> _selectedFileSystemNodes;
@@ -136,7 +144,8 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         IOperationsViewModel operationsViewModel,
         IDirectorySelectorViewModel directorySelectorViewModel,
         IDragAndDropOperationsMediator dragAndDropOperationsMediator,
-        IClipboardOperationsViewModel clipboardOperationsViewModel)
+        IClipboardOperationsViewModel clipboardOperationsViewModel,
+        IQuickSearchService quickSearchService)
     {
         _fileService = fileService;
         _directoryService = directoryService;
@@ -151,6 +160,7 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         _filePanelDirectoryObserver = filePanelDirectoryObserver;
         _permissionsService = permissionsService;
         _dialogService = dialogService;
+        _quickSearchService = quickSearchService;
 
         SearchViewModel = searchViewModel;
         TabsListViewModel = tabsListViewModel;
@@ -517,13 +527,55 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         }
     }
 
-    public void SelectNextItem()
+    private char KeyToChar2(Key key)
     {
-        GoToNextRow();
-    }
+        // requires win api ??
+        //https://stackoverflow.com/questions/318777/c-sharp-how-to-translate-virtual-keycode-to-char
+        char c = '\0';
+        if ((key >= Key.A) && (key <= Key.Z))
+        {
+            c = (char)((int)'a' + (int)(key - Key.A));
+        }
 
-    public void SelectPreviousItem()
+        else if ((key >= Key.D0) && (key <= Key.D9))
+        {
+            c = (char)((int)'0' + (int)(key - Key.D0));
+        }
+
+        return c;
+    }
+    public void OnDataGridKeyDownCallback(Key key)
     {
-        GoToPreviousRow();
+        if (_quickSearchService.Enabled())
+        {
+            //var key = (AbstractKey)args.Key;
+            //var modifiers = (AbstractKeyModifiers)args.KeyModifiers;
+            bool handled;
+            //_quickSearchService.OnKeyDown(key, modifiers, out handled);
+            // WIP777 = maybe add another arg ??
+            var files = FileSystemNodes
+                .Select(x => new QuickSearchFileModel() { Name = x.Name, Tag = x })
+                .ToList();
+
+            if (key == Key.Escape)
+            {
+                _quickSearchService.OnEscapeKeyDown(files, out handled);
+            }
+            else
+            {
+                var c = KeyToChar2(key);
+                _quickSearchService.OnCharDown(c, files, out handled);
+            }
+
+            if (handled)
+            {
+                foreach (var file in files)
+                {
+                    var node = (IFileSystemNodeViewModel)file.Tag;
+                    node.IsFilteredOut = !file.Found;
+                }
+                GoToNextRow();
+            }
+        }
     }
 }

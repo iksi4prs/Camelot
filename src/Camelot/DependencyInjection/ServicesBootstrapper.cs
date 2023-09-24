@@ -177,6 +177,10 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IUnitOfWorkFactory>(),
             resolver.GetRequiredService<IPlatformService>()
         ));
+
+        services.RegisterLazySingleton<IQuickSearchService>(() => new QuickSearchService(
+            resolver.GetRequiredService<IUnitOfWorkFactory>()
+        ));
     }
 
     private static void RegisterPlatformSpecificServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)

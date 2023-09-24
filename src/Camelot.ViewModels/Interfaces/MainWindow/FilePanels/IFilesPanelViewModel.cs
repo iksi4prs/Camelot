@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Avalonia.Input;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Tabs;
 using Camelot.ViewModels.Interfaces.MainWindow.Operations;
@@ -26,9 +27,7 @@ public interface IFilesPanelViewModel
     
     IEnumerable<IFileSystemNodeViewModel> FileSystemNodes { get; }
 
-    void SelectNextItem();
-
-    void SelectPreviousItem();
+    void OnDataGridKeyDownCallback(Key key);
 
     bool IsActive { get; }
 

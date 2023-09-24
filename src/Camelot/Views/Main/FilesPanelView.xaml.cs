@@ -156,21 +156,8 @@ public class FilesPanelView : UserControl
         nodeViewModel.OpenCommand.Execute(null);
     }
 
-    // WIP444 - just remove
-    /* not really needed
-    // TODO - fix this one to work cporrrectly
-    // and mayeb also tke from other place in code
-    private bool IsValidForPath(Key key)
-    {
-        char c = KeyToChar(key);
-        if (Char.IsLetterOrDigit(c))
-            return true;
-        return false;
-    }
-    */
-
-
-    // WIP444
+    /*
+    // WIP444 - cleanthis
     private char KeyToChar(Key key)
     {
         // requires win api ??
@@ -188,7 +175,8 @@ public class FilesPanelView : UserControl
 
         return c;
     }
-    bool _enableFilterAsYouType = true;
+    */
+    //bool _enableFilterAsYouType = true;
 
     /// Note: Key.Down and Key.Up are handeled via KeyBindings in xaml
     /// See <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToNextRowCommand"/> 
@@ -201,15 +189,21 @@ public class FilesPanelView : UserControl
             ViewModel.OperationsViewModel.MoveToTrashCommand.Execute(null);
             return;
         }
-        
-        if (_enableFilterAsYouType)
-            FilterOnKeyDown(args);
-    }
 
+        //WIP444 - cleanthis
+        //if (_enableFilterAsYouType)
+        //    FilterOnKeyDown(args);
+        //var c = KeyToChar(args.Key);
+        ViewModel.OnDataGridKeyDownCallback(args.Key);
+    }
+    /* WIP444 - cleanthis
     private void FilterOnKeyDown(KeyEventArgs args)
     {
         if (!_enableFilterAsYouType)
             return;
+        var c = KeyToChar(args.Key);
+        ViewModel.OnDataGridKeyDownCallback(c);
+        return;
 
         // Clear filter
         if (args.Key == Key.Escape)
@@ -257,15 +251,17 @@ public class FilesPanelView : UserControl
         // WIP555
         if ((args.KeyModifiers & KeyModifiers.Shift) == 0)
         {
-            ViewModel.SelectNextItem();
+            //ViewModel.SelectNextItem();
         }
         else
         {
-            ViewModel.SelectPreviousItem();
+            //ViewModel.SelectPreviousItem();
         }
 
         args.Handled = true;
+
     }
+    */
 
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
     {

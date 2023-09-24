@@ -320,7 +320,8 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IOperationsViewModel>(),
             directorySelectorViewModel,
             resolver.GetRequiredService<IDragAndDropOperationsMediator>(),
-            resolver.GetRequiredService<IClipboardOperationsViewModel>()
+            resolver.GetRequiredService<IClipboardOperationsViewModel>(),
+            resolver.GetRequiredService<IQuickSearchService>()
         );
 
         return filesPanelViewModel;
