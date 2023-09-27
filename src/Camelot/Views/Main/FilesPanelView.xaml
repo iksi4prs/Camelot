@@ -111,6 +111,7 @@
                   Items="{Binding FileSystemNodes}"
                   DragDrop.AllowDrop="True"
                   KeyDown="OnDataGridKeyDown"
+                  TextInput="OnDataGridTextInput"
                   DoubleTapped="OnDataGridDoubleTapped"
                   CellPointerPressed="OnDataGridCellPointerPressed"
                   SelectionChanged="OnDataGridSelectionChanged">

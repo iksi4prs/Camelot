@@ -196,6 +196,12 @@ public class FilesPanelView : UserControl
         //var c = KeyToChar(args.Key);
         ViewModel.OnDataGridKeyDownCallback(args.Key);
     }
+    private void OnDataGridTextInput(object sender, TextInputEventArgs args)
+    {
+
+        int dbg = 7;
+        dbg = 3;
+    }
     /* WIP444 - cleanthis
     private void FilterOnKeyDown(KeyEventArgs args)
     {
