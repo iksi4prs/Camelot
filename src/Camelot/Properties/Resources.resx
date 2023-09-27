@@ -552,4 +552,13 @@
   <data name="SupportedOnWindowsOnly" xml:space="preserve">
     <value>* Supported on Windows only</value>
   </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Keyboard</value>
+  </data>
+  <data name="QuickSearch" xml:space="preserve">
+    <value>Quick Search</value>
+  </data>
+    <data name="QuickSearchModeWithColon" xml:space="preserve">
+    <value>Quick search mode:</value>
+  </data>
 </root>

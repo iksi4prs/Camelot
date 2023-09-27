@@ -160,10 +160,14 @@ public static class ViewModelsBootstrapper
         services.Register(() => new SettingsDialogViewModel(
             resolver.GetRequiredService<GeneralSettingsViewModel>(),
             resolver.GetRequiredService<TerminalSettingsViewModel>(),
-            resolver.GetRequiredService<IconsSettingsViewModel>()
+            resolver.GetRequiredService<IconsSettingsViewModel>(),
+            resolver.GetRequiredService<KeyboardSettingsViewModel>()
         ));
         services.Register(() => new IconsSettingsViewModel(
             resolver.GetRequiredService<IIconsSettingsService>()
+        ));
+        services.Register(() => new KeyboardSettingsViewModel(
+            resolver.GetRequiredService<IQuickSearchService>()
         ));
         services.RegisterLazySingleton(() => new FilePropertiesBehavior(
             resolver.GetRequiredService<IDialogService>()
