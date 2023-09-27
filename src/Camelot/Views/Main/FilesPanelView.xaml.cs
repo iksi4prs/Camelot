@@ -190,17 +190,11 @@ public class FilesPanelView : UserControl
             return;
         }
 
-        //WIP444 - cleanthis
-        //if (_enableFilterAsYouType)
-        //    FilterOnKeyDown(args);
-        //var c = KeyToChar(args.Key);
         ViewModel.OnDataGridKeyDownCallback(args.Key);
     }
     private void OnDataGridTextInput(object sender, TextInputEventArgs args)
     {
-
-        int dbg = 7;
-        dbg = 3;
+        ViewModel.OnDataGridTextInputCallback(args.Text);
     }
 
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)

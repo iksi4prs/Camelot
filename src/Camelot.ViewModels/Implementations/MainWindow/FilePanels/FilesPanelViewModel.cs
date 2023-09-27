@@ -473,11 +473,11 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
     {
         var nodes = FileSystemNodes.ToList();
 
-        // current
+        // get current
         int selected = GetSelectedIndex();
         var oldSelected = selected >= 0 ? nodes[selected] : null;
-        
-        // next
+
+        // select next
         string newSelected = null;
         for (int i = selected+1; i<nodes.Count-1; i++)
         {
@@ -502,11 +502,11 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
     {
         var nodes = FileSystemNodes.ToList();
 
-        // current
+        // get current
         int selected = GetSelectedIndex();
         var oldSelected = selected >= 0 ? nodes[selected] : null;
 
-        // previous
+        // select previous
         string newSelected = null;
         for (int i = selected - 1; i > 1; i--)
         {
@@ -527,55 +527,58 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         }
     }
 
-    private char KeyToChar2(Key key)
-    {
-        // requires win api ??
-        //https://stackoverflow.com/questions/318777/c-sharp-how-to-translate-virtual-keycode-to-char
-        char c = '\0';
-        if ((key >= Key.A) && (key <= Key.Z))
-        {
-            c = (char)((int)'a' + (int)(key - Key.A));
-        }
-
-        else if ((key >= Key.D0) && (key <= Key.D9))
-        {
-            c = (char)((int)'0' + (int)(key - Key.D0));
-        }
-
-        return c;
-    }
     public void OnDataGridKeyDownCallback(Key key)
     {
         if (_quickSearchService.Enabled())
         {
-            //var key = (AbstractKey)args.Key;
-            //var modifiers = (AbstractKeyModifiers)args.KeyModifiers;
-            bool handled;
-            //_quickSearchService.OnKeyDown(key, modifiers, out handled);
-            // WIP777 = maybe add another arg ??
-            var files = FileSystemNodes
-                .Select(x => new QuickSearchFileModel() { Name = x.Name, Tag = x })
-                .ToList();
-
             if (key == Key.Escape)
             {
-                _quickSearchService.OnEscapeKeyDown(files, out handled);
-            }
-            else
-            {
-                var c = KeyToChar2(key);
-                _quickSearchService.OnCharDown(c, files, out handled);
-            }
-
-            if (handled)
-            {
-                foreach (var file in files)
-                {
-                    var node = (IFileSystemNodeViewModel)file.Tag;
-                    node.IsFilteredOut = !file.Found;
-                }
-                GoToNextRow();
+                var files = CreateQuickSearchFiles();
+                _quickSearchService.OnEscapeKeyDown(files, out bool handled);
+                if (handled)
+                    UpdateFilterAfterQuickSearch(files);
             }
         }
+    }
+
+    // We use specific handler for TextInput, and not reuse KeyDown,
+    // since translation from Key to Char is language/keyboard dependent.
+    public void OnDataGridTextInputCallback(string text)
+    {
+        if (_quickSearchService.Enabled())
+        {
+            if (string.IsNullOrEmpty(text) || text.Length != 1)
+                throw new ArgumentOutOfRangeException(nameof(text));
+
+            char c = text[0];
+            var files = CreateQuickSearchFiles();
+            _quickSearchService.OnCharDown(c, files, out bool handled);
+            if (handled)
+                UpdateFilterAfterQuickSearch(files);
+        }
+    }
+
+    private void UpdateFilterAfterQuickSearch(List<QuickSearchFileModel> files)
+    {
+        if (!_quickSearchService.Enabled())
+            throw new InvalidOperationException();
+
+        foreach (var file in files)
+        {
+            var node = (IFileSystemNodeViewModel)file.Tag;
+            node.IsFilteredOut = !file.Found;
+        }
+        GoToNextRow();
+    }
+
+    private List<QuickSearchFileModel> CreateQuickSearchFiles()
+    {
+        if (!_quickSearchService.Enabled())
+            throw new InvalidOperationException();
+
+        var result = FileSystemNodes
+            .Select(x => new QuickSearchFileModel() { Name = x.Name, Tag = x })
+            .ToList();
+        return result;
     }
 }
