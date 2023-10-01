@@ -540,8 +540,8 @@
   <data name="GoToParentDirectory" xml:space="preserve">
     <value>Go to parent directory</value>
   </data>
-  <data name="IconsWithColon" xml:space="preserve">
-    <value>Icons:</value>
+  <data name="Icons" xml:space="preserve">
+    <value>Icons</value>
   </data>
   <data name="FilesIconsWithColon" xml:space="preserve">
     <value>Files icons:</value>
