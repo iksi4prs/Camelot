@@ -52,7 +52,8 @@ public class App : Application
                 Styles.Add(new DarkTheme());
                 break;
             case Theme.Light:
-                Styles.Add(new LightTheme());
+                //Styles.Add(new LightTheme());
+                Styles.Add(new XLightTheme());
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(selectedTheme), selectedTheme, null);
