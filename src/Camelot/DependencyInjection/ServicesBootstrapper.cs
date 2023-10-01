@@ -372,7 +372,7 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IEnvironmentDriveService>(),
             resolver.GetRequiredService<IProcessService>()
         ));
-        services.RegisterLazySingleton<IShellIconsService>(() => new WindowsSystemIconsService());
+        services.RegisterLazySingleton<IShellIconsService>(() => new WindowsShellIconsService());
         services.RegisterLazySingleton<IShellLinksService>(() => new WindowsShellLinksService());
 
         services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(

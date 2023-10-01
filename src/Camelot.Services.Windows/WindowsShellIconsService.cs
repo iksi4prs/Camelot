@@ -15,7 +15,7 @@ namespace Camelot.Services.Windows;
 
 
 [SupportedOSPlatform("windows")]
-public class WindowsSystemIconsService : IShellIconsService
+public class WindowsShellIconsService : IShellIconsService
 {
     public ImageModel GetIconForExtension(string extension)
     {
