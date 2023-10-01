@@ -79,6 +79,13 @@ public class FilesPanelView : UserControl
         {
             FilesDataGrid.SelectedItems.Add(item);
         }
+
+        // In case event was triggerd by keyboard (up/down arrows, quick-search, etc),
+        // Need to make sure item is viewable
+        if (FilesDataGrid.SelectedItems.Count == 1)
+        {
+            FilesDataGrid.ScrollIntoView(item, null);
+        }
     }
 
     private void ViewModelOnSelectionRemoved(object sender, SelectionRemovedEventArgs e)
