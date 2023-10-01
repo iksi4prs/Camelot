@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
-using Camelot.Services.Windows.SystemIcons;
+using Camelot.Services.Windows.ShellIcons;
 using Camelot.Images;
 
 using SystemBitmap = System.Drawing.Bitmap;

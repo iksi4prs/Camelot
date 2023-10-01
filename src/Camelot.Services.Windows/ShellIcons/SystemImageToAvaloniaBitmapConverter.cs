@@ -8,7 +8,7 @@ using PixelSize = Avalonia.PixelSize;
 using Vector = Avalonia.Vector;
 
 
-namespace Camelot.Services.Windows.SystemIcons;
+namespace Camelot.Services.Windows.ShellIcons;
 
 [SupportedOSPlatform("windows")]
 

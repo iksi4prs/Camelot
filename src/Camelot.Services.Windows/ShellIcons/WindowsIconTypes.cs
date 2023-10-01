@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Camelot.Services.Windows.SystemIcons
+namespace Camelot.Services.Windows.ShellIcons
 {
     public class WindowsIconTypes
     {

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
-using Camelot.Services.Windows.SystemIcons;
+using Camelot.Services.Windows.ShellIcons;
 
 namespace Camelot.Services.Windows;
 

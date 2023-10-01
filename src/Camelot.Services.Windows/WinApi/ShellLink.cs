@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
 
-namespace Camelot.Services.Windows.SystemIcons;
+namespace Camelot.Services.Windows.ShellIcons;
 
 [SupportedOSPlatform("windows")]
 
