@@ -13,13 +13,13 @@ namespace Camelot.Services.AllPlatforms;
 public class ShellIconsCacheService : IShellIconsCacheService
 {
     private readonly IShellLinksService _shellLinksService;
-    private readonly ISystemIconsService _systemIconsService;
+    private readonly IShellIconsService _shellIconsService;
     private readonly Dictionary<string, Bitmap> _cache = new();
     private readonly Platform _platform;
     public ShellIconsCacheService(
         IPlatformService platformService,
         IShellLinksService shellLinksService,
-        ISystemIconsService systemIconsService)
+        IShellIconsService shellIconsService)
     {
         var platform = platformService.GetPlatform();
         if (platform != Platform.Windows)
@@ -27,7 +27,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
 
         _platform = platform;
         _shellLinksService = shellLinksService;
-        _systemIconsService = systemIconsService;
+        _shellIconsService = shellIconsService;
     }
 
     // The c'tor is for Mac/Linux, where cache is not implemented yet.
@@ -73,8 +73,8 @@ public class ShellIconsCacheService : IShellIconsCacheService
             {
                 if (Directory.Exists(resolved))
                 {
-                    // WIP333 - resolved is folder.
-                    // need to add support for folders...
+                    // resolved is folder.
+                    // TODO: need to add support for icons for folders. (iksi4prs: planned in future PR).
                     result = null;
                 }
                 else
@@ -119,10 +119,10 @@ public class ShellIconsCacheService : IShellIconsCacheService
         // based on result returned from shell.
         // eg, on Windows all .txt files will have same shell icon,
         // but each .exe will have its own icon (if was embdded in resource of .exe)
-        var iconType = _systemIconsService.GetIconType(path);
+        var iconType = _shellIconsService.GetIconType(path);
         switch (iconType)
         {
-            case ISystemIconsService.SystemIconType.Extension:
+            case IShellIconsService.ShellIconType.Extension:
                 {
                     var ext = Path.GetExtension(path);
                     if (string.IsNullOrEmpty(ext))
@@ -138,7 +138,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
                         }
                         else
                         {
-                            var image = _systemIconsService.GetIconForExtension(ext);
+                            var image = _shellIconsService.GetIconForExtension(ext);
                             if (image != null)
                             {
                                 var concreteImage = image as ConcreteImage;
@@ -151,7 +151,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
                     }
                 }
                 break;
-            case ISystemIconsService.SystemIconType.FullPath:
+            case IShellIconsService.ShellIconType.FullPath:
                 {
                     if (_cache.ContainsKey(path))
                     {
@@ -159,7 +159,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
                     }
                     else
                     {
-                        var image = _systemIconsService.GetIconForPath(path);
+                        var image = _shellIconsService.GetIconForPath(path);
                         if (image != null)
                         {
                             var concreteImage = image as ConcreteImage;

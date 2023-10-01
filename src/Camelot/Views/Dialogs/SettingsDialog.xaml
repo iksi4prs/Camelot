@@ -82,7 +82,7 @@
                                     </Image.Source>
                                 </Image>
 
-                                <TextBlock Classes="settingsTabTextBlock" Text="{x:Static p:Resources.IconsWithColon}" />
+                                <TextBlock Classes="settingsTabTextBlock" Text="{x:Static p:Resources.Icons}" />
                             </StackPanel>
                         </Border>
                     </TabItem.Header>

@@ -2,7 +2,7 @@
 using System.Runtime.Versioning;
 using Camelot.Services.Windows.WinApi;
 
-namespace Camelot.Services.Windows.SystemIcons;
+namespace Camelot.Services.Windows.ShellIcons;
 
 [SupportedOSPlatform("windows")]
 public class ShellIcon

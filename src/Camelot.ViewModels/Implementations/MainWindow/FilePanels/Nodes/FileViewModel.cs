@@ -23,8 +23,8 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
     private bool? _useShellIcon = null;
 
     // Helper to load icon only on demand.
-    // Can't use icon member itself, since null is valid value,
-    // in case file has no shell icon.
+    // (Reason: Can't use icon member itself, since null is valid value,
+    // in case file has no shell icon)
     private bool _loadedShellIcon = false;
     public string Extension { get; set; }
 
@@ -79,8 +79,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
 
     private IconsType GetUserSelectedType()
     {
-        // WIP333 TODO - later - how to reflect without restart ?
-        // check only once
         var model = _iconsSettingsService.GetIconsSettings();
         return  model.SelectedIconsType;
     }
@@ -119,12 +117,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         }
     }
 
-
-    // WIP333 maybe this, and the opposye should be in new file ?
-    // ImageModelConverter.cs ?
-    // BETTER put under new folder, not "Converters" so not to confuse...
-    // can put under folder Converters, but add not this is not IValueConverter
-    // which used in xaml
     private static Bitmap FromImageModel(ImageModel imageModel)
     {
         if (imageModel == null)

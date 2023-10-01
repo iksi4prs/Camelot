@@ -3,7 +3,7 @@ using Camelot.Services.Abstractions.Models;
 
 namespace Camelot.Services.Abstractions;
 
-public interface ISystemIconsService
+public interface IShellIconsService
 {
     // Motivation for 3 methods:
     // There are 3 methods and not only simple one "getter",
@@ -14,12 +14,12 @@ public interface ISystemIconsService
     // Using information provided by methods below,
     // the Avalonia cache "knows" which key to use for cache.
 
-    enum SystemIconType
+    enum ShellIconType
     {
         Extension,
         FullPath,
     }
-    SystemIconType GetIconType(string filename);
+    ShellIconType GetIconType(string filename);
     ImageModel GetIconForPath(string path);
     ImageModel GetIconForExtension(string extension);
 }

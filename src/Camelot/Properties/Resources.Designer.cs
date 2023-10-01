@@ -891,9 +891,9 @@ namespace Camelot.Properties {
             }
         }
         
-	public static string IconsWithColon {
+	public static string Icons{
             get {
-                return ResourceManager.GetString("IconsWithColon", resourceCulture);
+                return ResourceManager.GetString("Icons", resourceCulture);
             }
         }
 	

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
-using Camelot.Services.Windows.SystemIcons;
+using Camelot.Services.Windows.ShellIcons;
 using Camelot.Images;
 
 using SystemBitmap = System.Drawing.Bitmap;
@@ -15,7 +15,7 @@ namespace Camelot.Services.Windows;
 
 
 [SupportedOSPlatform("windows")]
-public class WindowsSystemIconsService : ISystemIconsService
+public class WindowsShellIconsService : IShellIconsService
 {
     public ImageModel GetIconForExtension(string extension)
     {
@@ -46,7 +46,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
 
-        if (GetIconType(path) != ISystemIconsService.SystemIconType.FullPath)
+        if (GetIconType(path) != IShellIconsService.ShellIconType.FullPath)
             throw new ArgumentOutOfRangeException(nameof(path));
 
         var ext = Path.GetExtension(path).ToLower();
@@ -67,9 +67,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (needsExtract)
         {
             var icon = IconExtractor.ExtractIcon(path);
-            // WIP333
-            // looks like bit lossy ??
-            // try other options ?
+            // TODO: check if lossy and/or try other options, see url below. (iksi4prs).
             // https://learn.microsoft.com/en-us/dotnet/api/system.drawing.imageconverter.canconvertfrom?view=dotnet-plat-ext-7.0
             SystemBitmap systemBitmap = icon.ToBitmap();
             AvaloniaBitmap avaloniaBitmap = SystemImageToAvaloniaBitmapConverter.Convert(systemBitmap);
@@ -92,7 +90,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         return result;
     }
 
-    public ISystemIconsService.SystemIconType GetIconType(string filename)
+    public IShellIconsService.ShellIconType GetIconType(string filename)
     {
         if (string.IsNullOrEmpty(filename))
             throw new ArgumentNullException(nameof(filename));
@@ -103,8 +101,8 @@ public class WindowsSystemIconsService : ISystemIconsService
         // and not just the extension itself.
         var extensionForFullPaths = new string[] { ".exe", ".cpl", ".appref-ms", ".msc" };
         if (extensionForFullPaths.Contains(ext))
-            return ISystemIconsService.SystemIconType.FullPath;
+            return IShellIconsService.ShellIconType.FullPath;
         
-        return ISystemIconsService.SystemIconType.Extension;
+        return IShellIconsService.ShellIconType.Extension;
     }
 }

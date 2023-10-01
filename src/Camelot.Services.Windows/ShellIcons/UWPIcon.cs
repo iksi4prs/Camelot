@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 //using Rect = System.Windows.Rect;
 //using LoggerLib;
 
-namespace Camelot.Services.Windows.SystemIcons;
+namespace Camelot.Services.Windows.ShellIcons;
 
 [SupportedOSPlatform("windows")]
 public class UWPIcon
