@@ -122,7 +122,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
         var iconType = _systemIconsService.GetIconType(path);
         switch (iconType)
         {
-            case IShellIconsService.SystemIconType.Extension:
+            case IShellIconsService.ShellIconType.Extension:
                 {
                     var ext = Path.GetExtension(path);
                     if (string.IsNullOrEmpty(ext))
@@ -151,7 +151,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
                     }
                 }
                 break;
-            case IShellIconsService.SystemIconType.FullPath:
+            case IShellIconsService.ShellIconType.FullPath:
                 {
                     if (_cache.ContainsKey(path))
                     {
