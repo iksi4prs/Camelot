@@ -13,13 +13,13 @@ namespace Camelot.Services.AllPlatforms;
 public class ShellIconsCacheService : IShellIconsCacheService
 {
     private readonly IShellLinksService _shellLinksService;
-    private readonly ISystemIconsService _systemIconsService;
+    private readonly IShellIconsService _systemIconsService;
     private readonly Dictionary<string, Bitmap> _cache = new();
     private readonly Platform _platform;
     public ShellIconsCacheService(
         IPlatformService platformService,
         IShellLinksService shellLinksService,
-        ISystemIconsService systemIconsService)
+        IShellIconsService systemIconsService)
     {
         var platform = platformService.GetPlatform();
         if (platform != Platform.Windows)
@@ -122,7 +122,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
         var iconType = _systemIconsService.GetIconType(path);
         switch (iconType)
         {
-            case ISystemIconsService.SystemIconType.Extension:
+            case IShellIconsService.SystemIconType.Extension:
                 {
                     var ext = Path.GetExtension(path);
                     if (string.IsNullOrEmpty(ext))
@@ -151,7 +151,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
                     }
                 }
                 break;
-            case ISystemIconsService.SystemIconType.FullPath:
+            case IShellIconsService.SystemIconType.FullPath:
                 {
                     if (_cache.ContainsKey(path))
                     {

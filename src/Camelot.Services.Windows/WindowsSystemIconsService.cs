@@ -15,7 +15,7 @@ namespace Camelot.Services.Windows;
 
 
 [SupportedOSPlatform("windows")]
-public class WindowsSystemIconsService : ISystemIconsService
+public class WindowsSystemIconsService : IShellIconsService
 {
     public ImageModel GetIconForExtension(string extension)
     {
@@ -46,7 +46,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
 
-        if (GetIconType(path) != ISystemIconsService.SystemIconType.FullPath)
+        if (GetIconType(path) != IShellIconsService.SystemIconType.FullPath)
             throw new ArgumentOutOfRangeException(nameof(path));
 
         var ext = Path.GetExtension(path).ToLower();
@@ -92,7 +92,7 @@ public class WindowsSystemIconsService : ISystemIconsService
         return result;
     }
 
-    public ISystemIconsService.SystemIconType GetIconType(string filename)
+    public IShellIconsService.SystemIconType GetIconType(string filename)
     {
         if (string.IsNullOrEmpty(filename))
             throw new ArgumentNullException(nameof(filename));
@@ -103,8 +103,8 @@ public class WindowsSystemIconsService : ISystemIconsService
         // and not just the extension itself.
         var extensionForFullPaths = new string[] { ".exe", ".cpl", ".appref-ms", ".msc" };
         if (extensionForFullPaths.Contains(ext))
-            return ISystemIconsService.SystemIconType.FullPath;
+            return IShellIconsService.SystemIconType.FullPath;
         
-        return ISystemIconsService.SystemIconType.Extension;
+        return IShellIconsService.SystemIconType.Extension;
     }
 }

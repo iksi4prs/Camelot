@@ -3,7 +3,7 @@ using Camelot.Services.Abstractions.Models;
 
 namespace Camelot.Services.Abstractions;
 
-public interface ISystemIconsService
+public interface IShellIconsService
 {
     // Motivation for 3 methods:
     // There are 3 methods and not only simple one "getter",

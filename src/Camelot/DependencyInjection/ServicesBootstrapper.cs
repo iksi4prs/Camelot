@@ -372,13 +372,13 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IEnvironmentDriveService>(),
             resolver.GetRequiredService<IProcessService>()
         ));
-        services.RegisterLazySingleton<ISystemIconsService>(() => new WindowsSystemIconsService());
+        services.RegisterLazySingleton<IShellIconsService>(() => new WindowsSystemIconsService());
         services.RegisterLazySingleton<IShellLinksService>(() => new WindowsShellLinksService());
 
         services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
             resolver.GetRequiredService<IPlatformService>(),
             resolver.GetRequiredService<IShellLinksService>(),
-            resolver.GetRequiredService<ISystemIconsService>()
+            resolver.GetRequiredService<IShellIconsService>()
         ));
 #pragma warning restore CA1416
     }
