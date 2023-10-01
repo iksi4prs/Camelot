@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Camelot.DataAccess.UnitOfWork;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
@@ -13,8 +14,9 @@ public class QuickSearchService : IQuickSearchService
     private readonly QuickSearchModel _default;
     private readonly IUnitOfWorkFactory _unitOfWorkFactory;
     private QuickSearchModel _cachedSettingsValue = null;
-    private string _searchString = string.Empty;
-
+    private string _searchWord = string.Empty;
+    private char _searchLetter;
+    private int _selectedIndex = -1;
     public QuickSearchService(IUnitOfWorkFactory unitOfWorkFactory)
     {
         _unitOfWorkFactory = unitOfWorkFactory;
@@ -57,81 +59,104 @@ public class QuickSearchService : IQuickSearchService
             return;
         }
 
+        if (files == null)
+            throw new ArgumentNullException(nameof(files));
+
+        
         c = Char.ToLower(c);
         switch(_cachedSettingsValue.SelectedMode)
         {
             case QuickSearchMode.Letter:
                 {
-                    if (_searchString.Length > 0)
+                    if (_searchLetter != c)
                     {
-                        if (_searchString[0] != c)
-                        {
-                            _searchString = string.Empty;
-                        }
+                        _selectedIndex = -1;
                     }
-                    // Keep repeats, to know which one to select
-                    _searchString += c;
+                    _searchLetter = c;
                     break;
                 }
             case QuickSearchMode.Word:
                 {
-                    _searchString += c;
+                    _searchWord += c;
                     break;
                 }
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        SearchFilesAndSetFound(files);
+        SetSelectedItem(files);
+        handled = true;
+    }
 
+    /// <summary>
+    /// Set value of <see cref="QuickSearchFileModel.Found"/> 
+    /// which indicates whether file was found in quick search,
+    /// namely start with the typed letter/word
+    /// </summary>
+    private void SearchFilesAndSetFound(List<QuickSearchFileModel> files)
+    {
+        if (files == null)
+            throw new ArgumentNullException(nameof(files));
 
-        // Step #1
-        // 2 values computed in loop:
-        // Value #1 - set 'Found' - whether file was found in quick search, namely start with the typed letter/word
-        // Value #2 - reset all values of 'Selected' to false (value set is later)
-        int found = 0;
-        for (int i=0; i<files.Count; i++)
+        for (int i = 0; i < files.Count; i++)
         {
             var file = files[i];
-            file.Selected = false;
             if (IncludeInSearchResults(file))
             {
                 file.Found = true;
-                found++;
                 // WIP777 - move this comment to somewhere else ??
                 // how to disable row ??
                 // not possible ??
                 // https://github.com/AvaloniaUI/Avalonia/issues/7766
                 //var x = FilesDataGrid.
-
             }
             else
             {
                 file.Found = false;
             }
         }
+    }
 
-        // Step #2
-        // Set 'Selected' - which file should be selected by ui.
-        // Reminders:
-        // a. Also for letter, we keep repeats in the string.
-        // b. We use modolu, so if previously selected item was last,
-        //    we move selection to first item, so will be more intuitive to user.
-        int selectedItemOrder = _searchString.Length % found + 1;
-        int counter = 0;
-        foreach(var file in files)
+    /// <summary>
+    /// Set value of <see cref="QuickSearchFileModel.Selected"/> 
+    /// which indicates to UI which item should be selected.
+    /// </summary>
+
+    private void SetSelectedItem(List<QuickSearchFileModel> files)
+    {
+        if (files == null)
+            throw new ArgumentNullException(nameof(files));
+        if (files.Where(x => x.Selected).Any())
+            throw new ArgumentOutOfRangeException(nameof(files));
+
+        bool selected = false;
+        for (int i = _selectedIndex + 1; i < files.Count; i++)
         {
+            var file = files[i];
             if (file.Found)
             {
-                counter++;
-                if (counter == selectedItemOrder)
+                _selectedIndex = i;
+                file.Selected = true;
+                selected = true;
+                break;
+            }
+        }
+        if (!selected)
+        {
+            // "cycle from last to first"
+            // reset, so and start again from first
+            // Done in 2 'half' loops, in sake of effiency.
+            for (int i = 0; i < _selectedIndex; i++)
+            {
+                var file = files[i];
+                if (file.Found)
                 {
+                    _selectedIndex = i;
                     file.Selected = true;
                     break;
                 }
             }
         }
-        
-
-        handled = true;
     }
 
     private bool IncludeInSearchResults(QuickSearchFileModel file)
@@ -139,9 +164,9 @@ public class QuickSearchService : IQuickSearchService
         switch (_cachedSettingsValue.SelectedMode)
         {
             case QuickSearchMode.Letter:
-               return _searchString[0] == Char.ToLower(file.Name[0]);
+               return _searchLetter == Char.ToLower(file.Name[0]);
             case QuickSearchMode.Word:
-               return _searchString.StartsWith(file.Name, StringComparison.OrdinalIgnoreCase);
+               return _searchWord.StartsWith(file.Name, StringComparison.OrdinalIgnoreCase);
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -156,7 +181,7 @@ public class QuickSearchService : IQuickSearchService
             return;
         }
 
-        _searchString = string.Empty;
+        _searchWord = string.Empty;
         // Mark all as found, to clear filter
         foreach (var file in files)
         {
