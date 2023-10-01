@@ -74,7 +74,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
                 if (Directory.Exists(resolved))
                 {
                     // resolved is folder.
-                    // TODO: need to add support for icons for folders. (iksi4prs: in future PR).
+                    // TODO: need to add support for icons for folders. (iksi4prs: planned in future PR).
                     result = null;
                 }
                 else
