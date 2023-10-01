@@ -67,9 +67,7 @@ public class WindowsShellIconsService : IShellIconsService
         if (needsExtract)
         {
             var icon = IconExtractor.ExtractIcon(path);
-            // WIP333
-            // looks like bit lossy ??
-            // try other options ?
+            // TODO: check if lossy and/or try other options, see url below. (iksi4prs).
             // https://learn.microsoft.com/en-us/dotnet/api/system.drawing.imageconverter.canconvertfrom?view=dotnet-plat-ext-7.0
             SystemBitmap systemBitmap = icon.ToBitmap();
             AvaloniaBitmap avaloniaBitmap = SystemImageToAvaloniaBitmapConverter.Convert(systemBitmap);
