@@ -1,11 +1,10 @@
-﻿using System;
-
+﻿
 namespace Camelot.Services.Abstractions.Models;
 
-// WIP333
-// add some explenatin why needed and why avstarct:
-// System.Drawing is only for Windows
-// Avalonia is not refebcrd in abatrsactions
+// Motivation for abstract class:
+// System.Drawing is only for Windows,
+// and Avalonia is not referenced in Camelot.Services.Abstractions,
+// hence we need an image model which can be used in Camelot.Services.Abstractions.
 public abstract class ImageModel
 {
 
