@@ -79,8 +79,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
 
     private IconsType GetUserSelectedType()
     {
-        // WIP333 TODO - later - how to reflect without restart ?
-        // check only once
         var model = _iconsSettingsService.GetIconsSettings();
         return  model.SelectedIconsType;
     }
