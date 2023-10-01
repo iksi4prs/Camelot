@@ -469,17 +469,26 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         }
         return -1;
     }
+
+    private IFileSystemNodeViewModel GetSelected()
+    {
+        int selectedIndex = GetSelectedIndex();
+        if (selectedIndex < 0)
+            return null;
+
+        var nodes = FileSystemNodes.ToList();
+        var selected = nodes[selectedIndex];
+        return selected;
+    }
     private void GoToNextRow()
     {
-        var nodes = FileSystemNodes.ToList();
-
         // get current
-        int selected = GetSelectedIndex();
-        var oldSelected = selected >= 0 ? nodes[selected] : null;
+        int selectedIndex = GetSelectedIndex();
 
         // select next
+        var nodes = FileSystemNodes.ToList();
         string newSelected = null;
-        for (int i = selected+1; i<nodes.Count-1; i++)
+        for (int i = selectedIndex+1; i<nodes.Count-1; i++)
         {
             var curr = nodes[i];
             if (curr.IsFilteredOut)
@@ -488,27 +497,20 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
             break;
         }
 
-        if (newSelected != null)
-        {
-            if (oldSelected != null)
-            {
-                UnselectNode(oldSelected.FullPath);
-            }
-            SelectNode(newSelected);
-        }
+        // update ui
+        var oldSelected = GetSelected();
+        SelectNodeEx(newSelected, oldSelected);
     }
 
     private void GoToPreviousRow()
     {
-        var nodes = FileSystemNodes.ToList();
-
         // get current
-        int selected = GetSelectedIndex();
-        var oldSelected = selected >= 0 ? nodes[selected] : null;
+        int selectedIndex = GetSelectedIndex();
 
         // select previous
         string newSelected = null;
-        for (int i = selected - 1; i > 1; i--)
+        var nodes = FileSystemNodes.ToList();
+        for (int i = selectedIndex - 1; i > 1; i--)
         {
             var curr = nodes[i];
             if (curr.IsFilteredOut)
@@ -517,6 +519,13 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
             break;
         }
 
+        // update ui
+        var oldSelected = GetSelected();
+        SelectNodeEx(newSelected, oldSelected);
+    }
+
+    private void SelectNodeEx(string newSelected, IFileSystemNodeViewModel oldSelected)
+    {
         if (newSelected != null)
         {
             if (oldSelected != null)
@@ -563,12 +572,17 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         if (!_quickSearchService.Enabled())
             throw new InvalidOperationException();
 
+        string newSelected = null;
         foreach (var file in files)
         {
             var node = (IFileSystemNodeViewModel)file.Tag;
             node.IsFilteredOut = !file.Found;
+            if (file.Selected)
+                newSelected = node.FullPath;
         }
-        GoToNextRow();
+
+        var oldSelected = GetSelected();
+        SelectNodeEx(newSelected, oldSelected);
     }
 
     private List<QuickSearchFileModel> CreateQuickSearchFiles()
