@@ -19,7 +19,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
     public ShellIconsCacheService(
         IPlatformService platformService,
         IShellLinksService shellLinksService,
-        IShellIconsService systemIconsService)
+        IShellIconsService shellIconsService)
     {
         var platform = platformService.GetPlatform();
         if (platform != Platform.Windows)
@@ -27,7 +27,7 @@ public class ShellIconsCacheService : IShellIconsCacheService
 
         _platform = platform;
         _shellLinksService = shellLinksService;
-        _shellIconsService = systemIconsService;
+        _shellIconsService = shellIconsService;
     }
 
     // The c'tor is for Mac/Linux, where cache is not implemented yet.
