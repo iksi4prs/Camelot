@@ -15,7 +15,7 @@ public class QuickSearchService : IQuickSearchService
     private readonly IUnitOfWorkFactory _unitOfWorkFactory;
     private QuickSearchModel _cachedSettingsValue = null;
     private string _searchWord = string.Empty;
-    private char _searchLetter;
+    private char _searchLetter = Char.MinValue;
     private int _selectedIndex = -1;
     public QuickSearchService(IUnitOfWorkFactory unitOfWorkFactory)
     {
@@ -61,7 +61,6 @@ public class QuickSearchService : IQuickSearchService
 
         if (files == null)
             throw new ArgumentNullException(nameof(files));
-
         
         c = Char.ToLower(c);
         switch(_cachedSettingsValue.SelectedMode)
@@ -181,22 +180,35 @@ public class QuickSearchService : IQuickSearchService
             return;
         }
 
+        if (files == null)
+            throw new ArgumentNullException(nameof(files));
+
+        ClearSearch(files);
+
+        handled = true;
+    }
+
+    private void ClearSearch(List<QuickSearchFileModel> files)
+    {
+        if (files == null)
+            throw new ArgumentNullException(nameof(files));
+
         _searchWord = string.Empty;
+        _searchLetter = Char.MinValue;
+        _selectedIndex = -1;
+
         // Mark all as found, to clear filter
         foreach (var file in files)
         {
             file.Found = true;
             file.Selected = false;
         }
-        handled = true;
     }
 
     public void SaveQuickSearchSettings(QuickSearchModel quickSearchModel)
     {
-        if (quickSearchModel is null)
-        {
+        if (quickSearchModel == null)
             throw new ArgumentNullException(nameof(quickSearchModel));
-        }
 
         using var uow = _unitOfWorkFactory.Create();
         var repository = uow.GetRepository<QuickSearchModel>();
