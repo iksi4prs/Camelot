@@ -932,5 +932,10 @@ namespace Camelot.Properties {
                 return ResourceManager.GetString("QuickSearchModeWithColon", resourceCulture);
             }
         }
+	public static string QuickSearchHelp {
+            get {
+                return ResourceManager.GetString("QuickSearchHelp", resourceCulture);
+            }
+        }
     }
 }
