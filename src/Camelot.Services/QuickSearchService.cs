@@ -137,8 +137,11 @@ public class QuickSearchService : IQuickSearchService
             throw new ArgumentOutOfRangeException(nameof(files));
 
         _selectedIndex = ComputeNewSelectedIndex(files, _selectedIndex, isShiftDown);
-        var file = files[_selectedIndex];
-        file.Selected = true;
+        if (_selectedIndex >= 0)
+        {
+            var file = files[_selectedIndex];
+            file.Selected = true;
+        }
     }
 
     private void ResetSelectedItem(List<QuickSearchFileModel> files)
