@@ -220,6 +220,8 @@ public class QuickSearchService : IQuickSearchService
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+    // WIP555 => remove ? was replaced with direct call to ClearSearch
     public void OnEscapeKeyDown(
         List<QuickSearchFileModel> files,
         out bool handled)
@@ -233,12 +235,25 @@ public class QuickSearchService : IQuickSearchService
         if (files == null)
             throw new ArgumentNullException(nameof(files));
 
-        ClearSearch(files);
+        ClearSearchImpl_OLD(files);
 
         handled = true;
     }
 
-    private void ClearSearch(List<QuickSearchFileModel> files)
+    public void ClearSearch()
+    {
+        if (!Enabled())
+        {
+            return;
+        }
+
+        _searchWord = string.Empty;
+        _searchLetter = Char.MinValue;
+        _selectedIndex = -1;
+    }
+
+    // WIP555 => remove ?
+    private void ClearSearchImpl_OLD(List<QuickSearchFileModel> files)
     {
         if (files == null)
             throw new ArgumentNullException(nameof(files));

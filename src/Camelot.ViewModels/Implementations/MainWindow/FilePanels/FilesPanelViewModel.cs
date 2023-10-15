@@ -271,6 +271,8 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
         CurrentDirectoryChanged.Raise(this, EventArgs.Empty);
         this.RaisePropertyChanged(nameof(ParentDirectory));
+
+        _quickSearchService.ClearSearch();
     }
 
     private void UpdateNode(string nodePath) => RecreateNode(nodePath, nodePath);
@@ -542,10 +544,8 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         {
             if (key == Key.Escape)
             {
-                var files = CreateQuickSearchFiles();
-                _quickSearchService.OnEscapeKeyDown(files, out bool handled);
-                if (handled)
-                    UpdateFilterAfterQuickSearch(files);
+                _quickSearchService.ClearSearch();
+                FileSystemNodes.ForEach(x => x.IsFilteredOut = false);
             }
         }
     }
