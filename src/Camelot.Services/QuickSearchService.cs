@@ -83,8 +83,11 @@ public class QuickSearchService : IQuickSearchService
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        SearchFilesAndSetFound(files);
-        SetSelectedItem(files, isShiftDown);
+
+        ResetSelectedItem(files);
+        var countFound = SearchFilesAndSetFound(files);
+        if (countFound > 0)
+            SetSelectedItem(files, isShiftDown);
         handled = true;
     }
 
@@ -93,17 +96,19 @@ public class QuickSearchService : IQuickSearchService
     /// which indicates whether file was found in quick search,
     /// namely start with the typed letter/word
     /// </summary>
-    private void SearchFilesAndSetFound(List<QuickSearchFileModel> files)
+    private int SearchFilesAndSetFound(List<QuickSearchFileModel> files)
     {
         if (files == null)
             throw new ArgumentNullException(nameof(files));
 
+        int found = 0;
         for (int i = 0; i < files.Count; i++)
         {
             var file = files[i];
             if (IncludeInSearchResults(file))
             {
                 file.Found = true;
+                found++;
                 // WIP777 - move this comment to somewhere else ??
                 // how to disable row ??
                 // not possible ??
@@ -115,6 +120,7 @@ public class QuickSearchService : IQuickSearchService
                 file.Found = false;
             }
         }
+        return found;
     }
 
     /// <summary>
@@ -133,7 +139,14 @@ public class QuickSearchService : IQuickSearchService
         _selectedIndex = ComputeNewSelectedIndex(files, _selectedIndex, isShiftDown);
         var file = files[_selectedIndex];
         file.Selected = true;
-    
+    }
+
+    private void ResetSelectedItem(List<QuickSearchFileModel> files)
+    {
+        if (files == null)
+            throw new ArgumentNullException(nameof(files));
+        
+        files.ForEach(x => x.Selected = false);
     }
 
     static private int ComputeNewSelectedIndex(
@@ -144,13 +157,13 @@ public class QuickSearchService : IQuickSearchService
         int start, end, jump;
         if (!isShiftDown)
         {
-            start = selectedIndex + 1;
+            start = selectedIndex > -1 ? selectedIndex + 1 : 0;
             end = files.Count;
             jump = 1;
         }
         else
         {
-            start = selectedIndex - 1;
+            start = selectedIndex > -1 ? selectedIndex - 1 : 0;
             end = -1;
             jump = -1;
         }
@@ -171,13 +184,13 @@ public class QuickSearchService : IQuickSearchService
         if (!isShiftDown)
         {
             start = 0;
-            end = selectedIndex;
+            end = selectedIndex > -1 ? selectedIndex : 0;
             jump = 1;
         }
         else
         {
             start = files.Count - 1;
-            end = selectedIndex;
+            end = selectedIndex > -1 ? selectedIndex : 0;
             jump = -1;
         }
         for (int i = start; i != end; i = i + jump)
@@ -197,9 +210,9 @@ public class QuickSearchService : IQuickSearchService
         switch (_cachedSettingsValue.SelectedMode)
         {
             case QuickSearchMode.Letter:
-               return _searchLetter == Char.ToLower(file.Name[0]);
+                return char.ToLower(file.Name[0]) == _searchLetter;
             case QuickSearchMode.Word:
-               return _searchWord.StartsWith(file.Name, StringComparison.OrdinalIgnoreCase);
+                return file.Name.StartsWith(_searchWord, StringComparison.OrdinalIgnoreCase);
             default:
                 throw new ArgumentOutOfRangeException();
         }
