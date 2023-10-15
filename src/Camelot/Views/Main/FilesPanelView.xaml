@@ -20,7 +20,6 @@
 
     <UserControl.Resources>
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-        <converters:RowConverter x:Key="RowConverter" />
     </UserControl.Resources>
 
     <Grid Classes="defaultBackgroundColorGrid" RowDefinitions="Auto,Auto,*,Auto,Auto">
