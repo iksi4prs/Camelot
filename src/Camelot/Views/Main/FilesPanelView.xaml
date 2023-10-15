@@ -160,42 +160,14 @@
             </DataGrid.Resources>
 
             <DataGrid.Styles>
-                
                 <Style Selector="DataGridRow">
                     <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
                     <Setter Property="IsEnabled" Value="{Binding !IsFilteredOut}" />
                     <Setter Property="Focusable" Value="{Binding !IsFilteredOut}" />
-                    <!-- lower value => less visible -->
-                    <!-- Setter Property="Opacity" Value="0.5" / -->
-                    <!--  not working, but not really needed
-                    <Setter Property="OpacityMask" Value="Red" />
-                    -->
                 </Style>
-                <!-- looks like cannot set IsEnbaled per row ?? so not helpful -->
-                <!-- Style Selector="DataGridRow[IsEnabled=false]" -->
-                <!-- THIS IS WHAT I WANT:  Style Selector="nodes|FileViewModel[IsFilteredOut=true]">  -->
-
-                <!-- using 'Control.class222' instead of 'Grid.class222' doesnt work) -->
-
                 <!-- see binding above, of IsEnabled to IsFilteredOut -->
                 <Style Selector="DataGridRow[IsEnabled=false]">
-                    <!-- lower value => less visible -->
-                    <Setter Property="Opacity" Value="0.2"/>
-                    <!-- Setter Property="Background" Value="Yellow"/ -->
-                    <!--  not working, but not really needed
-                    <Setter Property="OpacityMask" Value="Red" />
-                    -->
-                </Style>
-                
-                <Style Selector="Grid.class222">
-                    <!-- lower value => less visible -->
-                    <Setter Property="Opacity" Value="0.2"/>
-                    <!-- Setter Property="Background" Value="Yellow"/ -->
-                    <!--  not working, but not really needed
-                    <Setter Property="OpacityMask" Value="Red" />
-                    -->
-                </Style>
-                <Style Selector="TextBox.class223">
+                    <!-- WIP555 cleanup -->
                     <!-- lower value => less visible -->
                     <Setter Property="Opacity" Value="0.2"/>
                     <!-- Setter Property="Background" Value="Yellow"/ -->
@@ -289,7 +261,7 @@
                             <ContentControl Content="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridCell}}">
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="{x:Type nodes:DirectoryViewModel}">
-                                        <Grid Classes.class222="{Binding IsFilteredOut}">
+                                        <Grid>
                                             <Grid IsVisible="{Binding !IsParentDirectory}">
                                                 <TextBlock Classes="filePanelTextBlock" Text="{Binding Name}" IsVisible="{Binding !IsEditing}"
                                                            Name="NameTextBlock" />
@@ -307,7 +279,7 @@
                                     </DataTemplate>
 
                                     <DataTemplate DataType="{x:Type nodes:FileViewModel}">
-                                        <Grid Classes.class222="{Binding IsFilteredOut}">
+                                        <Grid>
                                             <TextBlock Classes="filePanelTextBlock" Text="{Binding Name}" IsVisible="{Binding !IsEditing}"
                                                        Name="NameTextBlock" />
                                             <TextBox Classes="fileNameTextBox" Text="{Binding FullName}" IsVisible="{Binding IsEditing}"
@@ -340,16 +312,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridCell}}">
-
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="{x:Type nodes:DirectoryViewModel}">
-                                        <TextBlock Text=""
-                                             Classes.class223="{Binding IsFilteredOut}" />
+                                        <TextBlock Text="" />
                                     </DataTemplate>
 
                                     <DataTemplate DataType="{x:Type nodes:FileViewModel}">
                                         <TextBlock Classes="filePanelTextBlock"
-                                                   Classes.class223="{Binding IsFilteredOut}"
                                                    Text="{Binding Extension}"
                                                    IsVisible="{Binding !IsEditing}" />
                                     </DataTemplate>
@@ -378,13 +347,11 @@
                                 <ContentControl.DataTemplates>
                                     <DataTemplate DataType="{x:Type nodes:DirectoryViewModel}">
                                         <TextBlock Classes="filePanelTextBlock"
-                                                   Classes.class223="{Binding IsFilteredOut}"
                                                    Text="{x:Static p:Resources.DirectoryTemplate}" />
                                     </DataTemplate>
 
                                     <DataTemplate DataType="{x:Type nodes:FileViewModel}">
                                         <TextBlock Classes="filePanelTextBlock"
-                                                   Classes.class223="{Binding IsFilteredOut}"
                                                    Text="{Binding FormattedSize}" />
                                     </DataTemplate>
                                 </ContentControl.DataTemplates>
@@ -409,7 +376,6 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Classes="filePanelTextBlock"
-                                       Classes.class222="{Binding IsFilteredOut}"
                                        Text="{Binding LastModifiedDateTime}" />
                             
                         </DataTemplate>
