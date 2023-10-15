@@ -111,8 +111,6 @@
         <DataGrid x:Name="FilesDataGrid" Grid.Row="2"
                   Items="{Binding FileSystemNodes}"
                   DragDrop.AllowDrop="True"
-                  LoadingRow="OnDataGridLoadingRow"
-                  UnloadingRow="OnDataGridUnloadingRow"
                   KeyDown="OnDataGridKeyDown"
                   KeyUp="OnDataGridKeyUp"
                   TextInput="OnDataGridTextInput"

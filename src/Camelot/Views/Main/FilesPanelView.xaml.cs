@@ -234,21 +234,6 @@ public class FilesPanelView : UserControl
         }
         ViewModel.OnDataGridTextInputCallback(args.Text);
     }
-    private void OnDataGridLoadingRow(object sender, DataGridRowEventArgs args)
-    {
-        int dbg = 1;
-        var row = args.Row;
-        //row.IsEnabled = false;
-        dbg = 2;
-    }
-    private void OnDataGridUnloadingRow(object sender, DataGridRowEventArgs args)
-    {
-        int dbg = 1;
-        var row = args.Row;
-        //row.IsEnabled = false;
-        dbg = 2;
-    }
-
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
     {
         ActivateViewModel();
