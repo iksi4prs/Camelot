@@ -130,17 +130,27 @@ public class QuickSearchService : IQuickSearchService
         if (files.Where(x => x.Selected).Any())
             throw new ArgumentOutOfRangeException(nameof(files));
 
-        bool selected = false;
+        _selectedIndex = ComputeNewSelectedIndex(files, _selectedIndex, isShiftDown);
+        var file = files[_selectedIndex];
+        file.Selected = true;
+    
+    }
+
+    static private int ComputeNewSelectedIndex(
+        List<QuickSearchFileModel> files,
+        int selectedIndex,
+        bool isShiftDown)
+    {
         int start, end, jump;
         if (!isShiftDown)
         {
-            start = _selectedIndex + 1;
+            start = selectedIndex + 1;
             end = files.Count;
             jump = 1;
         }
         else
         {
-            start = _selectedIndex - 1;
+            start = selectedIndex - 1;
             end = -1;
             jump = -1;
         }
@@ -149,42 +159,37 @@ public class QuickSearchService : IQuickSearchService
             var file = files[i];
             if (file.Found)
             {
-                _selectedIndex = i;
-                file.Selected = true;
-                selected = true;
-                break;
+                return i;
             }
         }
 
-        if (!selected)
+        // if not found yet, need to start search again from 'start'
+        // E.g. in case 'Shift' not down:
+        // "cycle from last to first"
+        // reset, so and start again from first
+        // Done in 2 'half' loops, in sake of effiency.
+        if (!isShiftDown)
         {
-            // in case 'Shift' not down:
-            // "cycle from last to first"
-            // reset, so and start again from first
-            // Done in 2 'half' loops, in sake of effiency.
-            if (!isShiftDown)
+            start = 0;
+            end = selectedIndex;
+            jump = 1;
+        }
+        else
+        {
+            start = files.Count - 1;
+            end = selectedIndex;
+            jump = -1;
+        }
+        for (int i = start; i != end; i = i + jump)
+        {
+            var file = files[i];
+            if (file.Found)
             {
-                start = 0;
-                end = _selectedIndex;
-                jump = 1;
-            }
-            else
-            {
-                start = files.Count - 1;
-                end = _selectedIndex;
-                jump = -1;
-            }
-            for (int i = start; i != end; i = i + jump)
-            {
-                var file = files[i];
-                if (file.Found)
-                {
-                    _selectedIndex = i;
-                    file.Selected = true;
-                    break;
-                }
+                return i;
             }
         }
+
+        return -1;
     }
 
     private bool IncludeInSearchResults(QuickSearchFileModel file)
