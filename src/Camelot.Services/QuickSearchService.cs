@@ -49,7 +49,8 @@ public class QuickSearchService : IQuickSearchService
         return _cachedSettingsValue;
     }
 
-    public void OnCharDown(char c, 
+    public void OnCharDown(char c,
+        bool isShiftDown,
         List<QuickSearchFileModel> files,
         out bool handled)
     {
@@ -83,7 +84,7 @@ public class QuickSearchService : IQuickSearchService
                 throw new ArgumentOutOfRangeException();
         }
         SearchFilesAndSetFound(files);
-        SetSelectedItem(files);
+        SetSelectedItem(files, isShiftDown);
         handled = true;
     }
 
@@ -121,7 +122,8 @@ public class QuickSearchService : IQuickSearchService
     /// which indicates to UI which item should be selected.
     /// </summary>
 
-    private void SetSelectedItem(List<QuickSearchFileModel> files)
+    private void SetSelectedItem(List<QuickSearchFileModel> files,
+        bool isShiftDown)
     {
         if (files == null)
             throw new ArgumentNullException(nameof(files));
@@ -129,7 +131,20 @@ public class QuickSearchService : IQuickSearchService
             throw new ArgumentOutOfRangeException(nameof(files));
 
         bool selected = false;
-        for (int i = _selectedIndex + 1; i < files.Count; i++)
+        int start, end, jump;
+        if (!isShiftDown)
+        {
+            start = _selectedIndex + 1;
+            end = files.Count;
+            jump = 1;
+        }
+        else
+        {
+            start = _selectedIndex - 1;
+            end = -1;
+            jump = -1;
+        }
+        for (int i = start; i != end; i = i + jump)
         {
             var file = files[i];
             if (file.Found)
@@ -140,12 +155,26 @@ public class QuickSearchService : IQuickSearchService
                 break;
             }
         }
+
         if (!selected)
         {
+            // in case 'Shift' not down:
             // "cycle from last to first"
             // reset, so and start again from first
             // Done in 2 'half' loops, in sake of effiency.
-            for (int i = 0; i < _selectedIndex; i++)
+            if (!isShiftDown)
+            {
+                start = 0;
+                end = _selectedIndex;
+                jump = 1;
+            }
+            else
+            {
+                start = files.Count - 1;
+                end = _selectedIndex;
+                jump = -1;
+            }
+            for (int i = start; i != end; i = i + jump)
             {
                 var file = files[i];
                 if (file.Found)

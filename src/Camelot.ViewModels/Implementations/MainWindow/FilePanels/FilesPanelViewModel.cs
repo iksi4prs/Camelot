@@ -552,7 +552,7 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
     // We use specific handler for TextInput, and not reuse KeyDown,
     // since translation from Key to Char is language/keyboard dependent.
-    public void OnDataGridTextInputCallback(string text)
+    public void OnDataGridTextInputCallback(string text, bool isShiftDown)
     {
         if (_quickSearchService.Enabled())
         {
@@ -561,7 +561,7 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
 
             char c = text[0];
             var files = CreateQuickSearchFiles();
-            _quickSearchService.OnCharDown(c, files, out bool handled);
+            _quickSearchService.OnCharDown(c, isShiftDown, files, out bool handled);
             if (handled)
                 UpdateFilterAfterQuickSearch(files);
         }

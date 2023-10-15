@@ -207,6 +207,7 @@ public class FilesPanelView : UserControl
         _shiftDown = (args.KeyModifiers & KeyModifiers.Shift) > 0;
         ViewModel.OnDataGridKeyDownCallback(args.Key);
 
+        // WIP555 - clenaup
         // KKK
         int dbg = 1;
         var items = FilesDataGrid.Items;
@@ -214,25 +215,16 @@ public class FilesPanelView : UserControl
         var x = FilesDataGrid.GetVisualChildren();
         dbg = 2;
     }
+
+    // Needed to get state of shift key
     private void OnDataGridKeyUp(object sender, KeyEventArgs args)
     {
         _shiftDown = (args.KeyModifiers & KeyModifiers.Shift) > 0;
     }
 
-        private void OnDataGridTextInput(object sender, TextInputEventArgs args)
+    private void OnDataGridTextInput(object sender, TextInputEventArgs args)
     {
-        //var device = args.Device;
-        //device.
-        var dbg = 0;
-        if (_shiftDown)
-        {
-            dbg = 1;
-        }
-        else
-        {
-            dbg = 2;
-        }
-        ViewModel.OnDataGridTextInputCallback(args.Text);
+        ViewModel.OnDataGridTextInputCallback(args.Text, _shiftDown);
     }
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
     {
