@@ -1,13 +1,17 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Xml.Serialization;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using Camelot.Avalonia.Interfaces;
 using Camelot.DependencyInjection;
 using Camelot.Extensions;
@@ -188,6 +192,9 @@ public class FilesPanelView : UserControl
     /// Note: Key.Down and Key.Up are handeled via KeyBindings in xaml
     /// See <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToNextRowCommand"/> 
     /// and <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToPreviousRowCommand"/>
+    /// 
+
+    bool _shiftDown;
     private void OnDataGridKeyDown(object sender, KeyEventArgs args)
     {
         if (args.Key == Key.Delete || args.Key == Key.Back)
@@ -197,11 +204,49 @@ public class FilesPanelView : UserControl
             return;
         }
 
+        _shiftDown = (args.KeyModifiers & KeyModifiers.Shift) > 0;
         ViewModel.OnDataGridKeyDownCallback(args.Key);
+
+        // KKK
+        int dbg = 1;
+        var items = FilesDataGrid.Items;
+        //return dataGrid.Items.OfType<FileViewModel>().Any();
+        var x = FilesDataGrid.GetVisualChildren();
+        dbg = 2;
     }
-    private void OnDataGridTextInput(object sender, TextInputEventArgs args)
+    private void OnDataGridKeyUp(object sender, KeyEventArgs args)
     {
+        _shiftDown = (args.KeyModifiers & KeyModifiers.Shift) > 0;
+    }
+
+        private void OnDataGridTextInput(object sender, TextInputEventArgs args)
+    {
+        //var device = args.Device;
+        //device.
+        var dbg = 0;
+        if (_shiftDown)
+        {
+            dbg = 1;
+        }
+        else
+        {
+            dbg = 2;
+        }
         ViewModel.OnDataGridTextInputCallback(args.Text);
+    }
+    private void OnDataGridLoadingRow(object sender, DataGridRowEventArgs args)
+    {
+        int dbg = 1;
+        var row = args.Row;
+        //row.IsEnabled = false;
+        dbg = 2;
+    }
+    private void OnDataGridUnloadingRow(object sender, DataGridRowEventArgs args)
+    {
+        int dbg = 1;
+        var row = args.Row;
+        //row.IsEnabled = false;
+        dbg = 2;
     }
 
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
@@ -393,3 +438,4 @@ public class FilesPanelView : UserControl
         }
     }
 }
+

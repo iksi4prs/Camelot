@@ -20,6 +20,7 @@
 
     <UserControl.Resources>
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <converters:RowConverter x:Key="RowConverter" />
     </UserControl.Resources>
 
     <Grid Classes="defaultBackgroundColorGrid" RowDefinitions="Auto,Auto,*,Auto,Auto">
@@ -110,7 +111,10 @@
         <DataGrid x:Name="FilesDataGrid" Grid.Row="2"
                   Items="{Binding FileSystemNodes}"
                   DragDrop.AllowDrop="True"
+                  LoadingRow="OnDataGridLoadingRow"
+                  UnloadingRow="OnDataGridUnloadingRow"
                   KeyDown="OnDataGridKeyDown"
+                  KeyUp="OnDataGridKeyUp"
                   TextInput="OnDataGridTextInput"
                   DoubleTapped="OnDataGridDoubleTapped"
                   CellPointerPressed="OnDataGridCellPointerPressed"
@@ -158,8 +162,11 @@
             </DataGrid.Resources>
 
             <DataGrid.Styles>
+                
                 <Style Selector="DataGridRow">
                     <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
+                    <Setter Property="IsEnabled" Value="{Binding !IsFilteredOut}" />
+                    <Setter Property="Focusable" Value="{Binding !IsFilteredOut}" />
                     <!-- lower value => less visible -->
                     <!-- Setter Property="Opacity" Value="0.5" / -->
                     <!--  not working, but not really needed
@@ -171,6 +178,17 @@
                 <!-- THIS IS WHAT I WANT:  Style Selector="nodes|FileViewModel[IsFilteredOut=true]">  -->
 
                 <!-- using 'Control.class222' instead of 'Grid.class222' doesnt work) -->
+
+                <!-- see binding above, of IsEnabled to IsFilteredOut -->
+                <Style Selector="DataGridRow[IsEnabled=false]">
+                    <!-- lower value => less visible -->
+                    <Setter Property="Opacity" Value="0.2"/>
+                    <!-- Setter Property="Background" Value="Yellow"/ -->
+                    <!--  not working, but not really needed
+                    <Setter Property="OpacityMask" Value="Red" />
+                    -->
+                </Style>
+                
                 <Style Selector="Grid.class222">
                     <!-- lower value => less visible -->
                     <Setter Property="Opacity" Value="0.2"/>
@@ -205,8 +223,10 @@
                 <KeyBinding Gesture="Left" Command="{Binding SelectedTab.GoToPreviousDirectoryCommand}" />
                 <KeyBinding Gesture="Right" Command="{Binding SelectedTab.GoToNextDirectoryCommand}" />
                 <!-- Bindings of up/down are used so can skip rows during filter -->
+                <!--
                 <KeyBinding Gesture="Up" Command="{Binding GoToPreviousRowCommand}" />
                 <KeyBinding Gesture="Down" Command="{Binding GoToNextRowCommand}" />
+                -->
             </DataGrid.KeyBindings>
 
             <DataGrid.ContextMenu>
