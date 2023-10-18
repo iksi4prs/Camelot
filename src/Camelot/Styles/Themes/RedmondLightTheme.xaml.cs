@@ -3,7 +3,7 @@ using AvaloniaStyles = Avalonia.Styling.Styles;
 
 namespace Camelot.Styles.Themes;
 
-public class XLightTheme : AvaloniaStyles
+public class RedmondLightTheme : AvaloniaStyles
 {
-    public XLightTheme() => AvaloniaXamlLoader.Load(this);
+    public RedmondLightTheme() => AvaloniaXamlLoader.Load(this);
 }
