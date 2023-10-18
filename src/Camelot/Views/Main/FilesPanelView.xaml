@@ -164,7 +164,9 @@
                     <Setter Property="IsEnabled" Value="{Binding !IsFilteredOut}" />
                     <Setter Property="Focusable" Value="{Binding !IsFilteredOut}" />
                 </Style>
-                <!-- see binding above, of IsEnabled to IsFilteredOut -->
+                <!-- See binding above, of IsEnabled to IsFilteredOut.
+                     Changing opacity of filtered items is based on muCommander"
+                -->
                 <Style Selector="DataGridRow[IsEnabled=false]">
                     <!-- WIP555 cleanup -->
                     <!-- lower value => less visible -->
