@@ -8,14 +8,13 @@ using PixelSize = Avalonia.PixelSize;
 using Vector = Avalonia.Vector;
 
 
-namespace Camelot.Services.Windows.SystemIcons;
+namespace Camelot.Services.Windows.ShellIcons;
 
 [SupportedOSPlatform("windows")]
 
 internal class SystemImageToAvaloniaBitmapConverter
 {
-    // TODO WIP333 - move to extnetsion method or helper file
-    // see https://github.com/AvaloniaUI/Avalonia/discussions/5908
+    // based on: https://github.com/AvaloniaUI/Avalonia/discussions/5908
     public static AvaloniaBitmap Convert(System.Drawing.Image image)
     {
         if (image == null)

@@ -27,7 +27,7 @@ public interface IFilesPanelViewModel
     
     IEnumerable<IFileSystemNodeViewModel> FileSystemNodes { get; }
 
-    void OnDataGridTextInputCallback(string text);
+    void OnDataGridTextInputCallback(string text, bool isShiftDown);
     void OnDataGridKeyDownCallback(Key key);
 
     bool IsActive { get; }

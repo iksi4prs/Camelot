@@ -891,9 +891,9 @@ namespace Camelot.Properties {
             }
         }
         
-	public static string IconsWithColon {
+	public static string Icons{
             get {
-                return ResourceManager.GetString("IconsWithColon", resourceCulture);
+                return ResourceManager.GetString("Icons", resourceCulture);
             }
         }
 	
@@ -930,6 +930,11 @@ namespace Camelot.Properties {
 	public static string QuickSearchModeWithColon {
             get {
                 return ResourceManager.GetString("QuickSearchModeWithColon", resourceCulture);
+            }
+        }
+	public static string QuickSearchHelp {
+            get {
+                return ResourceManager.GetString("QuickSearchHelp", resourceCulture);
             }
         }
     }
