@@ -24,6 +24,7 @@ internal class IconExtractor
         if (delimiter >= 0)
         {
             string iconPath = filename.Substring(0, delimiter);
+            iconPath = iconPath.Trim('"');
             string strIndex = filename.Substring(delimiter + 1);
             int index = int.Parse(strIndex);
             result = ExtractIconImpl(iconPath, index, true);
