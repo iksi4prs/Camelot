@@ -70,6 +70,7 @@ public class DirectorySelectorViewModel : ViewModelBase, IDirectorySelectorViewM
     public ICommand SaveFavouriteStatusCommand { get; }
 
     public ICommand ToggleFavouriteStatusCommand { get; }
+    public ICommand OpenFavouriteCommand { get; }
 
     public DirectorySelectorViewModel(
         IFavouriteDirectoriesService favouriteDirectoriesService,
@@ -88,7 +89,7 @@ public class DirectorySelectorViewModel : ViewModelBase, IDirectorySelectorViewM
 
         SaveFavouriteStatusCommand = ReactiveCommand.Create(SaveFavouriteStatus);
         ToggleFavouriteStatusCommand = ReactiveCommand.Create(ToggleFavouriteStatus);
-
+        OpenFavouriteCommand = ReactiveCommand.Create<int>(OpenFavourite);
         SubscribeToEvents();
     }
 
@@ -122,6 +123,15 @@ public class DirectorySelectorViewModel : ViewModelBase, IDirectorySelectorViewM
         }
     }
 
+    private void OpenFavourite(int number)
+    {
+        int index = number - 1; // convert to zero based
+        if (index < _favouriteDirectoriesService.FavouriteDirectories.Count)
+        {
+            var directory = _favouriteDirectoriesService.FavouriteDirectories.ToList()[index];
+            CurrentDirectory = directory;
+        }
+    }
     private void ClearSuggestions() => _suggestedPaths.Clear();
 
     private void ReloadSuggestions()
