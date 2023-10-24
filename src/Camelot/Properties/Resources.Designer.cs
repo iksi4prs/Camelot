@@ -943,5 +943,10 @@ namespace Camelot.Properties {
                 return ResourceManager.GetString("QuickSearchHelp", resourceCulture);
             }
         }
+	public static string Appearance {
+            get {
+                return ResourceManager.GetString("Appearance", resourceCulture);
+            }
+        }
     }
 }

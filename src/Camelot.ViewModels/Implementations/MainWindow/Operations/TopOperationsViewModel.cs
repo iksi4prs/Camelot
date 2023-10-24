@@ -31,6 +31,8 @@ public class TopOperationsViewModel : ViewModelBase, ITopOperationsViewModel
 
     public ICommand OpenTerminalCommand { get; }
 
+    public bool KeyboardHintIsVisible { get => true; } // TODO - get from settings
+
     public TopOperationsViewModel(
         ITerminalService terminalService,
         IDirectoryService directoryService,

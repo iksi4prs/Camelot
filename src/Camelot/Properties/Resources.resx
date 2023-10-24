@@ -567,4 +567,7 @@
   <data name="QuickSearchHelp" xml:space="preserve">
     <value>Quick search for items in current directory, as you type. use Esc to clear.</value>
   </data>
+  <data name="Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
 </root>
