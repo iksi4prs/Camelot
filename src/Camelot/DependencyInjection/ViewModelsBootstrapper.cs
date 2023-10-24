@@ -168,7 +168,7 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IIconsSettingsService>()
         ));
         services.Register(() => new AppearanceSettingsViewModel(
-            resolver.GetRequiredService<IQuickSearchService>()
+            resolver.GetRequiredService<IAppearanceSettingsService>()
         ));
         services.Register(() => new KeyboardSettingsViewModel(
             resolver.GetRequiredService<IQuickSearchService>()

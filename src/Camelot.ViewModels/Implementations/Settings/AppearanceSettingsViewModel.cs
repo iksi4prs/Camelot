@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Camelot.Services.Abstractions;
+﻿using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
-using Camelot.Services.Abstractions.Models.Enums;
 using Camelot.ViewModels.Interfaces.Settings;
 using ReactiveUI.Fody.Helpers;
 
@@ -9,31 +7,21 @@ namespace Camelot.ViewModels.Implementations.Settings;
 
 public class AppearanceSettingsViewModel : ViewModelBase, ISettingsViewModel
 {
-    private readonly IQuickSearchService _quickSearchService;
-    private QuickSearchMode _initialMode;
+    private readonly IAppearanceSettingsService _appearanceSettingService;
+    private bool _initialShowKeyboardShortcuts;
 
     private bool _isActivated;
 
     [Reactive]
-    public QuickSearchMode CurrentQuickSearchMode { get; set; }
+    public bool ShowKeyboardShortcuts { get; set; }
 
-    public IEnumerable<QuickSearchMode> QuickSearchModeOptions
-    {
-        get
-        {
-            return new []{
-                QuickSearchMode.Disabled,
-                QuickSearchMode.Letter,
-                QuickSearchMode.Word };
-        }
-    }
 
-    public bool IsChanged => _initialMode != CurrentQuickSearchMode;
+    public bool IsChanged => _initialShowKeyboardShortcuts != ShowKeyboardShortcuts;
     
     public AppearanceSettingsViewModel(
-        IQuickSearchService quickSearchService)
+        IAppearanceSettingsService appearanceSettingService)
     {
-        _quickSearchService = quickSearchService;
+        _appearanceSettingService = appearanceSettingService;
     }
 
     public void Activate()
@@ -45,14 +33,14 @@ public class AppearanceSettingsViewModel : ViewModelBase, ISettingsViewModel
 
         _isActivated = true;
 
-        var model = _quickSearchService.GetQuickSearchSettings();
-        _initialMode = model.SelectedMode;
-        CurrentQuickSearchMode = _initialMode;
+        var model = _appearanceSettingService.GetAppearanceSettings();
+        _initialShowKeyboardShortcuts = model.ShowKeyboardShortcuts;
+        ShowKeyboardShortcuts = _initialShowKeyboardShortcuts;
     }
 
     public void SaveChanges()
     {
-        var model = new QuickSearchModel(CurrentQuickSearchMode);
-        _quickSearchService.SaveQuickSearchSettings(model);
+        var model = new AppearanceSettingsModel(ShowKeyboardShortcuts);
+        _appearanceSettingService.SaveAppearanceSettings(model);
     }
 }

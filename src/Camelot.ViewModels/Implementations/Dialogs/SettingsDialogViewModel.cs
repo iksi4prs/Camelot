@@ -46,14 +46,17 @@ public class SettingsDialogViewModel : DialogViewModelBase
         IconsSettingsViewModel = iconsSettingsViewModel;
         KeyboardSettingsViewModel = keyboardSettingsViewModel;
         AppearanceSettingsViewModel = appearanceSettingsViewModel;
-
+        
+        // Items in next array should be in same order as 'tabs' in xaml,
+        // Otherwise, Activate will called for wrong model.
+        // TODO: need to make it more dynamic, and not rely on order in view.
         _settingsViewModels = new[]
         {
             generalSettingsViewModel,
+            appearanceSettingsViewModel,
             terminalSettingsViewModel,
             iconsSettingsViewModel,
-            keyboardSettingsViewModel,
-            appearanceSettingsViewModel
+            keyboardSettingsViewModel
         };
 
         Activate(_settingsViewModels.First());

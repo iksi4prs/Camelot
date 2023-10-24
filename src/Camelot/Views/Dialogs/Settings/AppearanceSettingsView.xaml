@@ -18,7 +18,7 @@
           Grid.Column="0"
           Grid.ColumnSpan="1"
           Margin="5,8,10,0"
-          IsChecked="True">
+          IsChecked="{Binding ShowKeyboardShortcuts}">
         </CheckBox>
         <TextBlock Grid.Row="1"
                    Grid.Column="1"
