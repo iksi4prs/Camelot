@@ -266,7 +266,8 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IPathService>(),
             resolver.GetRequiredService<IArchiveService>(),
             resolver.GetRequiredService<INodesSelectionService>(),
-            resolver.GetRequiredService<ISystemDialogService>()
+            resolver.GetRequiredService<ISystemDialogService>(),
+            resolver.GetRequiredService<IAppearanceSettingsService>()
         ));
         services.RegisterLazySingleton<IOperationStateViewModelFactory>(() => new OperationStateViewModelFactory(
             resolver.GetRequiredService<IPathService>()

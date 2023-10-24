@@ -27,7 +27,7 @@
                 </Image>
 
                 <TextBlock Text="{x:Static p:Resources.Search}" />
-                <TextBlock IsVisible="{Binding KeyboardHintIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[^F]" />
+                <TextBlock IsVisible="{Binding KeyboardShortcutIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[^F]" />
             </StackPanel>
         </Button>
 
@@ -46,7 +46,7 @@
                 </Image>
 
                 <TextBlock Text="{x:Static p:Resources.Terminal}" />
-                <TextBlock IsVisible="{Binding KeyboardHintIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[F9]" />
+                <TextBlock IsVisible="{Binding KeyboardShortcutIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[F9]" />
             </StackPanel>
         </Button>
 
@@ -65,7 +65,7 @@
                 </Image>
 
                 <TextBlock Text="{x:Static p:Resources.Pack}" />
-                <TextBlock IsVisible="{Binding KeyboardHintIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[F10]" />
+                <TextBlock IsVisible="{Binding KeyboardShortcutIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[F10]" />
             </StackPanel>
         </Button>
 
@@ -84,7 +84,7 @@
                 </Image>
 
                 <TextBlock Text="{x:Static p:Resources.Extract}" />
-                <TextBlock IsVisible="{Binding KeyboardHintIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[F11]" />
+                <TextBlock IsVisible="{Binding KeyboardShortcutIsVisible}" Classes="topOperationHotkeyTextBlock" Text="[F11]" />
             </StackPanel>
         </Button>
     </StackPanel>

@@ -22,6 +22,7 @@ public class TopOperationsViewModel : ViewModelBase, ITopOperationsViewModel
     private readonly IArchiveService _archiveService;
     private readonly INodesSelectionService _nodesSelectionService;
     private readonly ISystemDialogService _systemDialogService;
+    private readonly IAppearanceSettingsService _appearanceSettingsService;
 
     public ICommand PackCommand { get; }
 
@@ -31,7 +32,13 @@ public class TopOperationsViewModel : ViewModelBase, ITopOperationsViewModel
 
     public ICommand OpenTerminalCommand { get; }
 
-    public bool KeyboardHintIsVisible { get => true; } // TODO - get from settings
+    public bool KeyboardShortcutIsVisible 
+    { 
+        get
+        {
+            return _appearanceSettingsService.GetAppearanceSettings().ShowKeyboardShortcuts;
+        }
+    }
 
     public TopOperationsViewModel(
         ITerminalService terminalService,
@@ -41,7 +48,8 @@ public class TopOperationsViewModel : ViewModelBase, ITopOperationsViewModel
         IPathService pathService,
         IArchiveService archiveService,
         INodesSelectionService nodesSelectionService,
-        ISystemDialogService systemDialogService)
+        ISystemDialogService systemDialogService,
+        IAppearanceSettingsService appearanceSettingsService)
     {
         _terminalService = terminalService;
         _directoryService = directoryService;
@@ -51,6 +59,7 @@ public class TopOperationsViewModel : ViewModelBase, ITopOperationsViewModel
         _archiveService = archiveService;
         _nodesSelectionService = nodesSelectionService;
         _systemDialogService = systemDialogService;
+        _appearanceSettingsService = appearanceSettingsService;
 
         PackCommand = ReactiveCommand.CreateFromTask(PackAsync);
         ExtractCommand = ReactiveCommand.Create(ExtractAsync);
