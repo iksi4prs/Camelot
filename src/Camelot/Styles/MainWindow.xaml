@@ -25,7 +25,7 @@
         <Setter Property="FontFamily" Value="SansSerif" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Margin" Value="10,0,0,5" />
-        <Setter Property="Foreground" Value="{DynamicResource MainWindowForegroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
     </Style>
 
     <Style Selector="TextBlock.operationHotkeyTextBlock">
@@ -52,6 +52,7 @@
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="Height" Value="30" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
     </Style>
 
     <Style Selector="TextBox.searchTextBox">
@@ -59,6 +60,7 @@
         <Setter Property="Padding" Value="35,3,160,0" />
         <Setter Property="Margin" Value="27,10,5,0" />
         <Setter Property="Height" Value="30" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
     </Style>
 
     <Style Selector="Rectangle.tabRectangle">
@@ -89,6 +91,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="5,0" />
         <Setter Property="MaxWidth" Value="175" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
@@ -141,7 +144,7 @@
     </Style>
 
     <Style Selector="Button.topOperationButton">
-        <Setter Property="Foreground" Value="{DynamicResource MainWindowForegroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Opacity" Value="0.8" />
         <Setter Property="Height" Value="30" />
@@ -173,7 +176,7 @@
     </Style>
 
     <Style Selector="TextBlock.filePanelTextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource MainWindowForegroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="SansSerif" />
         <Setter Property="FontSize" Value="16" />
@@ -274,6 +277,7 @@
     <Style Selector="TextBox.fileNameTextBox">
         <Setter Property="FontSize" Value="15" />
         <Setter Property="Padding" Value="2" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}" />
     </Style>
 
     <Style Selector="ToggleButton#OperationsToggleButton">

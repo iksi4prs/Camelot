@@ -33,7 +33,7 @@
         <Color x:Key="MainBackgroundColor">#ffffff</Color>
         <!-- Color x:Key="AlternativeMainBackgroundColor">#f1f1f1</Color> -->
         <Color x:Key="AlternativeMainBackgroundColor">#FAFAFA</Color>
-        <!-- colors of buttons on bottom -->
+        <!-- colors of buttons on bottom 'operations' toolbar -->
         <Color x:Key="BlueVariantColor">#006CBE</Color>
         <Color x:Key="OperationButtonBackgroundColor">#006CBE</Color>
         <Color x:Key="OperationButtonHoverBackgroundColor">#674988</Color>
@@ -54,7 +54,7 @@
         <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{DynamicResource MainBackgroundColor}" />
         <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
-        <!-- used for selected line -->
+        <!-- used for selected row -->
         <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource LightBlueColor}" />
         <SolidColorBrush x:Key="HighlightForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.9" />
@@ -94,6 +94,8 @@
         <SolidColorBrush x:Key="OperationButtonBackgroundColorBrush" Color="{DynamicResource OperationButtonBackgroundColor}" />
         <SolidColorBrush x:Key="OperationButtonHoverBackgroundColorBrush" Color="{DynamicResource OperationButtonHoverBackgroundColor}" />
         <SolidColorBrush x:Key="OperationButtonPressedBackgroundColorBrush" Color="{DynamicResource OperationButtonPressedBackgroundColor}" />
+        <SolidColorBrush x:Key="TextForegroundBrush" Color="{DynamicResource MagentaTestsColor}"
+                        Opacity="1.0" />
         <SolidColorBrush x:Key="MainWindowForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
         <SolidColorBrush x:Key="InactiveTabForegroundBrush" Color="{DynamicResource BlackColor}"

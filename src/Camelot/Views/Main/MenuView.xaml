@@ -12,7 +12,8 @@
     </Design.DataContext>
 
     <DockPanel Name="MenuDockPanel">
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top"
+              Foreground="{DynamicResource TextForegroundBrush}">
             <MenuItem Header="{x:Static p:Resources.FileHeader}">
                 <MenuItem Header="{x:Static p:Resources.ExitHeader}" Command="{Binding ExitCommand}" />
             </MenuItem>
