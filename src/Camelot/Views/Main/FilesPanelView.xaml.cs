@@ -1,20 +1,26 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Xml.Serialization;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using Camelot.Avalonia.Interfaces;
 using Camelot.DependencyInjection;
 using Camelot.Extensions;
+using Camelot.ViewModels.Implementations.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.Views.Main.Controls;
 using DynamicData;
+using ReactiveUI;
 using Splat;
 
 namespace Camelot.Views.Main;
@@ -76,6 +82,13 @@ public class FilesPanelView : UserControl
         if (item is not null)
         {
             FilesDataGrid.SelectedItems.Add(item);
+        }
+
+        // In case event was triggerd by keyboard (up/down arrows, quick-search, etc),
+        // Need to make sure item is viewable
+        if (FilesDataGrid.SelectedItems.Count == 1)
+        {
+            FilesDataGrid.ScrollIntoView(item, null);
         }
     }
 
@@ -154,18 +167,65 @@ public class FilesPanelView : UserControl
         nodeViewModel.OpenCommand.Execute(null);
     }
 
+    /*
+    // WIP444 - cleanthis
+    private char KeyToChar(Key key)
+    {
+        // requires win api ??
+        //https://stackoverflow.com/questions/318777/c-sharp-how-to-translate-virtual-keycode-to-char
+        char c = '\0';
+        if ((key >= Key.A) && (key <= Key.Z))
+        {
+            c = (char)((int)'a' + (int)(key - Key.A));
+        }
+
+        else if ((key >= Key.D0) && (key <= Key.D9))
+        {
+            c = (char)((int)'0' + (int)(key - Key.D0));
+        }
+
+        return c;
+    }
+    */
+    //bool _enableFilterAsYouType = true;
+
+    /// Note: Key.Down and Key.Up are handeled via KeyBindings in xaml
+    /// See <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToNextRowCommand"/> 
+    /// and <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToPreviousRowCommand"/>
+    /// 
+
+    bool _shiftDown;
     private void OnDataGridKeyDown(object sender, KeyEventArgs args)
     {
-        if (args.Key != Key.Delete && args.Key != Key.Back)
+        if (args.Key == Key.Delete || args.Key == Key.Back)
         {
+            args.Handled = true;
+            ViewModel.OperationsViewModel.MoveToTrashCommand.Execute(null);
             return;
         }
 
-        args.Handled = true;
+        _shiftDown = (args.KeyModifiers & KeyModifiers.Shift) > 0;
+        ViewModel.OnDataGridKeyDownCallback(args.Key);
 
-        ViewModel.OperationsViewModel.MoveToTrashCommand.Execute(null);
+        // WIP555 - clenaup
+        // KKK
+        int dbg = 1;
+        var items = FilesDataGrid.Items;
+        //return dataGrid.Items.OfType<FileViewModel>().Any();
+        var x = FilesDataGrid.GetVisualChildren();
+        dbg = 2;
     }
 
+    // Needed to get state of shift key
+    private void OnDataGridKeyUp(object sender, KeyEventArgs args)
+    {
+        _shiftDown = (args.KeyModifiers & KeyModifiers.Shift) > 0;
+    }
+
+    private void OnDataGridTextInput(object sender, TextInputEventArgs args)
+    {
+        ViewModel.OnDataGridTextInputCallback(args.Text, _shiftDown);
+    }
     private void OnDataGridCellPointerPressed(object sender, DataGridCellPointerPressedEventArgs args)
     {
         ActivateViewModel();
@@ -355,3 +415,4 @@ public class FilesPanelView : UserControl
         }
     }
 }
+

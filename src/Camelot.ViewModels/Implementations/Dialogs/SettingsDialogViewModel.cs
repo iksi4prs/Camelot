@@ -17,6 +17,10 @@ public class SettingsDialogViewModel : DialogViewModelBase
     public ISettingsViewModel GeneralSettingsViewModel { get; set; }
     public ISettingsViewModel IconsSettingsViewModel { get; set; }
 
+    public ISettingsViewModel IconsSettingsViewModel { get; set; }
+
+    public ISettingsViewModel KeyboardSettingsViewModel { get; set; }
+
     public int SelectedIndex
     {
         get => _selectedIndex;
@@ -32,17 +36,20 @@ public class SettingsDialogViewModel : DialogViewModelBase
     public SettingsDialogViewModel(
         ISettingsViewModel generalSettingsViewModel,
         ISettingsViewModel terminalSettingsViewModel,
-        ISettingsViewModel iconsSettingsViewModel)
+        ISettingsViewModel iconsSettingsViewModel,
+        ISettingsViewModel keyboardSettingsViewModel)
     {
         TerminalSettingsViewModel = terminalSettingsViewModel;
         GeneralSettingsViewModel = generalSettingsViewModel;
         IconsSettingsViewModel = iconsSettingsViewModel;
+        KeyboardSettingsViewModel = keyboardSettingsViewModel;
 
         _settingsViewModels = new[]
         {
             generalSettingsViewModel,
             terminalSettingsViewModel,
-            iconsSettingsViewModel
+            iconsSettingsViewModel,
+            keyboardSettingsViewModel
         };
 
         Activate(_settingsViewModels.First());

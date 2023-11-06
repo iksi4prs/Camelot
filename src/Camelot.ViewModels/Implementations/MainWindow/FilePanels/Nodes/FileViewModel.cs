@@ -1,11 +1,13 @@
 using Avalonia.Media.Imaging;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Behaviors;
+using Camelot.Services.Abstractions.Models;
 using Camelot.Services.Abstractions.Models.Enums;
 using Camelot.ViewModels.Interfaces.Behaviors;
 using Camelot.ViewModels.Interfaces.MainWindow.FilePanels.Nodes;
 using Camelot.ViewModels.Services.Interfaces;
 using ReactiveUI;
+using System;
 
 namespace Camelot.ViewModels.Implementations.MainWindow.FilePanels.Nodes;
 
@@ -67,7 +69,6 @@ public class FileViewModel : FileSystemNodeViewModelBase, IFileViewModel
         get
         {
             TryLoadIcon();
-            
             return _shellIcon;
         }
     }
