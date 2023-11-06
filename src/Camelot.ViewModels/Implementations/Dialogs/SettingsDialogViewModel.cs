@@ -15,6 +15,7 @@ public class SettingsDialogViewModel : DialogViewModelBase
     public ISettingsViewModel TerminalSettingsViewModel { get; set; }
 
     public ISettingsViewModel GeneralSettingsViewModel { get; set; }
+    public ISettingsViewModel IconsSettingsViewModel { get; set; }
 
     public ISettingsViewModel IconsSettingsViewModel { get; set; }
 

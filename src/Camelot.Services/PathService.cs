@@ -63,6 +63,12 @@ public class PathService : IPathService
         return string.IsNullOrEmpty(fileName) ? path : fileName;
     }
 
+    /// <summary>
+    /// Returns the extension of the given path, without the prefix of dot.
+    /// This is intentionally returns different result than <see cref="System.IO.Path.GetExtension"/
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public string GetExtension(string path)
     {
         if (path.StartsWith("."))

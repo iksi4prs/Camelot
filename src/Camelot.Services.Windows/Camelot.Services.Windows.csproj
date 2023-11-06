@@ -11,7 +11,7 @@
         <Version>0.1.220</Version>
       </PackageReference>
     </ItemGroup>
-    
+
     <ItemGroup>
       <ProjectReference Include="..\Camelot.Extensions\Camelot.Extensions.csproj" />
       <ProjectReference Include="..\Camelot.Services.Abstractions\Camelot.Services.Abstractions.csproj" />

@@ -71,6 +71,7 @@ public class SettingsDialogViewModelTests
             .SetupGet(m => m.IsChanged)
             .Returns(true);
 
+
         var keyboardSettingsViewModel = new Mock<ISettingsViewModel>();
         keyboardSettingsViewModel
             .Setup(m => m.SaveChanges())

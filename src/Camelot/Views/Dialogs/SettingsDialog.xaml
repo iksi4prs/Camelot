@@ -93,6 +93,7 @@
                         </Border>
                     </TabItem.Content>
                 </TabItem>
+
                 <TabItem Name="Keyboard" VerticalContentAlignment="Center">
                     <TabItem.Header>
                         <Border Classes="settingsTabHeaderBorder">

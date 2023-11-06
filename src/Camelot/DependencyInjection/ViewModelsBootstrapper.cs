@@ -35,6 +35,9 @@ using Camelot.ViewModels.Interfaces.MainWindow.OperationsStates;
 using Camelot.ViewModels.Interfaces.Menu;
 using Camelot.ViewModels.Services.Implementations;
 using Camelot.ViewModels.Services.Interfaces;
+using Camelot.ViewModels.Windows.Interfaces;
+using Camelot.ViewModels.Windows.ShellIcons;
+using Camelot.ViewModels.Windows.WinApi;
 using Splat;
 
 namespace Camelot.DependencyInjection;
@@ -44,6 +47,7 @@ public static class ViewModelsBootstrapper
     public static void RegisterViewModels(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
         RegisterServices(services, resolver);
+        RegisterPlatformSpecificServices(services, resolver);
         RegisterFactories(services, resolver);
         RegisterCommonViewModels(services, resolver);
         RegisterPlatformSpecificViewModels(services, resolver);
@@ -51,6 +55,12 @@ public static class ViewModelsBootstrapper
 
     private static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IPlatformService>()
+        ));
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IPlatformService>()
+        ));
         services.RegisterLazySingleton<IFilesOperationsMediator>(() => new FilesOperationsMediator(
             resolver.GetRequiredService<IDirectoryService>()
         ));
@@ -77,6 +87,50 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IClipboardOperationsService>(),
             resolver.GetRequiredService<INodesSelectionService>(),
             resolver.GetRequiredService<IDirectoryService>()
+        ));
+    }
+
+    private static void RegisterPlatformSpecificServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+    {
+        var platformService = resolver.GetRequiredService<IPlatformService>();
+        var platform = platformService.GetPlatform();
+        if (platform is Platform.Windows)
+        {
+            RegisterWindowsServices(services, resolver);
+        }
+        else
+        {
+            RegisterNonWindowsServices(services, resolver);
+        }
+    }
+
+    private static void RegisterWindowsServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+    {
+        services.RegisterLazySingleton<IShellLinkResolver>(() => new ShellLinkResolver(
+            resolver.GetRequiredService<IPathService>()
+        ));
+        services.RegisterLazySingleton<IShellIconsService>(() => new WindowsShellIconsService(
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IFileService>()
+        ));
+        services.RegisterLazySingleton<IShellLinksService>(() => new WindowsShellLinksService(
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IShellLinkResolver>()
+        ));
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IPlatformService>(),
+            resolver.GetRequiredService<IShellLinksService>(),
+            resolver.GetRequiredService<IShellIconsService>(),
+            resolver.GetRequiredService<IFileService>(),
+            resolver.GetRequiredService<IDirectoryService>(),
+            resolver.GetRequiredService<IPathService>()
+        ));
+    }
+
+    private static void RegisterNonWindowsServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+    {
+        services.RegisterLazySingleton<IShellIconsCacheService>(() => new ShellIconsCacheService(
+            resolver.GetRequiredService<IPlatformService>()
         ));
     }
 
@@ -168,6 +222,7 @@ public static class ViewModelsBootstrapper
         ));
         services.Register(() => new KeyboardSettingsViewModel(
             resolver.GetRequiredService<IQuickSearchService>()
+
         ));
         services.RegisterLazySingleton(() => new FilePropertiesBehavior(
             resolver.GetRequiredService<IDialogService>()
