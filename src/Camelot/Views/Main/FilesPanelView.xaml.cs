@@ -167,28 +167,6 @@ public class FilesPanelView : UserControl
         nodeViewModel.OpenCommand.Execute(null);
     }
 
-    /*
-    // WIP444 - cleanthis
-    private char KeyToChar(Key key)
-    {
-        // requires win api ??
-        //https://stackoverflow.com/questions/318777/c-sharp-how-to-translate-virtual-keycode-to-char
-        char c = '\0';
-        if ((key >= Key.A) && (key <= Key.Z))
-        {
-            c = (char)((int)'a' + (int)(key - Key.A));
-        }
-
-        else if ((key >= Key.D0) && (key <= Key.D9))
-        {
-            c = (char)((int)'0' + (int)(key - Key.D0));
-        }
-
-        return c;
-    }
-    */
-    //bool _enableFilterAsYouType = true;
-
     /// Note: Key.Down and Key.Up are handeled via KeyBindings in xaml
     /// See <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToNextRowCommand"/> 
     /// and <see cref="ViewModels.Implementations.MainWindow.FilePanels.FilesPanelViewModel.GoToPreviousRowCommand"/>
