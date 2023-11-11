@@ -10,9 +10,14 @@ public interface IQuickSearchService
 
     void SaveQuickSearchSettings(QuickSearchModel quickSearchModel);
 
-    // arg is Char and not Key, since translation from Key to Char
-    // is platform dependent, and should be done in caller level.
-    //void OnKeyDown(Key key, KeyModifiers modifiers, out bool handled);
+    /// <summary>
+    /// </summary>
+    /// <param name="c">
+    /// This arg is is of type 'char' and not 'Key', since translation from Key to char
+    //  is platform dependent, and should be done in caller level.</param>
+    /// <param name="isShiftDown"></param>
+    /// <param name="files"></param>
+    /// <param name="handled"></param>
     void OnCharDown(char c, bool isShiftDown, List<QuickSearchFileModel> files, out bool handled);
 
     void ClearSearch();
