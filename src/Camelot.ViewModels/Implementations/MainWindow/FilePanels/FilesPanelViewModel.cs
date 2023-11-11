@@ -29,10 +29,6 @@ using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-//using AvaloniaKey = Avalonia.Input.Key;
-//using AbstractKey = Camelot.Services.Abstractions.Models.Enums.Input.Key;
-//using AbstractKeyModifiers = Camelot.Services.Abstractions.Models.Enums.Input.KeyModifiers;
-
 namespace Camelot.ViewModels.Implementations.MainWindow.FilePanels;
 
 public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
