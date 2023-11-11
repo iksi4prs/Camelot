@@ -110,11 +110,6 @@ public class QuickSearchService : IQuickSearchService
             {
                 file.Found = true;
                 found++;
-                // WIP777 - move this comment to somewhere else ??
-                // how to disable row ??
-                // not possible ??
-                // https://github.com/AvaloniaUI/Avalonia/issues/7766
-                //var x = FilesDataGrid.
             }
             else
             {
