@@ -546,8 +546,14 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         }
     }
 
-    // We use specific handler for TextInput, and not reuse KeyDown,
-    // since translation from Key to Char is language/keyboard dependent.
+    /// <summary>
+    /// We use specific handler for TextInput, and not reuse KeyDown,
+    /// since translation from Key to Char is language/keyboard dependent,
+    /// and should be done in caller level by Avalonia
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="isShiftDown"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public void OnDataGridTextInputCallback(string text, bool isShiftDown)
     {
         if (_quickSearchService.Enabled())

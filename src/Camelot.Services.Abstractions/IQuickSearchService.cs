@@ -14,7 +14,7 @@ public interface IQuickSearchService
     /// </summary>
     /// <param name="c">
     /// This arg is is of type 'char' and not 'Key', since translation from Key to char
-    //  is platform dependent, and should be done in caller level.</param>
+    //  is language/keyboard dependent, and should be done in caller level by Avalonia.</param>
     /// <param name="isShiftDown"></param>
     /// <param name="files"></param>
     /// <param name="handled"></param>
