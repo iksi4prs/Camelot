@@ -110,11 +110,6 @@ public class QuickSearchService : IQuickSearchService
             {
                 file.Found = true;
                 found++;
-                // WIP777 - move this comment to somewhere else ??
-                // how to disable row ??
-                // not possible ??
-                // https://github.com/AvaloniaUI/Avalonia/issues/7766
-                //var x = FilesDataGrid.
             }
             else
             {
@@ -222,25 +217,6 @@ public class QuickSearchService : IQuickSearchService
         }
     }
 
-    // WIP555 => remove ? was replaced with direct call to ClearSearch
-    public void OnEscapeKeyDown(
-        List<QuickSearchFileModel> files,
-        out bool handled)
-    {
-        if (!Enabled())
-        {
-            handled = false;
-            return;
-        }
-
-        if (files == null)
-            throw new ArgumentNullException(nameof(files));
-
-        ClearSearchImpl_OLD(files);
-
-        handled = true;
-    }
-
     public void ClearSearch()
     {
         if (!Enabled())
@@ -251,24 +227,6 @@ public class QuickSearchService : IQuickSearchService
         _searchWord = string.Empty;
         _searchLetter = Char.MinValue;
         _selectedIndex = -1;
-    }
-
-    // WIP555 => remove ?
-    private void ClearSearchImpl_OLD(List<QuickSearchFileModel> files)
-    {
-        if (files == null)
-            throw new ArgumentNullException(nameof(files));
-
-        _searchWord = string.Empty;
-        _searchLetter = Char.MinValue;
-        _selectedIndex = -1;
-
-        // Mark all as found, to clear filter
-        foreach (var file in files)
-        {
-            file.Found = true;
-            file.Selected = false;
-        }
     }
 
     public void SaveQuickSearchSettings(QuickSearchModel quickSearchModel)
