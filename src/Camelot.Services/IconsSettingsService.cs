@@ -11,6 +11,7 @@ namespace Camelot.Services;
 public class IconsSettingsService : IIconsSettingsService
 {
     private const string SettingsId = "IconsSettings";
+
     private readonly IUnitOfWorkFactory _unitOfWorkFactory;
     
     private readonly Platform _platform;
@@ -52,7 +53,7 @@ public class IconsSettingsService : IIconsSettingsService
 
         using var uow = _unitOfWorkFactory.Create();
         var repository = uow.GetRepository<IconsSettingsModel>();
-       
+        
         repository.Upsert(SettingsId, iconsSettingsModel);
     }
 }

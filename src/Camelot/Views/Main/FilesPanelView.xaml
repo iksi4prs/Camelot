@@ -168,10 +168,7 @@
                      Changing opacity of filtered items is based on muCommander"
                 -->
                 <Style Selector="DataGridRow[IsEnabled=false]">
-                    <!-- next also works, but has default value of 0.5, and I prefer lower value.
                     <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}"/>
-                    -->
-                    <Setter Property="Opacity" Value="0.2"/>
                 </Style>
            </DataGrid.Styles>
 
@@ -190,11 +187,6 @@
                 <KeyBinding Gesture="Shift+Back" Command="{Binding OperationsViewModel.RemoveCommand}" />
                 <KeyBinding Gesture="Left" Command="{Binding SelectedTab.GoToPreviousDirectoryCommand}" />
                 <KeyBinding Gesture="Right" Command="{Binding SelectedTab.GoToNextDirectoryCommand}" />
-                <!-- Bindings of up/down are used so can skip rows during filter -->
-                <!--
-                <KeyBinding Gesture="Up" Command="{Binding GoToPreviousRowCommand}" />
-                <KeyBinding Gesture="Down" Command="{Binding GoToNextRowCommand}" />
-                -->
             </DataGrid.KeyBindings>
 
             <DataGrid.ContextMenu>

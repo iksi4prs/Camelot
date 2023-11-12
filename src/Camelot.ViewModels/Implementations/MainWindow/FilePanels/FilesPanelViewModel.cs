@@ -12,7 +12,6 @@ using Camelot.Extensions;
 using Camelot.Services.Abstractions;
 using Camelot.Services.Abstractions.Models;
 using Camelot.Services.Abstractions.Models.Enums;
-//using Camelot.Services.Abstractions.Models.Enums.Input;
 using Camelot.Services.Abstractions.Models.EventArgs;
 using Camelot.Services.Abstractions.RecursiveSearch;
 using Camelot.Services.Abstractions.Specifications;
@@ -118,9 +117,6 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
     public ICommand GoToParentDirectoryCommand { get; }
 
     public ICommand SortFilesCommand { get; }
-    public ICommand GoToPreviousRowCommand { get; }
-    public ICommand GoToNextRowCommand { get; }
-
     public FilesPanelViewModel(
         IFileService fileService,
         IDirectoryService directoryService,
@@ -174,8 +170,6 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
             (DirectoryModel dm) => dm is not null);
         GoToParentDirectoryCommand = ReactiveCommand.Create(GoToParentDirectory, canGoToParentDirectory);
         SortFilesCommand = ReactiveCommand.Create<SortingMode>(SortFiles);
-        GoToPreviousRowCommand = ReactiveCommand.Create(GoToPreviousRow);
-        GoToNextRowCommand = ReactiveCommand.Create(GoToNextRow);
         SubscribeToEvents();
         UpdateStateAsync().Forget();
     }
@@ -477,49 +471,6 @@ public class FilesPanelViewModel : ViewModelBase, IFilesPanelViewModel
         var nodes = FileSystemNodes.ToList();
         var selected = nodes[selectedIndex];
         return selected;
-    }
-    private void GoToNextRow()
-    {
-        // get current
-        int selectedIndex = GetSelectedIndex();
-
-        // select next
-        var nodes = FileSystemNodes.ToList();
-        string newSelected = null;
-        for (int i = selectedIndex+1; i<nodes.Count-1; i++)
-        {
-            var curr = nodes[i];
-            if (curr.IsFilteredOut)
-                continue;
-            newSelected = curr.FullPath;
-            break;
-        }
-
-        // update ui
-        var oldSelected = GetSelected();
-        SelectNodeEx(newSelected, oldSelected);
-    }
-
-    private void GoToPreviousRow()
-    {
-        // get current
-        int selectedIndex = GetSelectedIndex();
-
-        // select previous
-        string newSelected = null;
-        var nodes = FileSystemNodes.ToList();
-        for (int i = selectedIndex - 1; i > 1; i--)
-        {
-            var curr = nodes[i];
-            if (curr.IsFilteredOut)
-                continue;
-            newSelected = curr.FullPath;
-            break;
-        }
-
-        // update ui
-        var oldSelected = GetSelected();
-        SelectNodeEx(newSelected, oldSelected);
     }
 
     private void SelectNodeEx(string newSelected, IFileSystemNodeViewModel oldSelected)
