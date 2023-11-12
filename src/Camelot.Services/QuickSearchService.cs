@@ -9,6 +9,7 @@ using Camelot.Services.Abstractions.Models.Enums;
 namespace Camelot.Services;
 
 // Name of feature as "Quick search" is based on same name used by Total-Commander.
+// Changing opacity of filtered items is based on muCommander.
 public class QuickSearchService : IQuickSearchService
 {
     private const string SettingsId = "QuickSearchSettings";
