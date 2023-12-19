@@ -159,12 +159,16 @@ public static class ViewModelsBootstrapper
         ));
         services.Register(() => new SettingsDialogViewModel(
             resolver.GetRequiredService<GeneralSettingsViewModel>(),
+            resolver.GetRequiredService<AppearanceSettingsViewModel>(),
             resolver.GetRequiredService<TerminalSettingsViewModel>(),
             resolver.GetRequiredService<IconsSettingsViewModel>(),
             resolver.GetRequiredService<KeyboardSettingsViewModel>()
         ));
         services.Register(() => new IconsSettingsViewModel(
             resolver.GetRequiredService<IIconsSettingsService>()
+        ));
+        services.Register(() => new AppearanceSettingsViewModel(
+            resolver.GetRequiredService<IAppearanceSettingsService>()
         ));
         services.Register(() => new KeyboardSettingsViewModel(
             resolver.GetRequiredService<IQuickSearchService>()
@@ -262,7 +266,8 @@ public static class ViewModelsBootstrapper
             resolver.GetRequiredService<IPathService>(),
             resolver.GetRequiredService<IArchiveService>(),
             resolver.GetRequiredService<INodesSelectionService>(),
-            resolver.GetRequiredService<ISystemDialogService>()
+            resolver.GetRequiredService<ISystemDialogService>(),
+            resolver.GetRequiredService<IAppearanceSettingsService>()
         ));
         services.RegisterLazySingleton<IOperationStateViewModelFactory>(() => new OperationStateViewModelFactory(
             resolver.GetRequiredService<IPathService>()
