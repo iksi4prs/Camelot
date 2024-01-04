@@ -12,7 +12,7 @@
     </Design.DataContext>
 
     <StackPanel Orientation="Vertical">
-        <Border Classes="tabBorder">
+        <Border Name="TextButtonContainer" Classes="tabBorder">
             <Grid>
                 <Button Name="TabButton"
                         Classes="tabButton"
@@ -48,7 +48,7 @@
             </Grid>
         </Border>
 
-        <Grid>
+        <Grid Name="ActiveTabColorIndicatorAtBottom">
             <Rectangle Classes="tabRectangle" Height="2" />
             <Rectangle Classes="tabRectangle tabRectangleActive"
                        Height="2" IsVisible="{Binding IsActive}" />

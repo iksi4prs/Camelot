@@ -765,6 +765,12 @@ namespace Camelot.Properties {
             }
         }
         
+        public static string RedmondLightThemeName {
+            get {
+                return ResourceManager.GetString("RedmondLightThemeName", resourceCulture);
+            }
+        }
+
         public static string Unmount {
             get {
                 return ResourceManager.GetString("Unmount", resourceCulture);

@@ -134,26 +134,26 @@
         <KeyBinding Gesture="F11" Command="{Binding TopOperationsViewModel.ExtractCommand}" />
     </Window.KeyBindings>
 
-    <Grid RowDefinitions="35,Auto,*,Auto">
-        <Grid Classes="topPanelGrid" ColumnDefinitions="Auto,Auto,*,Auto">
+    <Grid Name="MainGrid" RowDefinitions="35,Auto,*,Auto">
+        <Grid Name="TopPanelGrid" Classes="topPanelGrid" ColumnDefinitions="Auto,Auto,*,Auto">
             <main:MenuView DataContext="{Binding MenuViewModel}" />
             <operationsStates:OperationsStatesListView Grid.Column="1" DataContext="{Binding OperationsStateViewModel}" />
             <main:TopOperationsView Grid.Column="3" DataContext="{Binding TopOperationsViewModel}" />
         </Grid>
 
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+        <Grid Name="DrivesAndFavouritesGrid" Grid.Row="1" ColumnDefinitions="Auto,*">
             <drives:DrivesListView DataContext="{Binding DrivesListViewModel}" />
             <favouriteDirectories:FavouriteDirectoriesListView Grid.Column="1" DataContext="{Binding FavouriteDirectoriesListViewModel}" />
         </Grid>
 
-        <Grid Grid.Row="2" ColumnDefinitions="*,Auto,*">
-            <main:FilesPanelView DataContext="{Binding LeftFilesPanelViewModel}" />
-            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="2"
+        <Grid Name="FilesPanelsContainerGrid" Grid.Row="2" ColumnDefinitions="*,Auto,*">
+            <main:FilesPanelView Name="LeftFilesPanelView" DataContext="{Binding LeftFilesPanelViewModel}" />
+            <GridSplitter Name="FilesPanelsSplitter" Grid.Column="1" ShowsPreview="False" Width="2"
                           HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-            <main:FilesPanelView Grid.Column="2" DataContext="{Binding RightFilesPanelViewModel}" />
+            <main:FilesPanelView Name="RightFilesPanelView" Grid.Column="2" DataContext="{Binding RightFilesPanelViewModel}" />
         </Grid>
 
-        <main:OperationsView Grid.Row="3" DataContext="{Binding OperationsViewModel}" />
+        <main:OperationsView Name="BottomOperationsView" Grid.Row="3" DataContext="{Binding OperationsViewModel}" />
 
         <Grid x:Name="OverlayGrid" Grid.Row="0" Grid.RowSpan="4" />
     </Grid>

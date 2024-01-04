@@ -147,12 +147,16 @@
     </Style>
 
     <Style Selector="DataGridRow">
+        <!-- X3X3X3 i removed this ugly thing
         <Setter Property="Opacity" Value="0.7" />
+        -->
         <Setter Property="FontSize" Value="18" />
     </Style>
 
     <Style Selector="DataGridRow:selected">
+        <!-- X3X3X3 i removed this ugly thing, and need to remove opacity in all place
         <Setter Property="Opacity" Value="1" />
+        -->
     </Style>
 
     <Style Selector="DataGridRow:selected Grid">

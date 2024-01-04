@@ -477,6 +477,9 @@
   <data name="LightThemeName" xml:space="preserve">
     <value>Light</value>
   </data>
+  <data name="RedmondLightThemeName" xml:space="preserve">
+    <value>Redmond Light</value>
+  </data>
   <data name="Unmount" xml:space="preserve">
     <value>Unmount</value>
   </data>
