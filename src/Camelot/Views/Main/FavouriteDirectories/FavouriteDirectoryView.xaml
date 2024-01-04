@@ -25,7 +25,7 @@
             </Image>
 
             <TextBlock Grid.Column="1" Classes="mainWindowTextBlock"
-                       Text="{Binding DirectoryName}" />
+                       Text="{Binding DirectoryDisplayName}" />
         </Grid>
 
         <ToolTip.Tip>

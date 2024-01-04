@@ -19,6 +19,7 @@
     </Design.DataContext>
 
     <Window.KeyBindings>
+        <!-- Ctrl+N : go to tab -->
         <KeyBinding Gesture="Ctrl+D1" Command="{Binding ActiveTabsListViewModel.GoToTabCommand}">
             <KeyBinding.CommandParameter>
                 <system:Int32>0</system:Int32>
@@ -64,6 +65,7 @@
                 <system:Int32>8</system:Int32>
             </KeyBinding.CommandParameter>
         </KeyBinding>
+        <!-- Ctrl+Numpad N : go to tab -->
         <KeyBinding Gesture="Ctrl+NumPad1" Command="{Binding ActiveTabsListViewModel.GoToTabCommand}">
             <KeyBinding.CommandParameter>
                 <system:Int32>0</system:Int32>
@@ -109,6 +111,55 @@
                 <system:Int32>8</system:Int32>
             </KeyBinding.CommandParameter>
         </KeyBinding>
+
+        <!-- Ctrl+Shift+ N : open favourite -->
+        <KeyBinding Gesture="Ctrl+Shift+D1" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>1</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D2" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>2</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D3" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>3</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D4" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>4</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D5" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>5</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D6" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>6</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D7" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>7</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D8" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>8</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Ctrl+Shift+D9" Command="{Binding ActiveDirectorySelectorViewModel.OpenFavouriteCommand}">
+            <KeyBinding.CommandParameter>
+                <system:Int32>9</system:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+
+        <!-- Various -->
         <KeyBinding Gesture="Ctrl+D0" Command="{Binding ActiveTabsListViewModel.GoToLastTabCommand}" />
         <KeyBinding Gesture="Ctrl+NumPad0" Command="{Binding ActiveTabsListViewModel.GoToLastTabCommand}" />
         <KeyBinding Gesture="Ctrl+T" Command="{Binding ActiveTabsListViewModel.CreateNewTabCommand}" />
