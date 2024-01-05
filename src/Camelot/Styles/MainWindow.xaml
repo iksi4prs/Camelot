@@ -247,7 +247,7 @@
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="CanUserResizeColumns" Value="True" />
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
-        <Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternativeThemeBackgroundBrush}" />
+        <Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternativeRowBackgroundBrush}" />
     </Style>
 
     <Style Selector="Button.iconButton:pressed /template/ ContentPresenter">

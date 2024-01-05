@@ -31,6 +31,10 @@
         <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{DynamicResource MainBackgroundColor}" />
         <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{DynamicResource WhiteColor}"
                          Opacity="0.8" />
+        <!-- row -->
+        <SolidColorBrush x:Key="RowBackgroundBrush" Color="{DynamicResource MainBackgroundColor}" />
+        <SolidColorBrush x:Key="AlternativeRowBackgroundBrush" Color="{DynamicResource AlternativeMainBackgroundColor}" />
+
         <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource OrangeColor}" />
         <SolidColorBrush x:Key="HighlightForegroundBrush" Color="{DynamicResource WhiteColor}"
                          Opacity="0.9" />

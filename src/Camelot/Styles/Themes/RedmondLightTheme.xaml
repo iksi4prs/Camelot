@@ -29,8 +29,7 @@
         <Color x:Key="WhiteColor">#ffffff</Color>
         <Color x:Key="BlackColor">#000000</Color>
         <Color x:Key="MenuBackgroundColor">#f0f0f0</Color>
-        <!-- <Color x:Key="MainBackgroundColor">#f5f5f5</Color> -->
-        <Color x:Key="MainBackgroundColor">#ffffff</Color>
+        <Color x:Key="MainBackgroundColor">#f5f5f5</Color>
         <!-- Color x:Key="AlternativeMainBackgroundColor">#f1f1f1</Color> -->
         <Color x:Key="AlternativeMainBackgroundColor">#FAFAFA</Color>
         <!-- colors of buttons on bottom 'operations' toolbar -->
@@ -54,6 +53,11 @@
         <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{DynamicResource MainBackgroundColor}" />
         <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
+
+        <!-- row -->
+        <SolidColorBrush x:Key="RowBackgroundBrush" Color="{DynamicResource WhiteColor}" />
+        <SolidColorBrush x:Key="AlternativeRowBackgroundBrush" Color="{DynamicResource AlternativeMainBackgroundColor}" />
+        
         <!-- used for selected row -->
         <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource LightBlueColor}" />
         <SolidColorBrush x:Key="HighlightForegroundBrush" Color="{DynamicResource BlackColor}"
