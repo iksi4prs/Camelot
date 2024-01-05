@@ -94,7 +94,7 @@
         <SolidColorBrush x:Key="OperationButtonBackgroundColorBrush" Color="{DynamicResource OperationButtonBackgroundColor}" />
         <SolidColorBrush x:Key="OperationButtonHoverBackgroundColorBrush" Color="{DynamicResource OperationButtonHoverBackgroundColor}" />
         <SolidColorBrush x:Key="OperationButtonPressedBackgroundColorBrush" Color="{DynamicResource OperationButtonPressedBackgroundColor}" />
-        <SolidColorBrush x:Key="TextForegroundBrush" Color="{DynamicResource MagentaTestsColor}"
+        <SolidColorBrush x:Key="TextForegroundBrush" Color="{DynamicResource BlackColor}"
                         Opacity="1.0" />
         <SolidColorBrush x:Key="MainWindowForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
@@ -132,7 +132,7 @@
         <SolidColorBrush x:Key="FavouriteDirectoryIconBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
         <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{DynamicResource PopupBackgroundColor}" />
-        <SolidColorBrush x:Key="FolderIconBrush" Color="{DynamicResource YellowColor}" />
+        <SolidColorBrush x:Key="DirectoryIconBrush" Color="{DynamicResource YellowColor}" />
         
         <!-- Theme resources -->
         <system:Double x:Key="ThemeDisabledOpacity">0.5</system:Double>

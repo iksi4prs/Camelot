@@ -106,6 +106,7 @@
         <SolidColorBrush x:Key="FavouriteDirectoryIconBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
         <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{DynamicResource PopupBackgroundColor}" />
+        <SolidColorBrush x:Key="DirectoryIconBrush" Color="{DynamicResource BlackColor}" />
 
         <!-- Theme resources -->
         <system:Double x:Key="ThemeDisabledOpacity">0.5</system:Double>
