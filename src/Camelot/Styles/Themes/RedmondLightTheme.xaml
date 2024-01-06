@@ -13,8 +13,6 @@
         NEXT: magenta
         -->
         <Color x:Key="OrangeColor">#FF00DC</Color>
-
-        
         <Color x:Key="BrightOrangeColor">#ff9334</Color>
         <!-- BrightOrangeColor was replced with LightBlueColor in some placed -->
         <Color x:Key="LightBlueColor">#cce8ff</Color>
@@ -28,25 +26,38 @@
         <Color x:Key="GreenTestsColor">#00FF00</Color>
         <Color x:Key="WhiteColor">#ffffff</Color>
         <Color x:Key="BlackColor">#000000</Color>
+        <!-- light-gray -->
         <Color x:Key="MenuBackgroundColor">#f0f0f0</Color>
+        <!-- light-gray -->
         <Color x:Key="MainBackgroundColor">#f5f5f5</Color>
-        <!-- Color x:Key="AlternativeMainBackgroundColor">#f1f1f1</Color> -->
         <Color x:Key="AlternativeMainBackgroundColor">#FAFAFA</Color>
         <!-- colors of buttons on bottom 'operations' toolbar -->
         <Color x:Key="BlueVariantColor">#006CBE</Color>
+        <!-- blue -->
         <Color x:Key="OperationButtonBackgroundColor">#006CBE</Color>
+        <!-- purple -->
         <Color x:Key="OperationButtonHoverBackgroundColor">#674988</Color>
+        <!-- dark-purple -->
         <Color x:Key="OperationButtonPressedBackgroundColor">#342544</Color>
-        <!-- more -->
+        <!-- green -->
         <Color x:Key="SuccessColor">#187918</Color>
+        <!-- red -->
         <Color x:Key="OperationErrorColor">#b42e1c</Color>
+        <!-- light-green -->
         <Color x:Key="SuccessBackgroundColor">#25be25</Color>
+        <!-- green -->
         <Color x:Key="SuccessHoverBackgroundColor">#3aad3a</Color>
+        <!-- green -->
         <Color x:Key="SuccessPressedBackgroundColor">#2f972f</Color>
+        <!-- light-brown-gray -->
         <Color x:Key="SettingsTabBorderColor">#b8a898</Color>
+        <!-- red -->
         <Color x:Key="ErrorColor">#eb3c25</Color>
+        <!-- light gray -->
         <Color x:Key="InactiveTabBackgroundColor">#dcdcdc</Color>
+        <!-- white -->
         <Color x:Key="PopupBackgroundColor">#ffffff</Color>
+        <!-- yellow -->
         <Color x:Key="DirectoryIconYellowColor">#FFD766</Color>
 
         <!-- Avalonia brushes -->
@@ -58,12 +69,12 @@
         <SolidColorBrush x:Key="RowBackgroundBrush" Color="{DynamicResource WhiteColor}" />
         <SolidColorBrush x:Key="AlternativeRowBackgroundBrush" Color="{DynamicResource AlternativeMainBackgroundColor}" />
         
-        <!-- used for selected row -->
+        <!-- used also for selected row -->
         <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource LightBlueColor}" />
         <SolidColorBrush x:Key="HighlightForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.9" />
-        <!-- what is next used for ?? -->
-        <SolidColorBrush x:Key="ThemeAccentBrush4" Color="{DynamicResource MagentaTestsColor}" />
+        <!-- next used for hover of menu items -->
+        <SolidColorBrush x:Key="ThemeAccentBrush4" Color="{DynamicResource GreenTestsColor}" />
         <!-- next used for selected tab in main view see tabRectangleGloballyActive. used orange like in xp ? -->
         <SolidColorBrush x:Key="ThemeAccentBrush3" Color="{DynamicResource BrightOrangeColor}" />
         <!-- what is next used for ?? -->
@@ -143,7 +154,5 @@
         <system:Double x:Key="ScrollBarThickness">18</system:Double>
         <system:Double x:Key="ScrollBarThumbThickness">8</system:Double>
         <Thickness x:Key="ThemeBorderThickness">1</Thickness>
-
     </Style.Resources>
-
 </Style>
