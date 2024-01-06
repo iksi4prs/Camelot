@@ -160,7 +160,7 @@
     </Style>
 
     <Style Selector="DataGridRow:selected Grid">
-        <Setter Property="Background" Value="{DynamicResource HighlightBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SelectedRowBackgroundBrush}" />
     </Style>
 
     <Style Selector="DataGridRow:selected MenuItem Grid">
@@ -172,7 +172,7 @@
     </Style>
 
     <Style Selector="DataGridRow:selected Rectangle">
-        <Setter Property="Fill" Value="{DynamicResource HighlightBrush}" />
+        <Setter Property="Fill" Value="{DynamicResource SelectedRowBackgroundBrush}" />
         <Setter Property="Opacity" Value="1" />
     </Style>
 
@@ -193,7 +193,7 @@
     </Style>
 
     <Style Selector="DataGridRow:selected MenuItem:selected /template/ Grid">
-        <Setter Property="Background" Value="{DynamicResource HighlightBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SelectedRowBackgroundBrush}" />
     </Style>
 
     <Style Selector="ListBoxItem:selected TextBlock">

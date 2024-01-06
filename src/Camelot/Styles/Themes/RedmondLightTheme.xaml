@@ -68,14 +68,15 @@
         <!-- row -->
         <SolidColorBrush x:Key="RowBackgroundBrush" Color="{DynamicResource WhiteColor}" />
         <SolidColorBrush x:Key="AlternativeRowBackgroundBrush" Color="{DynamicResource AlternativeMainBackgroundColor}" />
-        
-        <!-- used also for selected row -->
-        <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource LightBlueColor}" />
+        <SolidColorBrush x:Key="SelectedRowBackgroundBrush" Color="{DynamicResource LightBlueColor}" />
+
+        <!-- next is used for selected tabs in settings, and more -->
+        <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource MagentaTestsColor}" />
         <SolidColorBrush x:Key="HighlightForegroundBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.9" />
-        <!-- next used for hover of menu items -->
+        <!-- next is used for hover of menu items -->
         <SolidColorBrush x:Key="ThemeAccentBrush4" Color="{DynamicResource GreenTestsColor}" />
-        <!-- next used for selected tab in main view see tabRectangleGloballyActive. used orange like in xp ? -->
+        <!-- next is used for selected tab in main view see tabRectangleGloballyActive. used orange like in xp ? -->
         <SolidColorBrush x:Key="ThemeAccentBrush3" Color="{DynamicResource BrightOrangeColor}" />
         <!-- what is next used for ?? -->
         <SolidColorBrush x:Key="ThemeAccentBrush2" Color="{DynamicResource MagentaTestsColor}" />
