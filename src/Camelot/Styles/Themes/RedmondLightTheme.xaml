@@ -47,7 +47,7 @@
         <Color x:Key="ErrorColor">#eb3c25</Color>
         <Color x:Key="InactiveTabBackgroundColor">#dcdcdc</Color>
         <Color x:Key="PopupBackgroundColor">#ffffff</Color>
-        <Color x:Key="YellowColor">#FFD766</Color>
+        <Color x:Key="DirectoryIconYellowColor">#FFD766</Color>
 
         <!-- Avalonia brushes -->
         <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{DynamicResource MainBackgroundColor}" />
@@ -136,7 +136,7 @@
         <SolidColorBrush x:Key="FavouriteDirectoryIconBrush" Color="{DynamicResource BlackColor}"
                          Opacity="0.8" />
         <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{DynamicResource PopupBackgroundColor}" />
-        <SolidColorBrush x:Key="DirectoryIconBrush" Color="{DynamicResource YellowColor}" />
+        <SolidColorBrush x:Key="DirectoryIconBrush" Color="{DynamicResource DirectoryIconYellowColor}" />
         
         <!-- Theme resources -->
         <system:Double x:Key="ThemeDisabledOpacity">0.5</system:Double>
